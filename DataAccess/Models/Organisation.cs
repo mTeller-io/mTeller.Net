@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Models
+namespace DataAccess
 {
     public class Organisation
     {

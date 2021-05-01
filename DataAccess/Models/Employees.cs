@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Models
+namespace DataAccess
 {
     public class Employees
     {
@@ -17,6 +17,9 @@ namespace Business.Models
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public PersonalContact Contact { get; set; }
+        public string SSNITId { get; set; }
+        public string TIN { get; set; }
+        public string GhanaCardId { get; set; }
+        public List<Address> Contact { get; set; }
     }
 }
