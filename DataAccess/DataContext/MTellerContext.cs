@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DataAccess
 {
-    public class MTellContext : DbContext
+    public class MTellerContext : DbContext
     {
-        public MTellContext(DbContextOptions contextOptions) : base(contextOptions) { }
+        public MTellerContext(DbContextOptions contextOptions) : base(contextOptions) { }
         DbSet<CashIn> CashIns { get; set; }
         DbSet<CashOut> CashOuts { get; set; }
         DbSet<Employees> Employees { get; set; }
