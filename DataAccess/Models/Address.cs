@@ -7,6 +7,7 @@ namespace DataAccess
     public class Address
     {
         public string MailingAddress { get; set; }
+        public List<string> Email { get; set; }
         public string City { get; set; }
         public string GhanaPostCode { get; set; }
         public string MobileNumber { get; set; }
