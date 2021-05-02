@@ -10,6 +10,7 @@ namespace DataAccess
         public Guid MaritalStatus { get; set; }
         public Guid Nationality { get; set; }
         public Guid EnployeeID { get; set; }
+        public Guid AddressId { get; set; }
         public DateTime HiredDate { get; set; }
         public string LoginName { get; set; }
         public string Password { get; set; }
@@ -20,6 +21,5 @@ namespace DataAccess
         public string SSNITId { get; set; }
         public string TIN { get; set; }
         public string GhanaCardId { get; set; }
-        public List<Address> Contact { get; set; }
     }
 }
