@@ -8,12 +8,24 @@ namespace DataAccess
     public class mTellerDBContext : DbContext
     {
         public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions) { }
-        DbSet<CashIn> CashIn { get; set; }
-        DbSet<CashOut> CashOut { get; set; }
-        DbSet<Organisation> Organisation { get; set; }
-        DbSet<OrganisationBranch> OrganisationBranch { get; set; }
+        DbSet<CashIn> CashIns { get; set; }
+        DbSet<CashOut> CashOuts { get; set; }
+        DbSet<Organisation> Organisations { get; set; }
+        DbSet<OrganisationBranch> OrganisationBranchs { get; set; }
         DbSet<AuditTrails> AuditTrails {get;set;}
-        DbSet<City> City {get;set;}
-        DbSet<BranchMerchantNumber> BranchMerchantNumber {get;set;}
+        DbSet<City> Cities {get;set;}
+        DbSet<BranchMerchantNumber> BranchMerchantNumbers {get;set;}
+        DbSet<AccountChartType> AccountChartTypes {get;set;}
+        DbSet<ChartOfAccount> ChartOfAccounts { get; set; }
+        DbSet<Country> Countries {get;set;}
+        DbSet<EntityType> EntityTypes {get;set;}
+        DbSet<Feature> Features {get;set;}
+        DbSet<Ledger> Ledgers {get;set;}
+        Dbset<Permission> Permissions {get;set;}
+        Dbset<Region> Regions {get;set;}
+        DbSet<Role> Roles{get;set;}
+        DbSet<Town> Towns {get;set;}
+        DbSet<User> Users {get;set;}
+
     }
 }
