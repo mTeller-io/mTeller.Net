@@ -7,7 +7,8 @@ namespace DataAccess
 {
     public class mTellerDBContext : DbContext
     {
-        public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions) { }
+        public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions)
+         { }
         DbSet<CashIn> CashIns { get; set; }
         DbSet<CashOut> CashOuts { get; set; }
         DbSet<Organisation> Organisations { get; set; }
