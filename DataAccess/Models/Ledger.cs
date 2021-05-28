@@ -14,7 +14,7 @@ namespace DataAccess
       //The global unique field
       public Guid LedgerUId = Guid.NewGuid();
       //The account phone number
-      public string AccountPhoneNumber {get;set;}
+      public string AccountNumber {get;set;}
       //The amount
       public string Amount {get;set;}
       //The entry type ie credit or debit
