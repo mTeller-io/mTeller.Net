@@ -3,6 +3,7 @@ namespace DataAccess.Models
     public class EntityType
     {
         //The identity primary key field
+        [key]
         public int EntityId {get;set;}
         //The globale unique identifier field
         public guid EntityUId = Guid.NewGuid();

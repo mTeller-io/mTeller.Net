@@ -10,6 +10,7 @@ namespace DataAccess
 public class Permission
  {
     //The identity auto primary key
+    [key]
     public int PermissionId {get;set;}
     //The global UId
     public Guid PermissonUId = Guid.NewGuid();

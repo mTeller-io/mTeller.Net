@@ -6,6 +6,7 @@ namespace DataAccess.Models
     public class Role
     {
         //The identity role id
+        [key]
         public int RoleID {get;set;}
         //The global unique identifier
         public Guid  RoleUID = Guid.NewGuid();

@@ -10,6 +10,7 @@ namespace DataAccess
   public class Ledger
   {
       //The primary key field
+      [key]
       public int LedgerId {get;set;}
       //The global unique field
       public Guid LedgerUId = Guid.NewGuid();

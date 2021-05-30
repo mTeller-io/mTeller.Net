@@ -10,6 +10,7 @@ namespace DataAccess
   public class Region
     {
         //The identity primary key field
+        [key]
         public int RegionId {get;set;}
         //The global unique id
         public Guid RegionUId = Guid.NewGuid();

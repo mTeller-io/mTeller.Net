@@ -12,6 +12,7 @@ namespace DataAccess
     public class BranchMerchantNumber
     {
         //The identity primary key
+        [key]
         public int   BranchMerchantNumberId {get;set;}
         //The global guid key
         public Guid BranchMerchantNumberUId = Guid.NewGuid();

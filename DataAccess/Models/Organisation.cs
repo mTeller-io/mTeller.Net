@@ -10,6 +10,7 @@ namespace DataAccess
     public class Organisation
     {
         //The identity primary key
+        [key]
         public int OrganizationId {get;set;}
         // The global guid primary key
         public Guid OrganizationUId { get; set; }

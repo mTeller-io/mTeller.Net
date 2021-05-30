@@ -10,6 +10,7 @@ namespace DataAccess
     public class Town
     {
         //The identity primary key field
+        [key]
         public int TownId {get;set;}
         //The global unique id
         public Guid TownUId = Guid.NewGuid();

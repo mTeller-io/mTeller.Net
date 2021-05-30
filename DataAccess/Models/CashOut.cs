@@ -10,6 +10,7 @@ namespace DataAccess
     public class CashOut
     {
         //The identity primary key
+        [key]
         public int CashOutId {get;set;}
         //The guid identifier id to uniquely identify the record
         public Guid CashOutUId { get; set; }

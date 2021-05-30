@@ -6,6 +6,7 @@ namespace DataAccess.Models
     public class AccountChartType
     {
         //Auto increment key
+        [key]
         public int AccountChartTypeId {get;set;}
         //Global unique key
         public Guid AccountChartTypeUId {get;set;} = Guid.NewGuid();

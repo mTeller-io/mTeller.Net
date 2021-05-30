@@ -1,6 +1,7 @@
 public class Feature
 {
     //primary key
+    [key]
     public int FeatureId {get;set;}
     //The global unique field
     public Guid FeatureUId = Guid.NewGuid();

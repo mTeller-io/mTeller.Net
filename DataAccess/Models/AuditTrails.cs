@@ -2,7 +2,8 @@ namespace DataAccess.Models
 {
     public class AuditTrails
     {
-        //Identity primary key        
+        //Identity primary key 
+        [key]       
         public int AuditId {get;set;}
         //The global unique id
         public Guid AuditUId = Guid.NewGuid();
