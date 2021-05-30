@@ -1,4 +1,6 @@
-namespace DataAccess.Models
+using System;
+
+namespace DataAccess
 {
     public class AuditTrails
     {
@@ -7,7 +9,7 @@ namespace DataAccess.Models
         //The global unique id
         public Guid AuditUId = Guid.NewGuid();
         //The type of audit activity. e.g Add,Update,Delete,View
-        public string AuditType {get;set}
+        public string AuditType { get; set; }
         //The id of the entity being audited
         public int EntitypeID {get;set;}
         //The identity number identifying the record in the entity
