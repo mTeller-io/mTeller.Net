@@ -1,3 +1,5 @@
+using System;
+
 namespace DataAccess.Models
 {
     public class EntityType
@@ -6,7 +8,7 @@ namespace DataAccess.Models
         [key]
         public int EntityId {get;set;}
         //The globale unique identifier field
-        public guid EntityUId = Guid.NewGuid();
+        public Guid EntityUId = Guid.NewGuid();
         // The short name of the entity
         public string Name {get;set;}
         //The description of the entity

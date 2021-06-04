@@ -13,7 +13,7 @@ namespace DataAccess
         [key]
         public int BranchId { get; set; }
         //The global identification id
-        public guid BranchUId {get;set;}
+        public Guid BranchUId {get;set;}
         //The user assigned branch code
         public string BranchCode {get;set;}
         //The Organization global unique id

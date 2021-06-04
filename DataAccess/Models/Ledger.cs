@@ -23,7 +23,7 @@ namespace DataAccess
       //The transaction type i.e cashin or cashout
       public string TransactionType {get;set;}
       //The value date
-      public date EntryDate {get;set}
+      public DateTime EntryDate { get; set; }
       //Narration 
       public string Narration {get;set;}
       //The name of the user capturing the record

@@ -17,7 +17,7 @@ namespace DataAccess
         //The global guid key
         public Guid BranchMerchantNumberUId = Guid.NewGuid();
         //The Merchant Account Numbe
-        public string MerchantPhoneNumber {get;se}
+        public string MerchantPhoneNumber { get; set; }
         //The Network Provider Name
         public string NetworkProviderName {get;set;}
         //The status

@@ -1,3 +1,5 @@
+using System;
+
 public class User {
     //The identity primary key
     [key]
@@ -13,7 +15,7 @@ public class User {
     //Login password expiry date
     public DateTime PasswordExpiryDate {get;set;}
     // The id of the user assigned role from the roles object
-    public int UserRoleID {get;set;};
+    public int UserRoleID { get; set; }
     // The brancode of the user assigned branch
     public string BranchCode {get;set;}
     // The mailing address of the user

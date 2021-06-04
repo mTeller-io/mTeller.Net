@@ -17,7 +17,7 @@ namespace DataAccess
         //The entity type id
         public int EntitypeID {get;set;}
         //The default transaction type name
-        public string TransactionType {get;set;}='CASHIN'
+        public string TransactionType { get; set; } = "CASHIN";
         //The name of cash sender
         public string CustomerName { get; set; }
         //The phone number of cash sender
@@ -39,7 +39,7 @@ namespace DataAccess
         //The current status of the transaction
         public string Status {get;set;}
         //The history record of the transation
-        public Text history {get;set;}
+        public string History {get;set;}
         //The telecom network provider name of the receiver
         public string DepositPhoneNumberNetworkName {get;set;}
         //The telecom network provider name of the sender
