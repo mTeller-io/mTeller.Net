@@ -1,6 +1,6 @@
 using System;
 
-namespace DataAccess.Models
+namespace Model
 {
     /// <summary>
     /// The chart of account of the business for book keeping purpose

@@ -1,19 +1,23 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess.Models
+namespace Model
 {
-    public class EntityType
+    /// <summary>
+    /// The class for defining user roles
+    /// </summary>
+    public class Role
     {
-        //The identity primary key field
-        public int EntityId {get;set;}
-        //The globale unique identifier field
-        public Guid EntityUId = Guid.NewGuid();
-        // The short name of the entity
+        //The identity role id
+        public int RoleID {get;set;}
+        //The global unique identifier
+        public Guid  RoleUID = Guid.NewGuid();
+        //The name of the role
+        [Required]
         public string Name {get;set;}
-        //The description of the entity
+        //The description of the role
+        [Required]
         public string Description {get;set;}
-        //The database table object
-        public string Table {get;set;} 
          //The name of the user capturing the record
         public string CreateUserName {get;set;}
         //The date and time of the captured record. Auto set with format yyyy/MM//dd H:MM SSSS

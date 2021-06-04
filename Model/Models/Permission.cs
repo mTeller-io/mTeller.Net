@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
  /// <summary>
  /// The table for storing permissions

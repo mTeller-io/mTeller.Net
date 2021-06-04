@@ -1,6 +1,6 @@
 using System;
 
-namespace DataAccess.Models
+namespace Model
 {
     /// <summary>
     /// The various type of account that can be found in the chart of accounts for book keeping

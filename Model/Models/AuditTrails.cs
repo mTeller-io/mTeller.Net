@@ -1,6 +1,6 @@
 using System;
 
-namespace DataAccess
+namespace Model
 {
     public class AuditTrails
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
     /// <summary>
     /// The class for town object
@@ -14,11 +15,13 @@ namespace DataAccess
         //The global unique id
         public Guid TownUId = Guid.NewGuid();
         //The town name
+        [Required]
         public string Name {get;set;}
         //The town description 
+        [Required]
         public string Description {get;set;} 
         //The city id
-        public int CityId {get;set;}
+        public Guid CityUId { get;set;}
         //The name of the user capturing the record
         public string CreateUserName {get;set;}
         //The date and time of the captured record. Auto set with format yyyy/MM//dd H:MM SSSS

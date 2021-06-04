@@ -1,25 +1,27 @@
-﻿using System;
+  using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
     /// <summary>
-    /// The class for city object
+    /// The class for region object
     /// </summary>
-    public class City
+  public class Region
     {
         //The identity primary key field
-        public int CityId {get;set;}
+        public int RegionId {get;set;}
         //The global unique id
-        public Guid CityUId = Guid.NewGuid();
+        public Guid RegionUId = Guid.NewGuid();
         //The city name
+        [Required]
         public string Name {get;set;}
         //The city description 
+        [Required]
         public string Description {get;set;} 
-        //The region id
-        public int RegionId {get;set;}
-      
+        //The country id
+        public Guid CountryUId { get;set;}
         //The name of the user capturing the record
         public string CreateUserName {get;set;}
         //The date and time of the captured record. Auto set with format yyyy/MM//dd H:MM SSSS

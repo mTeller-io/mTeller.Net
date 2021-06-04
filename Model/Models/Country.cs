@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
     /// <summary>
     /// The class for region object
@@ -14,8 +15,10 @@ namespace DataAccess
         //The global unique id
         public Guid CountryUId = Guid.NewGuid();
         //The city name
+        [Required]
         public string Name {get;set;}
         //The city description 
+        [Required]
         public string Description {get;set;} 
         //The name of the user capturing the record
         public string CreateUserName {get;set;}

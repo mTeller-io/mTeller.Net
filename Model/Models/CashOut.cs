@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
     /// <summary>
     /// The cash out object. Capture transation of giving cash out to customer
@@ -16,29 +17,39 @@ namespace DataAccess
         //The entity type id
         public int EntitypeID { get; set; }
         //The default transaction type name
-        public string TransactionType { get; set; } = "CASHOUT";
+        public string TransactionType { get; set; } = nameof(Transaction.CASHOUT);
         //The name of cash sender
+        [Required]
         public string CustomerName { get; set; }
         //The phone number of cash sender
+        [Required]
         public string CustomerPhoneNumber { get; set; }
         //The registered sim name of momo cashin payee number
+        [Required]
         public string WithdrawerName { get; set; }
         // The registered sim  number of momo cashin payee
+        [Required]
         public string WithdrawerPhoneNumber { get; set; }
         // The identification type of the withdrawer
+        [Required]
         public string WithdrawerIDType { get; set; }
         //The identification number 
         public string WithdrawerIDNo { get; set; }
         // The cashOut amount
+        [Required]
         public double Amount { get; set; }
         //True if sender pays charges
+        [Required]
         public string ChargeRate { get; set; }
         //The amount of charges for sending cashin
+        [Required]
         public double ChargeAmount { get; set; }
         //The date of transaction. This is auto set with format yyyy/MM/dd
+        [Required]
         public string TransactionDate { get; set; }
         //The previous status value before the transation status
-        public string lastStatus { get; set; }
+        [Required]
+        public string LastStatus { get; set; }
         //The current status of the transaction
         public string Status { get; set; }
         //The history record of the transation

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DataAccess
+namespace Model
 {
     /// <summary>
     /// This is contain details of the agent organization
@@ -14,18 +15,23 @@ namespace DataAccess
         // The global guid primary key
         public Guid OrganizationUId { get; set; }
         //The name of the organization
+        [Required]
         public string Name { get; set; }
         //The VAT identification Id of the organization
         public string VATId { get; set; }
         //The user specified business registration id
         public string BusinessRegistrationId { get; set; }
         //The business registration date of the organization
+        [Required]
         public DateTime BusinessRegistrationDate { get; set; }
         //The names of the owners of the organization
+        [Required]
         public List<string> Owners { get; set; }
         //The name of the appointed CEO
-        public string CEOs { get; set; }
+        [Required]
+        public List<string> CEOs { get; set; }
         //The country of origin of the business
+        [Required]
         public int CountryOfOrigin { get; set; }
          //The name of the user capturing the record
         public string CreateUserName {get;set;}

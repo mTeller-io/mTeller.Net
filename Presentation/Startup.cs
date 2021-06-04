@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business;
+using DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,14 @@ namespace Controllers
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            string connectionString = Configuration.GetConnectionString("MtellerConnection");
+            services.AddDbContext<MTellerDBContext>(option => option.UseNpgsql(connectionString));
+
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            MTellerDBContext appDbContext = serviceProvider.GetService<MTellerDBContext>();
+
+            Business.ServiceCollectionExtensions.RegisterYourLibrary(services,appDbContext);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
