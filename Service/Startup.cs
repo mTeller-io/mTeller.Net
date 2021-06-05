@@ -31,9 +31,9 @@ namespace Service
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
-            services.AddDbContextFactory<ApplicationDbContext>(
+            services.AddDbContextFactory<mTellerDBContext>(
         options =>
-            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"),actions=>actions.MigrationsAssembly("DataAccess")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
