@@ -1,8 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class User {
     //The identity primary key
-    [key]
+    [Key]
     public int UserId {get;set;}
     //The global unique identifier
     public Guid UserUId = Guid.NewGuid();

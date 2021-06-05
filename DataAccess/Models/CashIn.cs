@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,7 +11,7 @@ namespace DataAccess
     public class CashIn
     {
         //The identity primary key
-        [key]
+        [Key]
         public int CashInId {get;set;}
         //The guid identifier id to uniquely identify the record
         public Guid CashInUId { get; set; }

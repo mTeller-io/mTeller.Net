@@ -1,11 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
     public class AuditTrails
     {
         //Identity primary key 
-        [key]       
+        [Key]       
         public int AuditId {get;set;}
         //The global unique id
         public Guid AuditUId = Guid.NewGuid();

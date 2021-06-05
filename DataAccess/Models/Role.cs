@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
 {
@@ -8,7 +9,7 @@ namespace DataAccess.Models
     public class Role
     {
         //The identity role id
-        [key]
+        [Key]
         public int RoleID {get;set;}
         //The global unique identifier
         public Guid  RoleUID = Guid.NewGuid();

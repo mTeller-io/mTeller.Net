@@ -1,8 +1,9 @@
 ﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
+// using System.Collections.Generic;
+// using System.Text;
+// using System.Data.Entity.Core;
 
 namespace DataAccess
 {
@@ -14,6 +15,8 @@ namespace DataAccess
            
 
         }
+
+
 
         
         
