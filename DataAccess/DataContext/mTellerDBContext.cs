@@ -5,7 +5,7 @@ using System;
 // using System.Text;
 // using System.Data.Entity.Core;
 
-namespace DataAccess
+namespace DataAccess.DataContext
 {
     public class mTellerDBContext : DbContext
     {
