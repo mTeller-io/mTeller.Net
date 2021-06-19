@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using DataAccess;
+using DataAccess.DataContext;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace Service
 {
@@ -25,7 +29,15 @@ namespace Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+          
             services.AddControllers();
+
+            /*   services.AddDbContext<mTellerContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
+
+            services.AddDbContextFactory<mTellerDBContext>(
+        options =>
+            options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"),actions=>actions.MigrationsAssembly("DataAccess")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

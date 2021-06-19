@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,6 +11,7 @@ namespace DataAccess
     public class CashOut
     {
         //The identity primary key
+        [Key]
         public int CashOutId { get; set; }
         //The guid identifier id to uniquely identify the record
         public Guid CashOutUId { get; set; }
@@ -38,7 +40,7 @@ namespace DataAccess
         //The date of transaction. This is auto set with format yyyy/MM/dd
         public string TransactionDate { get; set; }
         //The previous status value before the transation status
-        public string lastStatus { get; set; }
+        public string PrevStatus { get; set; }
         //The current status of the transaction
         public string Status { get; set; }
         //The history record of the transation

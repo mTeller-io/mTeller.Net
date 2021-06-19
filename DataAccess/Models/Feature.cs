@@ -1,8 +1,10 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class Feature
 {
     //primary key
+    [Key]
     public int FeatureId {get;set;}
     //The global unique field
     public Guid FeatureUId = Guid.NewGuid();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,6 +11,7 @@ namespace DataAccess
 public class Permission
  {
     //The identity auto primary key
+    [Key]
     public int PermissionId {get;set;}
     //The global UId
     public Guid PermissonUId = Guid.NewGuid();

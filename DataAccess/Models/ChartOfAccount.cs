@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
 {
@@ -8,6 +9,7 @@ namespace DataAccess.Models
     public class ChartOfAccount
     {
         //Auto increment primary key
+        [Key]
         public int ChartOfAccountId {get;set;}
         //Global unique key
         public Guid ChartOfAccountUId {get;set;} = Guid.NewGuid();

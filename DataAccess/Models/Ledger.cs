@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,6 +11,7 @@ namespace DataAccess
   public class Ledger
   {
       //The primary key field
+      [Key]
       public int LedgerId {get;set;}
       //The global unique field
       public Guid LedgerUId = Guid.NewGuid();

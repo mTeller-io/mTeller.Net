@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,6 +11,7 @@ namespace DataAccess
     public class OrganisationBranch
     {
         //The identity primary key
+        [Key]
         public int BranchId { get; set; }
         //The global identification id
         public Guid BranchUId {get;set;}

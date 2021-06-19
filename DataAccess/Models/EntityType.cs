@@ -1,10 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
 {
     public class EntityType
     {
         //The identity primary key field
+        [Key]
         public int EntityId {get;set;}
         //The globale unique identifier field
         public Guid EntityUId = Guid.NewGuid();

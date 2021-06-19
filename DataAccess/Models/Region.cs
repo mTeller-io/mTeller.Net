@@ -1,6 +1,7 @@
-  using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -10,6 +11,7 @@ namespace DataAccess
   public class Region
     {
         //The identity primary key field
+        [Key]
         public int RegionId {get;set;}
         //The global unique id
         public Guid RegionUId = Guid.NewGuid();

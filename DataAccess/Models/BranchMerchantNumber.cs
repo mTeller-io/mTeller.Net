@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess
 {
@@ -12,6 +11,7 @@ namespace DataAccess
     public class BranchMerchantNumber
     {
         //The identity primary key
+        [Key]
         public int   BranchMerchantNumberId {get;set;}
         //The global guid key
         public Guid BranchMerchantNumberUId = Guid.NewGuid();
