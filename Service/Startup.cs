@@ -35,6 +35,7 @@ namespace Service
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
+            services.AddScoped<ImTellerRepository<T>, mTellerRepository>();
             services.AddDbContextFactory<mTellerDBContext>(
         options =>
             options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"),actions=>actions.MigrationsAssembly("DataAccess")));

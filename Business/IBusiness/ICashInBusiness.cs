@@ -1,0 +1,7 @@
+namespace .
+{
+    public interface ICashInBusiness
+    {
+         
+    }
+}
