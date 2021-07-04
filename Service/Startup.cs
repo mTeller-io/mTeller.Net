@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DataAccess;
+using Business;
 using DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -31,6 +32,8 @@ namespace Service
         {
           
             services.AddControllers();
+            services.AddScoped<ICashInBusiness, CashInBusiness>();
+            services.AddScoped<ICashOutBusiness, CashOutBusiness>();
 
             services.AddDbContextFactory<mTellerDBContext>(
         options =>

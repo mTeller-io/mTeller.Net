@@ -2,17 +2,18 @@ using DataAccess;
 using DataAccess.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
         private readonly ImTellerRepository<CashIn> _cashInRepository;
+        private static readonly HttpClient client = new HttpClient();
 
         public CashInBusiness(ImTellerRepository<CashIn> cashInRepository)
         {
             _cashInRepository = cashInRepository;
-
         }
 
         public async Task AddCashIn(CashIn cashIn)
@@ -21,6 +22,13 @@ namespace Business
 
             if (validationResult.IsValid)
             {
+                //TODO: 1. Get customer data from MTN API
+                //      2. If data retrieval succeeds
+                //          2.1. Add the cashin ammount to customers balance
+                //          2.2. Log the transaction details and or print out a receipt.
+                //      3. If data retrieval fails
+                //          3.1. log the exception
+                //          3.2. throw a user friendly error message for user
                 await _cashInRepository.Add(cashIn);
             }
             else
