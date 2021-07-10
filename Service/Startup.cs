@@ -10,11 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using DataAccess;
 using Business;
 using DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using DataAccess.Repository;
 
 namespace Service
 {
@@ -32,12 +32,17 @@ namespace Service
         {
           
             services.AddControllers();
+
+            services.AddDbContextFactory<mTellerDBContext>(
+     options =>
+         options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"), actions => actions.MigrationsAssembly("DataAccess")));
+
+            services.AddTransient<mTellerDBContext>();
+            services.AddScoped<ImTellerRepository, mTellerRepository>();
             services.AddScoped<ICashInBusiness, CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
 
-            services.AddDbContextFactory<mTellerDBContext>(
-        options =>
-            options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"),actions=>actions.MigrationsAssembly("DataAccess")));
+         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

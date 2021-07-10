@@ -8,10 +8,10 @@ namespace Business
 {
     public class CashOutBusiness : ICashOutBusiness
     {
-        private readonly ImTellerRepository<CashOut> _cashOutRepository;
+        private readonly ImTellerRepository _cashOutRepository;
         private static readonly HttpClient client = new HttpClient();
 
-        public CashOutBusiness(ImTellerRepository<CashOut> cashOutRepository)
+        public CashOutBusiness(ImTellerRepository cashOutRepository)
         {
             _cashOutRepository = cashOutRepository;
         }
@@ -19,12 +19,12 @@ namespace Business
 
         public async Task<CashOut> GetCashOut(int CashOutId)
         {
-            return await _cashOutRepository.Get(CashOutId);
+            return await _cashOutRepository.Get<CashOut>(CashOutId);
         }
 
         public async Task<List<CashOut>> GetAllCashOut()
         {
-            return await _cashOutRepository.GetAll();
+            return await _cashOutRepository.GetAll<CashOut>();
         }
 
         public async Task AddCashOut(CashOut cashOut)
@@ -67,7 +67,7 @@ namespace Business
 
         public async Task<CashOut> DeleteCashOut(int id)
         {
-            return await _cashOutRepository.Delete(id);
+            return await _cashOutRepository.Delete<CashOut>(id);
         }
     }
 }

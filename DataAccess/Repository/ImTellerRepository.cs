@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public interface ImTellerRepository<T> where T : class
+    public interface ImTellerRepository
     {
-          Task<List<T>> GetAll();
-          Task<T> Get(int id);
-          Task<T> Add(T entity);
-          Task<T> Update(T entity);
-          Task<T> Delete(int id);
+        Task<List<T>> GetAll<T>() where T : class;
+        Task<T> Get<T>(int id) where T : class;
+        Task<T> Add<T>(T entity) where T : class;
+        Task<T> Update<T>(T entity);
+        Task<T> Delete<T>(int id) where T : class;
     }
 }

@@ -8,10 +8,10 @@ namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
-        private readonly ImTellerRepository<CashIn> _cashInRepository;
+        private readonly ImTellerRepository _cashInRepository;
         private static readonly HttpClient client = new HttpClient();
 
-        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository)
+        public CashInBusiness(ImTellerRepository cashInRepository)
         {
             _cashInRepository = cashInRepository;
         }
@@ -39,17 +39,17 @@ namespace Business
 
         public async Task<CashIn> DeleteCashIn(int id)
         {
-            return await _cashInRepository.Delete(id);
+            return await _cashInRepository.Delete<CashIn>(id);
         }
 
         public async Task<List<CashIn>> GetAllCashIn()
         {
-            return await _cashInRepository.GetAll();
+            return await _cashInRepository.GetAll<CashIn>();
         }
 
         public async Task<CashIn> GetCashIn(int CashInId)
         {
-            return await _cashInRepository.Get(CashInId);
+            return await _cashInRepository.Get<CashIn>(CashInId);
         }
 
         public async Task<CashIn> UpdateCashIn(CashIn cashIn)
