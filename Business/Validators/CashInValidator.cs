@@ -20,7 +20,7 @@ namespace Business
             RuleFor(c => c.CustomerName).NotEmpty();
             RuleFor(c => c.BranchMerchantNumber).NotEmpty().Must(BeLenghtOfTen);
             RuleFor(c => c.BranchMerchantNumberNetworkName).NotEmpty();
-            RuleFor(c => c.CreateDateTime).GreaterThan(System.DateTime.Now); //Not sure
+            RuleFor(c => c.CreateDateTime).LessThanOrEqualTo(System.DateTime.Now); //Not sure
             RuleFor(c => c.CreateUserName).NotEmpty();
             RuleFor(c => c.CustomerPhoneNumber).NotEmpty();
             RuleFor(c => c.DepositAmount).NotEmpty().GreaterThan(0.0);
@@ -42,6 +42,6 @@ namespace Business
                 return false;
             else
                 return true;
-        }
+        } 
     }
 }
