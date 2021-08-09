@@ -33,6 +33,11 @@ namespace Service
           
             services.AddControllers();
 
+
+            /*   services.AddDbContext<mTellerContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
+
+  
             services.AddDbContextFactory<mTellerDBContext>(
      options =>
          options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"), actions => actions.MigrationsAssembly("DataAccess")));

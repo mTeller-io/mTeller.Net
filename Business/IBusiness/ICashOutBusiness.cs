@@ -1,3 +1,4 @@
+
 using DataAccess;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,5 +12,6 @@ namespace Business
         Task AddCashOut(CashOut cashOut);
         Task<CashOut> UpdateCashOut(CashOut cashOut);
         Task<CashOut> DeleteCashOut(int id);
+
     }
 }

@@ -1,3 +1,4 @@
+
 using DataAccess;
 using DataAccess.Repository;
 using System.Collections.Generic;
@@ -69,5 +70,6 @@ namespace Business
         {
             return await _cashOutRepository.Delete<CashOut>(id);
         }
+
     }
 }

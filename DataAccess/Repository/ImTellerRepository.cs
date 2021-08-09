@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,5 +11,6 @@ namespace DataAccess.Repository
         Task<T> Add<T>(T entity) where T : class;
         Task<T> Update<T>(T entity);
         Task<T> Delete<T>(int id) where T : class;
+
     }
 }
