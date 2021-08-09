@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess
+namespace DataAccess.Models
 {
     public class AuditTrails
     {

@@ -1,14 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
-public class User {
+public class User : IdentityUser<int> {
     //The identity primary key
     [Key]
     public int UserId {get;set;}
     //The global unique identifier
     public Guid UserUId = Guid.NewGuid();
     //The user define login name
-    public string UserName {get;set;}
+    public override string  UserName {get;set;}
     //The full name of the user
     public string UserFullName {get;set;}
     // The hash login password of the user

@@ -1,13 +1,17 @@
-﻿using DataAccess.Models;
+﻿using System;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+
 // using System.Collections.Generic;
 // using System.Text;
 // using System.Data.Entity.Core;
 
 namespace DataAccess.DataContext
 {
-    public class mTellerDBContext : DbContext
+    public class mTellerDBContext : IdentityDbContext<User, Role,int>
     {
 
         public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions)
@@ -31,10 +35,11 @@ namespace DataAccess.DataContext
         //     => optionsBuilder.UseNpgsql(_connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+             base.OnModelCreating(modelBuilder);
             //Set the default schema for postgres so it does not default to dbo which is for SQL Server
             modelBuilder.HasDefaultSchema("public");
 
-       
         }
    
         DbSet<CashIn> CashIns { get; set; }
@@ -52,9 +57,9 @@ namespace DataAccess.DataContext
         DbSet<Ledger> Ledgers {get;set;}
         DbSet<Permission> Permissions {get;set;}
         DbSet<Region> Regions {get;set;}
-        DbSet<Role> Roles{get;set;}
+        DbSet<Role>   Roles{get;set;}
         DbSet<Town> Towns {get;set;}
-        DbSet<User> Users {get;set;}
+        DbSet<User>  Users {get;set;}
 
     }
 }

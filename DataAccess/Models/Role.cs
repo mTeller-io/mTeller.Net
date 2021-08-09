@@ -1,12 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAccess.Models
 {
     /// <summary>
     /// The class for defining user roles
     /// </summary>
-    public class Role
+    public class Role: IdentityRole<int>
     {
         //The identity role id
         [Key]
@@ -14,7 +15,7 @@ namespace DataAccess.Models
         //The global unique identifier
         public Guid  RoleUID = Guid.NewGuid();
         //The name of the role
-        public string Name {get;set;}
+        public override string  Name {get;set;}
         //The description of the role
         public string Description {get;set;}
          //The name of the user capturing the record
