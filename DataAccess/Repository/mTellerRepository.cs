@@ -1,8 +1,14 @@
 using DataAccess.Models;
 
+using DataAccess.DataContext;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
 namespace DataAccess.Repository
 {
-    public class mTellerRepository<T>  :ImTellerRepository<T> : where T : class {
+    public class mTellerRepository<T>  :ImTellerRepository<T>  where T : class {
+
 
         private readonly mTellerDBContext _mTellerContext;
 
@@ -13,43 +19,37 @@ namespace DataAccess.Repository
         
         public async Task<TEntity> Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
-            await context.SaveChangesAsync();
+            _mTellerContext.Set<TEntity>().Add(entity);
+            await _mTellerContext.SaveChangesAsync();
             return entity;
         }
 
         public async Task<TEntity> Delete(int id)
         {
-            var entity = await context.Set<TEntity>().FindAsync(id);
+            var entity = await _mTellerContext.Set<TEntity>().FindAsync(id);
+
             if (entity == null)
             {
                 return entity;
             }
 
-            context.Set<TEntity>().Remove(entity);
-            await context.SaveChangesAsync();
+            _mTellerContext.Set<T>().Remove(entity);
+            await _mTellerContext.SaveChangesAsync();
+
 
             return entity;
         }
 
-        public async Task<TEntity> Get(int id)
+
+        public async Task<T> Get<T>(int id) 
         {
-            return await context.Set<TEntity>().FindAsync(id);
+            return await _mTellerContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<List<TEntity>> GetAll()
+        public async Task<List<T>> GetAll<T>() 
         {
-            return await context.Set<TEntity>().ToListAsync();
+            return await _mTellerContext.Set<T>().ToListAsync();
         }
 
-        public async Task<TEntity> Update(TEntity entity)
-        {
-            context.Entry(entity).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return entity;
-        }
-         
-
-     
     }
 }
