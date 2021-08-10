@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using DataAccess.DataContext;
 
 
-
-
 namespace DataAccess.Repository
 {
     public class mTellerRepository<T> :ImTellerRepository<T>  where T : class
@@ -58,8 +56,6 @@ namespace DataAccess.Repository
             await _mTellerContext.SaveChangesAsync();
             return entity;
         }
-         
 
-     
     }
 }
