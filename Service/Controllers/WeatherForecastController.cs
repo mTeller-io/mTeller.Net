@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business;
-using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,29 +18,29 @@ namespace Service.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private ICashInBusiness _cashInBusiness;
+        
 
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, ICashInBusiness cashInBusiness)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
 
         {
             _logger = logger;
-            _cashInBusiness = cashInBusiness;
+          
         }
 
         [HttpGet]
-        public async Task<List<CashIn>> Get()
+        public IEnumerable< WeatherForecast> Get()
         {
-            //var rng = new Random();
-            //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            //{
-            //    Date = DateTime.Now.AddDays(index),
-            //    TemperatureC = rng.Next(-20, 55),
-            //    Summary = Summaries[rng.Next(Summaries.Length)]
-            //})
-            //.ToArray();
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+               Date = DateTime.Now.AddDays(index),
+               TemperatureC = rng.Next(-20, 55),
+               Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
 
-            return (await _cashInBusiness.GetAllCashIn()).ToList();
+           
         }
     }
 }

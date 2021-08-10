@@ -1,4 +1,4 @@
-﻿using DataAccess;
+﻿using DataAccess.Models;
 using FluentValidation;
 
 namespace Business
