@@ -1,18 +1,19 @@
 
-using DataAccess;
-using DataAccess.Repository;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
+using DataAccess.Repository;
+using DataAccess.Models;
+using Business.Interface;
+using System.Collections.Generic;
 using System.Net.Http;
-
 namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
-        private readonly ImTellerRepository _cashInRepository;
+        private readonly ImTellerRepository<CashIn> _cashInRepository;
         private static readonly HttpClient client = new HttpClient();
 
-        public CashInBusiness(ImTellerRepository cashInRepository)
+        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository)
         {
             _cashInRepository = cashInRepository;
         }
@@ -40,17 +41,17 @@ namespace Business
 
         public async Task<CashIn> DeleteCashIn(int id)
         {
-            return await _cashInRepository.Delete<CashIn>(id);
+            return await _cashInRepository.Delete(id);
         }
 
-        public async Task<List<CashIn>> GetAllCashIn()
+        public async Task<IList<CashIn>> GetAllCashIn()
         {
-            return await _cashInRepository.GetAll<CashIn>();
+            return await _cashInRepository.GetAll();
         }
 
         public async Task<CashIn> GetCashIn(int CashInId)
         {
-            return await _cashInRepository.Get<CashIn>(CashInId);
+            return await _cashInRepository.Get(CashInId);
         }
 
         public async Task<CashIn> UpdateCashIn(CashIn cashIn)

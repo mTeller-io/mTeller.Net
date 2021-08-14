@@ -1,14 +1,16 @@
+using System;
 using DataAccess.Models;
-
-using DataAccess.DataContext;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using DataAccess.DataContext;
+
 
 namespace DataAccess.Repository
 {
-    public class mTellerRepository<T>  :ImTellerRepository<T>  where T : class {
-
+    public class mTellerRepository<T> :ImTellerRepository<T>  where T : class
+    {
 
         private readonly mTellerDBContext _mTellerContext;
 
@@ -17,17 +19,16 @@ namespace DataAccess.Repository
           _mTellerContext = mTellerContext  ;
         }
         
-        public async Task<TEntity> Add(TEntity entity)
+        public async Task<T> Add(T entity)
         {
-            _mTellerContext.Set<TEntity>().Add(entity);
+            _mTellerContext.Set<T>().Add(entity);
             await _mTellerContext.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<TEntity> Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            var entity = await _mTellerContext.Set<TEntity>().FindAsync(id);
-
+            var entity = await _mTellerContext.Set<T>().FindAsync(id);
             if (entity == null)
             {
                 return entity;
@@ -36,19 +37,24 @@ namespace DataAccess.Repository
             _mTellerContext.Set<T>().Remove(entity);
             await _mTellerContext.SaveChangesAsync();
 
-
             return entity;
         }
 
-
-        public async Task<T> Get<T>(int id) 
+        public async Task<T> Get(int id)
         {
             return await _mTellerContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<List<T>> GetAll<T>() 
+        public async Task<IList<T>> GetAll()
         {
             return await _mTellerContext.Set<T>().ToListAsync();
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            _mTellerContext.Entry(entity).State = EntityState.Modified;
+            await _mTellerContext.SaveChangesAsync();
+            return entity;
         }
 
     }

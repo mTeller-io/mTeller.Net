@@ -1,9 +1,7 @@
-
+using  System.Collections.Generic;
 using System;
-using System.Collections.Generic;
 
-namespace Business
-
+namespace Business.Interface
 {
     public interface IBusiness
     {

@@ -1,13 +1,17 @@
-﻿using DataAccess.Models;
+﻿using System;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+
 // using System.Collections.Generic;
 // using System.Text;
 // using System.Data.Entity.Core;
 
 namespace DataAccess.DataContext
 {
-    public class mTellerDBContext : DbContext
+    public class mTellerDBContext : IdentityDbContext<User, Role,int>
     {
 
         public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions)
@@ -31,30 +35,31 @@ namespace DataAccess.DataContext
         //     => optionsBuilder.UseNpgsql(_connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+             base.OnModelCreating(modelBuilder);
             //Set the default schema for postgres so it does not default to dbo which is for SQL Server
             modelBuilder.HasDefaultSchema("public");
 
-       
         }
    
-        public DbSet<CashIn> CashIns { get; set; }
-        public DbSet<CashOut> CashOuts { get; set; }
-        public DbSet<Organisation> Organisations { get; set; }
-        public DbSet<OrganisationBranch> OrganisationBranchs { get; set; }
-        public DbSet<AuditTrails> AuditTrails {get;set;}
-        public DbSet<City> Cities {get;set;}
-        public DbSet<BranchMerchantNumber> BranchMerchantNumbers {get;set;}
-        public DbSet<AccountChartType> AccountChartTypes {get;set;}
-        public DbSet<ChartOfAccount> ChartOfAccounts { get; set; }
-        public DbSet<Country> Countries {get;set;}
-        public DbSet<EntityType> EntityTypes {get;set;}
-        public DbSet<Feature> Features {get;set;}
-        public DbSet<Ledger> Ledgers {get;set;}
-        public DbSet<Permission> Permissions {get;set;}
-        public DbSet<Region> Regions {get;set;}
-        public DbSet<Role> Roles{get;set;}
-        public DbSet<Town> Towns {get;set;}
-        public DbSet<User> Users {get;set;}
+        DbSet<CashIn> CashIns { get; set; }
+        DbSet<CashOut> CashOuts { get; set; }
+        DbSet<Organisation> Organisations { get; set; }
+        DbSet<OrganisationBranch> OrganisationBranchs { get; set; }
+        DbSet<AuditTrails> AuditTrails {get;set;}
+        DbSet<City> Cities {get;set;}
+        DbSet<BranchMerchantNumber> BranchMerchantNumbers {get;set;}
+        DbSet<AccountChartType> AccountChartTypes {get;set;}
+        DbSet<ChartOfAccount> ChartOfAccounts { get; set; }
+        DbSet<Country> Countries {get;set;}
+        DbSet<EntityType> EntityTypes {get;set;}
+        DbSet<Feature> Features {get;set;}
+        DbSet<Ledger> Ledgers {get;set;}
+        DbSet<Permission> Permissions {get;set;}
+        DbSet<Region> Regions {get;set;}
+        DbSet<Role>   Roles{get;set;}
+        DbSet<Town> Towns {get;set;}
+        DbSet<User>  Users {get;set;}
 
     }
 }
