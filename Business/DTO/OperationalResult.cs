@@ -8,7 +8,7 @@ namespace Business.DTO
         public bool Status {get;set;}
         public string Message {get;set;}
         public List<object> Data {get;set;}
-        public List<Error> ErrorCode {get;set;}
+        public List<Error> ErrorList {get;set;}
     }
 
     public class Error{

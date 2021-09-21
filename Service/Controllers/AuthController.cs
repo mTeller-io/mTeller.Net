@@ -20,7 +20,7 @@ namespace Service.Controllers
         /// <summary>
         /// The default controller constructor
         /// </summary>
-        /// <param name="authBusiness">The injeted authentiation business class dependency</param>
+        /// <param name="authBusiness">The injected authentiation business class dependency</param>
         public  AuthController(AuthBusiness authBusiness)
         {
             _authBusiness  = authBusiness;
@@ -37,11 +37,12 @@ namespace Service.Controllers
 
                 if(signUpresult.Status)
                 {
-                     return Created(string.Empty, string.Empty);
+                     return Created("User created succesfully", string.Empty);
                 }
                 else
                 {
-                  return Problem(signUpresult.Data.First().ToString(), null, 500);
+                    //TODO:Change it to IActionResult that takes list or type as argument
+                  return Problem(signUpresult.ErrorList.FirstOrDefault().ErrorMessage.ToString(), null, 500);
                 }
 
            
@@ -53,7 +54,7 @@ namespace Service.Controllers
         /// <param name="userSignIn">The submitted user details</param>
         /// <returns>returns action result</returns>
         [HttpPost("signin")]
-        public async Task<IActionResult> SignUp (UserSignIn userSignIn)
+        public async Task<IActionResult> SignIn (UserSignIn userSignIn)
         {       //Call the createUserAsync method to register the new user
                 var signInResult = await _authBusiness.SignIn(userSignIn);
 

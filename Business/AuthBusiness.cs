@@ -8,6 +8,7 @@ using Business.DTO;
 using DataAccess.Models;
 using Business.Interface;
 using AutoMapper;
+
 namespace Business
 {
     /// <summary>
@@ -17,19 +18,137 @@ namespace Business
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        
+        private readonly RoleManager<Role> _roleManager;        
         /// <summary>
         ///  The constructor of the AuthBusiness class
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public AuthBusiness(UserManager<User> userManager, IMapper mapper)
+        public AuthBusiness(UserManager<User> userManager, IMapper mapper, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
         
+        /// <summary>
+        /// Process identity result error
+        /// </summary>
+        /// <param name="identityResult"></param>
+        /// <returns></returns>
+        private List<Error> AddIdentityError ( IdentityResult identityResult)
+        {
+             var errorList = new List<Error>();
+
+                if(identityResult!=null && identityResult.Errors.Any())
+                {
+                        //Get error from identity operation
+                        var lsErr= identityResult.Errors;
+                        //Convert and assign identity error to custom error object.
+                        errorList.AddRange(lsErr.Select(x=> new Error{
+                            ErrorCode = x.Code,
+                            ErrorMessage = x.Description
+                        })); 
+                }
+                      
+
+             return errorList;
+        }
         
+        /// <summary>
+        /// Add user to specified role
+        /// </summary>
+        /// <param name="userEmail"> user email</param>
+        /// <param name="roleName">role name</param>
+        /// <returns></returns>
+        public async Task<OperationalResult> AddUserToRole (string userEmail, string roleName)
+        {
+            var result = new OperationalResult
+            {
+                Status= false
+            };
+             //check for  null of input values
+            if(!string.IsNullOrWhiteSpace(userEmail) && !string.IsNullOrWhiteSpace(roleName))
+            {
+                //Get the user by username
+                var user = _userManager.Users.SingleOrDefault(u=>u.UserName==userEmail);
+
+                if(!String.IsNullOrWhiteSpace(user.UserName))
+                {    //Add the user to the specified role
+                     var addRoleResult = await _userManager.AddToRoleAsync(user,roleName);
+
+                     if(addRoleResult.Succeeded){
+                         result.Status = true;
+                         result.Message =$"User {user.UserName} added to the role {roleName} successfully";
+                     }
+                     else{
+
+                        result.Message=$"Sorry. An error occurred when adding user {user.UserName} to the role {roleName}. Please try again";
+
+                        result.ErrorList.AddRange (AddIdentityError(addRoleResult));
+                     }
+                }
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Add a new role 
+        /// </summary>
+        /// <param name="roleName">The name of the new role</param>
+        /// <returns></returns>
+        public async Task<OperationalResult> CreateRole(string roleName)
+        {
+                //initialise result
+                var result = new OperationalResult
+                {
+                    Status= false
+                    
+                };
+
+                //Check for null or empty string 
+                if(!String.IsNullOrWhiteSpace(roleName))
+                {
+                    var newRole = new Role
+                    {
+                        Name = roleName
+                    };
+                    
+                    //Create new role
+                    var roleResult = await _roleManager.CreateAsync(newRole);
+
+                    if(roleResult.Succeeded)
+                    {
+                        result.Status= true;
+                        result.Message=$"New role {newRole} created successfully";
+                    }
+                    else
+                    {
+                        //Set the status to false
+                        result.Status = false;
+                        //Get error from identity operation
+                        var lsErr= roleResult.Errors;
+                        //Convert and assign identity error to custom error object.
+                        result.ErrorList.AddRange(lsErr.Select(x=> new Error{
+                            ErrorCode = x.Code,
+                            ErrorMessage = x.Description
+                        }));
+
+                        result.Message=$"Sorry. Unable to create new role {newRole}.Please try again";
+                    }
+                }
+                else
+                {
+                    result.Message="New role name cannot be null or empty";
+                }
+
+            return result;
+        }
+
+        
+
+
         /// <summary>
         /// Creates a new user
         /// </summary>
@@ -52,7 +171,8 @@ namespace Business
                var user = _mapper.Map<UserSignUp,User>(userSignUp);
               
                //Add the new user if it does not already exist
-               var signUpResult = await _userManager.CreateAsync(user, userSignUp.Password);
+               //Move it to repository
+               var signUpResult = await CreateUserAsync(user, userSignUp.Password);
 
                if(signUpResult.Succeeded)
                {
@@ -61,9 +181,15 @@ namespace Business
                }
                else
                {
+                  //Set the status to false
                   result.Status = false;
-                  var lsErr= signUpResult.Errors.ToList();
-                  result.Data.AddRange(lsErr);
+                  //Get error from identity operation
+                  var lsErr= signUpResult.Errors;
+                  //Convert and assign identity error to custom error object.
+                  result.ErrorList.AddRange(lsErr.Select(x=> new Error{
+                      ErrorCode = x.Code,
+                      ErrorMessage = x.Description
+                  }));
                    
                }
    
@@ -71,7 +197,20 @@ namespace Business
 
              return result;
         }
+         
+        /// <summary>
+        /// Create identity user
+        /// </summary>
+        /// <param name="user">The domain user model</param>
+        /// <param name="password">The passord</param>
+        /// <returns></returns>
+        public async Task<IdentityResult> CreateUserAsync (User user, string password)
+        {
 
+           var signUpResult = await _userManager.CreateAsync(user, password);
+
+             return signUpResult;
+        }
 
          /// <summary>
         /// Creates a new user
@@ -112,9 +251,7 @@ namespace Business
                     {
                         result.Message="UserName or password incorrect";
                     }
-
                }
- 
             }
             else
             {
