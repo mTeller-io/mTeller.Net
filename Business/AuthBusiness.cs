@@ -117,9 +117,9 @@ namespace Business
                     
                     //Create new role
                     var roleResult = await _roleManager.CreateAsync(newRole);
-
+                   
                     if(roleResult.Succeeded)
-                    {
+                    {  
                         result.Status= true;
                         result.Message=$"New role {newRole} created successfully";
                     }

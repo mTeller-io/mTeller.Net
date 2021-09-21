@@ -68,5 +68,43 @@ namespace Service.Controllers
                 }
 
         }
+        
+        /// <summary>
+        ///  Create a new role
+        /// </summary>
+        /// <param name="roleName"> New role name</param>
+        /// <returns></returns>
+        [HttpPost("Roles")]
+        public async Task<IActionResult> CreateRole (String roleName)
+        {
+           //add the new role to the context
+           var result = await _authBusiness.CreateRole(roleName);
+
+           if(result.Status)
+           {
+              return Created( new Uri($"Roles/{roleName}"),roleName);
+           }
+           else
+           {
+             
+             return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,500);
+           }
+
+        }
+
+        [HttpPost("user/{userEmail}/Role")]
+        public async Task<IActionResult> AddRoleToUser (string userEmail,[FromBody] string roleName)
+        {
+              var result = await _authBusiness.AddUserToRole(userEmail,roleName);
+
+              if(result.Status)
+              {
+                return Ok();
+              }
+              else
+              {
+                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,500);
+              }
+        }
     }
 }
