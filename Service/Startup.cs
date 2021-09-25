@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using DataAccess.Models;
 using DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.AspNetCore.Identity;
+using Business;
+using Business.Interface;
 
 namespace Service
 {
@@ -33,7 +28,7 @@ namespace Service
           
             services.AddControllers();
 
-
+            
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
@@ -57,6 +52,13 @@ namespace Service
             
             //Automapper registering
             services.AddAutoMapper(typeof(Startup));
+
+            //Register dependencies
+            services.AddScoped<IAuthBusiness,AuthBusiness>();
+            services.AddScoped<ICashInBusiness,CashInBusiness>();
+            services.AddScoped<ICashOutBusiness, CashOutBusiness>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

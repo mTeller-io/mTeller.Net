@@ -1,6 +1,9 @@
 using System;
 namespace Business.DTO
 {
+    /// <summary>
+    /// The sign up dto
+    /// </summary>
     public class UserSignUp
     {
     
