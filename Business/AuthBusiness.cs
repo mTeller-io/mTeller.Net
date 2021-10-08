@@ -18,17 +18,20 @@ namespace Business
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        private readonly RoleManager<Role> _roleManager;        
+        private readonly RoleManager<Role> _roleManager;     
+
+        private readonly JwtTokenBusiness _jwtTokenBusiness;   
         /// <summary>
         ///  The constructor of the AuthBusiness class
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public AuthBusiness(UserManager<User> userManager, IMapper mapper, RoleManager<Role> roleManager)
+        public AuthBusiness(UserManager<User> userManager, IMapper mapper, RoleManager<Role> roleManager, JwtTokenBusiness jwtTokenBusiness)
         {
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
+            _jwtTokenBusiness = jwtTokenBusiness;
         }
         
         /// <summary>
@@ -238,14 +241,18 @@ namespace Business
 
                }
                else
-               {
-                 
+               {                 
                      var signInResult= await _userManager.CheckPasswordAsync(user,userSignIn.Password);
                  
                     if(signInResult)
                     {
+                        //get list of row names the user belongs to
+                        var roles = await _userManager.GetRolesAsync(user);
+                        //Set the operational status to true
                         result.Status=true;
-                    
+                        //Generate the token
+                        result.AuthToken = _jwtTokenBusiness.GenerateJwt(user, roles);
+
                     }
                     else
                     {

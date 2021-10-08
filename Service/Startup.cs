@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Business;
 using Business.Interface;
+using Business.Settings;
 
 namespace Service
 {
@@ -49,9 +50,13 @@ namespace Service
             .AddEntityFrameworkStores<mTellerDBContext>()
             .AddDefaultTokenProviders();
            
+           //Register JwtSettings token
+           services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             
             //Automapper registering
             services.AddAutoMapper(typeof(Startup));
+
+            
 
             //Register dependencies
             services.AddScoped<IAuthBusiness,AuthBusiness>();
@@ -68,12 +73,19 @@ namespace Service
             {
                 app.UseDeveloperExceptionPage();
             }
+            else{
+
+                app.UseExceptionHandler("/Error");
+
+            }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

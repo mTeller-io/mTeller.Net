@@ -54,17 +54,17 @@ namespace Service.Controllers
         /// <param name="userSignIn">The submitted user details</param>
         /// <returns>returns action result</returns>
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn (UserSignIn userSignIn)
+        public async Task<IActionResult> Token (UserSignIn userSignIn)
         {       //Call the createUserAsync method to register the new user
-                var signInResult = await _authBusiness.SignIn(userSignIn);
+                var result = await _authBusiness.SignIn(userSignIn);
 
-                if(signInResult.Status)
+                if(result.Status)
                 {
-                     return Ok();
+                     return Ok(result.AuthToken);
                 }
                 else
                 {
-                  return BadRequest(signInResult.Message);
+                  return BadRequest(result.Message);
                 }
 
         }
