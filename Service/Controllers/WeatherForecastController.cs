@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -29,6 +31,8 @@ namespace Service.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IEnumerable< WeatherForecast> Get()
         {
             var rng = new Random();
