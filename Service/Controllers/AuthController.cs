@@ -31,7 +31,7 @@ namespace Service.Controllers
         /// <param name="userSignUp">The submitted user details</param>
         /// <returns>returns action result</returns>
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp (UserSignUp userSignUp)
+        public async Task<IActionResult> SignUp ([FromBody] UserSignUp userSignUp)
         {       //Call the createUserAsync method to register the new user
                 var signUpresult = await _authBusiness.CreateUserAsync(userSignUp);
 
@@ -54,7 +54,7 @@ namespace Service.Controllers
         /// <param name="userSignIn">The submitted user details</param>
         /// <returns>returns action result</returns>
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn (UserSignIn userSignIn)
+        public async Task<IActionResult> SignIn([FromBody] UserSignIn userSignIn)
         {       //Call the createUserAsync method to register the new user
                 var signInResult = await _authBusiness.SignIn(userSignIn);
 
@@ -75,7 +75,7 @@ namespace Service.Controllers
         /// <param name="roleName"> New role name</param>
         /// <returns></returns>
         [HttpPost("Roles")]
-        public async Task<IActionResult> CreateRole (String roleName)
+        public async Task<IActionResult> CreateRole ([FromBody] string roleName)
         {
            //add the new role to the context
            var result = await _authBusiness.CreateRole(roleName);
