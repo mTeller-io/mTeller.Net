@@ -53,9 +53,9 @@ namespace DataAccess.DataContext
         DbSet<Ledger> Ledgers {get;set;}
         DbSet<Permission> Permissions {get;set;}
         DbSet<Region> Regions {get;set;}
-        DbSet<Role>  Roles{get;set;}
+        public override DbSet<Role> Roles{get;set;}
         DbSet<Town> Towns {get;set;}
-        DbSet<User>  Users {get;set;}
+        public override DbSet<User> Users {get;set;}
 
     }
 }

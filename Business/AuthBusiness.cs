@@ -20,13 +20,13 @@ namespace Business
         private readonly IMapper _mapper;
         private readonly RoleManager<Role> _roleManager;     
 
-        private readonly JwtTokenBusiness _jwtTokenBusiness;   
+        private readonly IJwtTokenBusiness _jwtTokenBusiness;   
         /// <summary>
         ///  The constructor of the AuthBusiness class
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public AuthBusiness(UserManager<User> userManager, IMapper mapper, RoleManager<Role> roleManager, JwtTokenBusiness jwtTokenBusiness)
+        public AuthBusiness(UserManager<User> userManager, IMapper mapper, RoleManager<Role> roleManager, IJwtTokenBusiness jwtTokenBusiness)
         {
             _userManager = userManager;
             _mapper = mapper;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess
+namespace DataAccess.Models
 {
     /// <summary>
     /// This object contains branches belonging to particular organization

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-
+namespace DataAccess.Models
+{
 public class Feature
 {
     //primary key
@@ -23,4 +24,5 @@ public class Feature
     //The datetime of modification
     public DateTime ModifyDateTime{get;set;}
 
+  }
 }
