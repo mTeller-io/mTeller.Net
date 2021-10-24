@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Business;
 using Business.Interface;
 using Microsoft.OpenApi.Models;
+using Business.Settings;
 
 namespace Service
 {
@@ -67,9 +68,13 @@ namespace Service
             .AddEntityFrameworkStores<mTellerDBContext>()
             .AddDefaultTokenProviders();
            
+           //Register JwtSettings token
+           services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             
             //Automapper registering
             services.AddAutoMapper(typeof(Startup));
+
+            
 
             //Register dependencies
             services.AddScoped<IAuthBusiness,AuthBusiness>();
@@ -85,6 +90,11 @@ namespace Service
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else{
+
+                app.UseExceptionHandler("/Error");
+
             }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -105,6 +115,8 @@ namespace Service
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
