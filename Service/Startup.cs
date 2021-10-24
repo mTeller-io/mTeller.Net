@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Business;
 using Business.Interface;
+using Microsoft.OpenApi.Models;
 using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
@@ -32,10 +33,34 @@ namespace Service
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
           
             services.AddControllers();
+
             services.AddAuth(jwtSettings);
             
               /*  services.AddDbContext<mTellerDBContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
+
+
+            // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
+            // Note: Add this service at the end after AddMvc() or AddMvcCore().
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "mTeller API",
+                    Version = "v1",
+                    Description = "The mTeller API shows the endpoints for accessing the mTeller functionalities.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "mTeller",
+                        Email = "mteller@mteller.io",
+                        Url = new Uri("https://mteller.io/"),
+                    },
+                });
+            });
+
+            /*   services.AddDbContext<mTellerContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
+
 
             //Register our DB context
             //services.AddDbContextFactory<mTellerDBContext>(
@@ -87,6 +112,19 @@ namespace Service
                 app.UseExceptionHandler("/Error");
 
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "mTeller API V1");
+
+                // To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
