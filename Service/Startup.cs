@@ -12,6 +12,9 @@ using Business;
 using Business.Interface;
 using Microsoft.OpenApi.Models;
 using Business.Settings;
+using Business.Extensions;
+using DataAccess.Repository;
+
 
 namespace Service
 {
@@ -27,8 +30,15 @@ namespace Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
           
             services.AddControllers();
+
+            services.AddAuth(jwtSettings);
+            
+              /*  services.AddDbContext<mTellerDBContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
+
 
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
@@ -51,10 +61,13 @@ namespace Service
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
+
             //Register our DB context
-            services.AddDbContextFactory<mTellerDBContext>(
+            //services.AddDbContextFactory<mTellerDBContext>(
+            services.AddDbContext<mTellerDBContext>(
         options =>
-            options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString"),actions=>actions.MigrationsAssembly("DataAccess")));
+            options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString")
+            ,actions=>actions.MigrationsAssembly("DataAccess")));
          
            //Register and tell Identity to use our DbContext for when we use its services
             services.AddIdentity<User,Role>(options=>{
@@ -74,12 +87,15 @@ namespace Service
             //Automapper registering
             services.AddAutoMapper(typeof(Startup));
 
-            
+           
 
             //Register dependencies
+            services.AddScoped<IJwtTokenBusiness,JwtTokenBusiness>();
             services.AddScoped<IAuthBusiness,AuthBusiness>();
             services.AddScoped<ICashInBusiness,CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
+           // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
+             services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
 
 
         }
@@ -114,9 +130,11 @@ namespace Service
 
             app.UseRouting();
 
-            app.UseAuthorization();
+           // app.UseAuthorization();
 
-            app.UseAuthentication();
+           // app.UseAuthentication();
+
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {

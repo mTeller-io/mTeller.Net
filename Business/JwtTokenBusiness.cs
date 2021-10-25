@@ -20,7 +20,7 @@ namespace Business
     /// <summary>
     /// The token business class to generate auth toekn
     /// </summary>
-    public class JwtTokenBusiness
+    public class JwtTokenBusiness : IJwtTokenBusiness
     {
         //class member of jwttoken
          private readonly  JwtSettings _jwtSettings;

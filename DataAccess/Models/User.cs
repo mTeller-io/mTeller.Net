@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
+namespace DataAccess.Models
+{
 public class User : IdentityUser<int> {
     //The identity primary key
     [Key]
@@ -34,6 +36,5 @@ public class User : IdentityUser<int> {
     public string ModifyUserName {get;set;}
     //The date and time last modification of the record
     public DateTime ModifyDateTime {get;set;}
-    
-    
+ }
 }
