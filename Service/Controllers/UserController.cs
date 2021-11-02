@@ -8,28 +8,21 @@ using Business.DTO;
 using Business.Interface;
 
 namespace Service.Controllers
-{   
+{
     /// <summary>
-    /// The Authentication controller
+    /// User controller class
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class UserController : ControllerBase
     {
-        //The authentication business class
-        private readonly IAuthBusiness _authBusiness ;
         private readonly IUserBusiness _userBusiness;
-        
-        /// <summary>
-        /// The default controller constructor
-        /// </summary>
-        /// <param name="authBusiness">The injected authentiation business class dependency</param>
-        public  AuthController(IAuthBusiness authBusiness,IUserBusiness userBusiness)
+        public UserController(UserBusiness userBusiness)
         {
-            _authBusiness  = authBusiness;
             _userBusiness = userBusiness;
         }
-        /// <summary>
+           
+            /// <summary>
         /// Add or register new user
         /// </summary>
         /// <param name="userSignUp">The submitted user details</param>
@@ -49,30 +42,40 @@ namespace Service.Controllers
                   return Problem(signUpresult.ErrorList.FirstOrDefault().ErrorMessage.ToString(), null, 500);
                 }
         }
-
+        
         /// <summary>
-        /// Add or register new user
+        /// 
         /// </summary>
-        /// <param name="userSignIn">The submitted user details</param>
-        /// <returns>returns action result</returns>
-        [HttpPost("signin")]
+        /// <param name="userEmail"></param>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
 
-        public async Task<IActionResult> GetToken (UserSignIn userSignIn)
+         [HttpPost("user/{userEmail}/Role")]
+        public async Task<IActionResult> AddRoleToUser (string userEmail,[FromBody] string roleName)
+        {
+              var result = await _userBusiness.AddRoleToUser(userEmail,roleName);
 
-        {       //Call the createUserAsync method to register the new user
-                var result = await _userBusiness.SignIn(userSignIn);
-
-                if(result.Status)
-                {
-                     return Ok(result.AuthToken);
-                }
-                else
-                {
-                  return BadRequest(result.Message);
-                }
-
+              if(result.Status)
+              {
+                return Ok();
+              }
+              else
+              {
+                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,500);
+              }
         }
         
-       
+        /*  [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+
+
+
+        } */
+
+        
+        
     }
+
+      
 }

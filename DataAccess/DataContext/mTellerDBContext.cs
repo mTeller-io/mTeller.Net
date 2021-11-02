@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DataAccess.DataContext
 {
-    public class mTellerDBContext : IdentityDbContext<User, Role,int>
+    public class mTellerDBContext : IdentityDbContext<User, Role,int> 
     {
 
         public mTellerDBContext(DbContextOptions contextOptions) : base(contextOptions)

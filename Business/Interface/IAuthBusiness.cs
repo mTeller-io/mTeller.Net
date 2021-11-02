@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.DTO;
 using DataAccess.Models;
@@ -11,14 +12,14 @@ namespace Business.Interface
     /// </summary>
     public interface IAuthBusiness
     {
-        //Add new user 
-         Task<OperationalResult> CreateUserAsync (UserSignUp userSignUp);
+       
          //validate user information
-         Task<OperationalResult> Validate (UserSignUp userSignUp);
+         OperationalResult Validate (UserSignUp userSignUp);
 
-         Task<OperationalResult> SignIn (UserSignIn userSignIn);
+         OperationalResult GetToken (User user,
+                                           IList<string> roles);
 
-         Task<IdentityResult> CreateUserAsync (User user, string password);
+       
 
          
     }

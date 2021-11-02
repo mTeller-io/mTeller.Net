@@ -7,9 +7,9 @@ namespace Business.Interface
     {
         Task<CashIn> GetCashIn(int CashInId);
         Task<IList<CashIn>> GetAllCashIn();
-        Task AddCashIn(CashIn cashIn);
-        Task<CashIn> UpdateCashIn(CashIn cashIn);
-        Task<CashIn> DeleteCashIn(int id);
+        bool AddCashIn(CashIn cashIn);
+        bool UpdateCashIn(CashIn cashIn);
+        Task<bool> DeleteCashIn(int id);
 
     }
 }

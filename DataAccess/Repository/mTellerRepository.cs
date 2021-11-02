@@ -5,7 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataAccess.DataContext;
-
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace DataAccess.Repository
 {
@@ -13,51 +14,116 @@ namespace DataAccess.Repository
     {
 
         private readonly mTellerDBContext _mTellerContext;
+        internal DbSet<T> _dbSet;
 
         public mTellerRepository (mTellerDBContext mTellerContext)
         {
           _mTellerContext = mTellerContext  ;
+           this._dbSet = _mTellerContext.Set<T>();
         }
         
-        public async Task<T> Add(T entity)
+        public bool Add(T entityToAdd)
         {
-            _mTellerContext.Set<T>().Add(entity);
-            await _mTellerContext.SaveChangesAsync();
-            return entity;
+            if (entityToAdd == null)
+            {
+                return false;
+            }
+            _dbSet.Add(entityToAdd);
+           // await _mTellerContext.SaveChangesAsync();
+           
+            return true;
         }
 
-        public async Task<T> Delete(int id)
+        
+        public  async Task<bool> DeleteAsync(object id)
         {
-            var entity = await _mTellerContext.Set<T>().FindAsync(id);
-            if (entity == null)
+            var entityToDelete = await _dbSet.FindAsync(id);
+           if (entityToDelete == null)
             {
-                return entity;
+                return false;
+            }
+            var result = Delete(entityToDelete);
+
+            return result;
+
+
+        }
+
+        public  bool  Delete(T entityToDelete)
+        {
+            if (entityToDelete == null)
+            {
+                return false;
             }
 
-            _mTellerContext.Set<T>().Remove(entity);
-            await _mTellerContext.SaveChangesAsync();
+            if (_mTellerContext.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entityToDelete);
+            }
+            _dbSet.Remove(entityToDelete);
 
-            return entity;
+            return true;
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T> GetAsync(int id)
         {
-            return await _mTellerContext.Set<T>().FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IList<T>> GetAll()
+        public async Task<IList<T>> GetAllAsync()
         {
-            return await _mTellerContext.Set<T>().ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> Update(T entity)
+         public  async Task<IEnumerable<T>> GetAsync(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "")
         {
+           
+            System.Linq.IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy((IQueryable<T>)query).ToListAsync();
+            }
+            else
+            {
+                return await query.ToListAsync();
+            }
+        }
+
+        public bool Update(T entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
             _mTellerContext.Entry(entity).State = EntityState.Modified;
-            await _mTellerContext.SaveChangesAsync();
-            return entity;
+          
+            return true;
         }
 
-       
+        public async Task<bool> SaveChangesAsync()
+        {
+           await _mTellerContext.SaveChangesAsync();
 
+            return true;
+        }
+
+        
     }
+
+    
 }
