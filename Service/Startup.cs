@@ -94,6 +94,8 @@ namespace Service
             services.AddScoped<IAuthBusiness,AuthBusiness>();
             services.AddScoped<ICashInBusiness,CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
+            services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IRoleBusiness,RoleBusiness>();
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
 
@@ -122,8 +124,8 @@ namespace Service
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "mTeller API V1");
 
-                // To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
-                c.RoutePrefix = string.Empty;
+                //// To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
+                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
