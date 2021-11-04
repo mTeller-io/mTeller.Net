@@ -18,7 +18,7 @@ namespace Business
             _cashInRepository = cashInRepository;
         }
 
-        public async Task AddCashIn(CashIn cashIn)
+        public  bool AddCashIn(CashIn cashIn)
         {
             var validationResult = CashInValidator.GetInstance.Validate(cashIn);
 
@@ -31,7 +31,7 @@ namespace Business
                 //      3. If data retrieval fails
                 //          3.1. log the exception
                 //          3.2. throw a user friendly error message for user
-                await _cashInRepository.Add(cashIn);
+               return  _cashInRepository.Add(cashIn);
             }
             else
             {
@@ -39,28 +39,28 @@ namespace Business
             }
         }
 
-        public async Task<CashIn> DeleteCashIn(int id)
+        public async Task<bool> DeleteCashIn(int id)
         {
-            return await _cashInRepository.Delete(id);
+            return  await _cashInRepository.DeleteAsync(id);
         }
 
         public async Task<IList<CashIn>> GetAllCashIn()
         {
-            return await _cashInRepository.GetAll();
+            return await _cashInRepository.GetAllAsync();
         }
 
         public async Task<CashIn> GetCashIn(int CashInId)
         {
-            return await _cashInRepository.Get(CashInId);
+            return await _cashInRepository.GetAsync(CashInId);
         }
 
-        public async Task<CashIn> UpdateCashIn(CashIn cashIn)
+        public bool UpdateCashIn(CashIn cashIn)
         {
             var validationResult = CashInValidator.GetInstance.Validate(cashIn);
 
             if (validationResult.IsValid)
             {
-                return await _cashInRepository.Update(cashIn);
+                return _cashInRepository.Update(cashIn);
             }
             else
             {

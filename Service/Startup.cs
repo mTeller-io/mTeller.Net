@@ -94,6 +94,8 @@ namespace Service
             services.AddScoped<IAuthBusiness,AuthBusiness>();
             services.AddScoped<ICashInBusiness,CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
+            services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IRoleBusiness,RoleBusiness>();
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
 
