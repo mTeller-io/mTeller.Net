@@ -54,7 +54,6 @@ namespace Service.Controllers
         /// <param name="userSignIn">The submitted user details</param>
         /// <returns>returns action result</returns>
         [HttpPost("signin")]
-
         public async Task<IActionResult> Token (UserSignIn userSignIn)
 
         {       //Call the createUserAsync method to register the new user
