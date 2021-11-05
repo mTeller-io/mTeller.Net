@@ -53,6 +53,9 @@
 </MudLayout>
 
 @code {
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
     public bool LogOn { get; set; } = false;
     public void SignIn()
     {
@@ -60,6 +63,7 @@
         if (SignInSuccess)
         {
             LogOn = true;
+            NavigationManager.NavigateTo("/signin");
         }
     }
 }
