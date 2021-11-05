@@ -4,13 +4,13 @@
 <MudSnackbarProvider />
 
 <MudLayout>
+    
     <MudAppBar Color="Color.Warning" Fixed="false">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         mTeller
         <MudSpacer />
-        <MudToggleIconButton @bind-Toggled="@LogOn"
-                             Icon="@Icons.Material.Filled.Logout" Color="@Color.Error" Title="SignOut"
-                             ToggledIcon="@Icons.Material.Filled.Login" ToggledColor="@Color.Success" ToggledTitle="SignIn" />
+        <MudToggleIconButton Icon="@Icons.Material.Filled.Logout" Color="@Color.Error" Title="SignOut"
+                             ToggledIcon="@Icons.Material.Filled.Login" ToggledColor="@Color.Success" ToggledTitle="SignIn" ToggledChanged="SignIn" />
         <span>@(LogOn ? "Sign Out" : "Sign In")</span>
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>
@@ -22,7 +22,7 @@
 
             <MudNavGroup Title="Products" Icon="@Icons.Filled.Album" IconColor="Color.Warning" Expanded="false">
                 <MudNavLink Href="/cashin" Icon="@Icons.Filled.AttachMoney" IconColor="Color.Info">Cash-In</MudNavLink>
-                <MudNavLink Href="#" Icon="@Icons.Filled.MoneyOff" IconColor="Color.Info">Cash-Out</MudNavLink>
+                <MudNavLink Href="/cashout" Icon="@Icons.Filled.MoneyOff" IconColor="Color.Info">Cash-Out</MudNavLink>
             </MudNavGroup>
             <MudNavGroup Title="Use Cases" Icon="@Icons.Filled.Nat" IconColor="Color.Warning" Expanded="false">
                 <MudNavLink Href="#" Icon="@Icons.Filled.BusinessCenter" IconColor="Color.Secondary">E-Commerce</MudNavLink>
@@ -39,7 +39,8 @@
                 <MudNavLink Href="#" Icon="@Icons.Filled.BusinessCenter" IconColor="Color.Success">Business B</MudNavLink>
             </MudNavGroup>
             <MudNavGroup Title="Register" Icon="@Icons.Filled.Settings" IconColor="Color.Warning" Expanded="true">
-                <MudNavLink Href="#" Icon="@Icons.Rounded.People" IconColor="Color.Success">Sign Up</MudNavLink>
+                <MudNavLink Href="/signup" Icon="@Icons.Rounded.People" IconColor="Color.Success">Sign Up</MudNavLink>
+                <MudNavLink Href="/signin" Icon="@Icons.Rounded.People" IconColor="Color.Success">Sign In</MudNavLink>
                 <MudNavLink Href="#" Icon="@Icons.Rounded.Security" IconColor="Color.Info">Security</MudNavLink>
             </MudNavGroup>
         </MudNavMenu>
@@ -52,8 +53,17 @@
 </MudLayout>
 
 @code {
-    public bool LogOn { get; set; }
+    public bool LogOn { get; set; } = false;
+    public void SignIn()
+    {
+        var SignInSuccess = true;
+        if (SignInSuccess)
+        {
+            LogOn = true;
+        }
+    }
 }
+
 
 @code {
     bool _drawerOpen = true;

@@ -1,0 +1,29 @@
+﻿@page "/signin"
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+<h1>Sign In</h1>
+
+Enter Login Credentials!
+<div style="max-width: 400px;">
+    <MudCard>
+        <MudCardContent>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField T="string" Label="Username"/>
+                <MudTextField T="string" Label="Password"  @ref="pwField1"
+                              InputType="InputType.Password"/>
+                <br/>
+            </MudForm>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Warning" Disabled="@(!success)" Class="ml-auto">Sign In</MudButton>
+        </MudCardActions>
+    </MudCard>
+</div>
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string>
+    pwField1;
+    MudForm form;
+     }
