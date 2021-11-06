@@ -58,7 +58,6 @@ namespace Service.Controllers
         [HttpPost("signin")]
 
         public async Task<IActionResult> GetToken (UserSignIn userSignIn)
-
         {       //Call the createUserAsync method to register the new user
                 var result = await _userBusiness.SignIn(userSignIn);
 
