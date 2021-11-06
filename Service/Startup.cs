@@ -124,8 +124,8 @@ namespace Service
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "mTeller API V1");
 
-                // To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
-                c.RoutePrefix = string.Empty;
+                //// To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
+                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
