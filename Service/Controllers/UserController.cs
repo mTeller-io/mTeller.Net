@@ -12,8 +12,9 @@ namespace Service.Controllers
     /// <summary>
     /// User controller class
     /// </summary>
-    [Route("api/[controller]")]
+   
     [ApiController]
+     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserBusiness _userBusiness;
@@ -50,7 +51,7 @@ namespace Service.Controllers
         /// <param name="roleName"></param>
         /// <returns></returns>
 
-         [HttpPost("user/{userEmail}/Role")]
+         [HttpPost("{userEmail}/Role")]
         public async Task<IActionResult> AddRoleToUser (string userEmail,[FromBody] string roleName)
         {
               var result = await _userBusiness.AddRoleToUser(userEmail,roleName);
