@@ -22,10 +22,10 @@ namespace Business
         /// </summary>
         /// <param name="roleName">The name of the new role</param>
         /// <returns></returns>
-        public async Task<OperationalResult> CreateRole(string roleName)
+        public async Task<OperationalResult<Role>> CreateRole(string roleName)
         {
                 //initialise result
-                var result = new OperationalResult
+                var result = new OperationalResult<Role>
                 {
                     Status= false
                     

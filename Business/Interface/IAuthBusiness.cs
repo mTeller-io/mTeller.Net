@@ -14,9 +14,9 @@ namespace Business.Interface
     {
        
          //validate user information
-         OperationalResult Validate (UserSignUp userSignUp);
+         OperationalResult<UserDetail> Validate (UserSignUp userSignUp);
 
-         OperationalResult GetToken (User user,
+         OperationalResult<UserDetail> GetToken (User user,
                                            IList<string> roles);
 
        

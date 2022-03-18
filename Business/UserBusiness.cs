@@ -7,26 +7,33 @@ using Business.DTO;
 using Business.Interface;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
+using DataAccess.Repository;
 
 namespace Business
 {
     public class UserBusiness : IUserBusiness
     {
-        private readonly UserManager<User> _userManager;
-        private readonly IMapper _mapper;
+         private readonly UserManager<User> _userManager;
+         private readonly IMapper _mapper;
 
          private readonly IJwtTokenBusiness _jwtTokenBusiness;  
+
+         private readonly ImTellerRepository<User> _userRepository;
+
+         
         
          /// <summary>
         ///  The constructor of the AuthBusiness class
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public UserBusiness(UserManager<User> userManager, IMapper mapper, IJwtTokenBusiness jwtTokenBusiness)
+        public UserBusiness(UserManager<User> userManager, IMapper mapper, IJwtTokenBusiness jwtTokenBusiness,
+         ImTellerRepository<User> userRepository)
         {
             _userManager=userManager;
             _mapper = mapper;
-              _jwtTokenBusiness = jwtTokenBusiness;
+            _jwtTokenBusiness = jwtTokenBusiness;
+            _userRepository = userRepository;
         }
         /// <summary>
         /// Add user to specified role
@@ -34,9 +41,9 @@ namespace Business
         /// <param name="userEmail"> user email</param>
         /// <param name="roleName">role name</param>
         /// <returns></returns>
-        public async Task<OperationalResult> AddRoleToUser (string userEmail, string roleName)
-        {
-            var result = new OperationalResult
+        public async Task<OperationalResult<UserDetail>> AddRoleToUser (string userEmail, string roleName)
+        {  
+            var result = new OperationalResult<UserDetail>
             {
                 Status= false
             };
@@ -58,7 +65,7 @@ namespace Business
 
                         result.Message=$"Sorry. An error occurred when adding user {user.UserName} to the role {roleName}. Please try again";
 
-                        result.ErrorList.AddRange (AddIdentityError(addRoleResult));
+                        result.ErrorList=AddIdentityError(addRoleResult);
                      }
                 }
             }
@@ -73,10 +80,10 @@ namespace Business
         /// </summary>
         /// <param name="userSignUp">The user sign up submitted from client</param>
         /// <returns>Returns operational result</returns>
-        public async Task<OperationalResult> CreateUserAsync (UserSignUp userSignUp)
+        public async Task<OperationalResult<UserDetail>> CreateUserAsync (UserSignUp userSignUp)
         {
             //Initialise the return result
-            var result  = new OperationalResult
+            var result  = new OperationalResult<UserDetail>
                 {
                     Status = false
                 } ;
@@ -105,10 +112,10 @@ namespace Business
                   //Get error from identity operation
                   var lsErr= signUpResult.Errors;
                   //Convert and assign identity error to custom error object.
-                  result.ErrorList.AddRange(lsErr.Select(x=> new Error{
+                  result.ErrorList=lsErr.Select(x=> new Error{
                       ErrorCode = x.Code,
                       ErrorMessage = x.Description
-                  }));
+                  }).ToList();
                    
                }
    
@@ -136,10 +143,10 @@ namespace Business
         /// </summary>
         /// <param name="userSignIn">The user sign in submitted from client</param>
         /// <returns>Returns operational result</returns>
-        public async Task<OperationalResult> SignIn (UserSignIn userSignIn)
+        public async Task<OperationalResult<UserDetail>> SignIn (UserSignIn userSignIn)
         {
             //Initialise the return result
-            var result  = new OperationalResult
+            var result  = new OperationalResult<UserDetail>
                 {
                     Status = false
                 } ;
@@ -201,13 +208,96 @@ namespace Business
                         errorList.AddRange(lsErr.Select(x=> new Error{
                             ErrorCode = x.Code,
                             ErrorMessage = x.Description
-                        })); 
+                        }).ToList()); 
                 }
                       
 
              return errorList;
         }
         
+        /// <summary>
+        /// Get the list of user based on matching search parameters
+        /// </summary>
+        /// <param name="userSearchParameter"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNo"></param>
+        /// <returns></returns>
+        public async Task<OperationalResult<UserDetail>> Get (UserSearchParameter userSearchParameter, int pageSize=25, int pageNo=0)
+        {
+             var result = new OperationalResult<UserDetail>
+                 {
+                     Status = false
+
+                 };
+
+            try
+            {
+                 var userls= await _userRepository.GetAllAsync(pageNo,pageSize);
+                
+                     result.Status = userls!=null && userls.Any();
+                     if(result.Status)
+                      result.Data=GetDisplayData(userls);
+                     else{
+                        result.Message="Sorry unable to find matching users for the criteria specified. Please try again.";
+                     }
+     
+            }
+            catch (System.Exception ex)
+            {
+                //TODO: log exception to error file
+                 result.ErrorList.Add( new Error{
+                     ErrorCode="001",
+                     ErrorMessage=$"Sorry , an error occurred while trying to search for the users. Please contact Support. Details is {ex}"
+
+                 }
+                 );
+            }
+           
+           return result;
+
+        }
+        
+        //Display data
+        public List<UserDetail> GetDisplayData(IEnumerable<User> userls)
+        {
+            var data = new List<UserDetail>();
+            try
+            {
+                if(userls !=null && userls.Any())
+                {
+                    data = userls.Select(u=> 
+                    new UserDetail {
+
+                         //The user define login name
+                         UserName= u.UserName,
+                        //The full name of the user
+                         FullName= u.UserFullName ,
+                         //The role id
+                         RoleID=  u.UserRoleID ,
+                        // The brancode of the user assigned branch
+                         BranchCode =  u.BranchCode ,
+                        // The mailing address of the user
+                         MailingAddress= u.MailingAddress,
+                        // The GPS Ghana Post Code of the user
+                         GhanaPostCode= u.GhanaPostCode ,
+                        // The mobile number of the user
+                         MobileNumber= u.MobileNumber
+
+                    }).ToList();
+                }else{
+
+                    data = null;
+
+                }  
+            }
+            catch (System.Exception ex)
+            {
+                 // TODO: log exception to error file
+            }
+
+            return data;
+        }
+
 
         
     }

@@ -44,7 +44,7 @@ namespace Business
             return  await _cashInRepository.DeleteAsync(id);
         }
 
-        public async Task<IList<CashIn>> GetAllCashIn()
+        public async Task<IEnumerable<CashIn>> GetAllCashIn()
         {
             return await _cashInRepository.GetAllAsync();
         }

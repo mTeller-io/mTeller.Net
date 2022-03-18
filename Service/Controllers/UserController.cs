@@ -62,17 +62,29 @@ namespace Service.Controllers
               }
               else
               {
-                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,500);
+                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,401);
               }
         }
         
-        /*  [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet]
+        /// <summary>
+        /// Get existing user(s) based on matching search parameter
+        /// </summary>
+        /// <returns>List of users</returns>
+        public async Task<IActionResult> Get( UserSearchParameter userSearchParameter, int pageSize=25,int pageNo=0)
         {
+           var result = await  _userBusiness.Get(userSearchParameter, pageSize,pageNo);
+            
+            if(result.Status)
+            {
 
+              return Ok(result.Data);
+            }else{
+                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage,null,401);
+            }
+          
 
-
-        } */
+        } 
 
         
         

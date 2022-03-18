@@ -6,7 +6,7 @@ namespace Business.Interface
     public interface ICashInBusiness
     {
         Task<CashIn> GetCashIn(int CashInId);
-        Task<IList<CashIn>> GetAllCashIn();
+        Task<IEnumerable<CashIn>> GetAllCashIn();
         bool AddCashIn(CashIn cashIn);
         bool UpdateCashIn(CashIn cashIn);
         Task<bool> DeleteCashIn(int id);
