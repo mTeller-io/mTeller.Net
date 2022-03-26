@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,9 @@ using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Batch;
+using Microsoft.OData.Edm;
 
 namespace Service
 {
@@ -32,8 +36,6 @@ namespace Service
         {
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
           
-            services.AddControllers();
-
             services.AddAuth(jwtSettings);
             
               /*  services.AddDbContext<mTellerDBContext>(options =>
@@ -58,12 +60,13 @@ namespace Service
                 });
             });
 
-            services.AddControllers().AddFluentValidation(s =>
-            {
-                s.RegisterValidatorsFromAssemblyContaining<CashInValidator> ();
-                //s.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                s.DisableDataAnnotationsValidation = true;
-            });
+            services.AddControllers()
+                .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssemblyContaining<CashInValidator>();
+                    s.DisableDataAnnotationsValidation = true;
+                });
 
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
@@ -107,6 +110,11 @@ namespace Service
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
 
 
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            throw new NotImplementedException();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

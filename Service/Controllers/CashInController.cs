@@ -6,14 +6,16 @@ using Business.DTO;
 using Business.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Service.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
-    public class CashInController : ControllerBase
+    [EnableQuery]
+    public class CashInController : ODataController
     {
         private readonly ICashInBusiness _cashInBusiness;
 
@@ -23,7 +25,8 @@ namespace Service.Controllers
         }
 
         // Get api/<CashInController>
-        [HttpGet("getAllCashIn")]
+        [HttpGet("allCashIn")]
+        [EnableQuery(PageSize = 50, MaxExpansionDepth = 5)]
         public async Task<IActionResult> GetCashIn()
         {
             try
