@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
-
+using FluentValidation.AspNetCore;
 
 namespace Service
 {
@@ -56,6 +56,13 @@ namespace Service
                         Url = new Uri("https://mteller.io/"),
                     },
                 });
+            });
+
+            services.AddControllers().AddFluentValidation(s =>
+            {
+                s.RegisterValidatorsFromAssemblyContaining<CashInValidator> ();
+                //s.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                s.DisableDataAnnotationsValidation = true;
             });
 
             /*   services.AddDbContext<mTellerContext>(options =>
