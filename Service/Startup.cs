@@ -19,6 +19,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 
 namespace Service
 {
@@ -114,7 +115,12 @@ namespace Service
 
         private static IEdmModel GetEdmModel()
         {
-            throw new NotImplementedException();
+            ODataConventionModelBuilder modelBuilder = new ODataConventionModelBuilder();
+            modelBuilder.EntitySet<CashIn>("CashIns");
+            modelBuilder.EntitySet<CashOut>("CashOuts");
+            IEdmModel model = modelBuilder.GetEdmModel();
+
+            return model;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
