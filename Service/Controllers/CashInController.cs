@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business;
@@ -11,8 +12,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Service.Controllers
 {
-    [Authorize]
-    //[Route("api/[controller]")]
+    //[Authorize]
+    [Route("api/[controller]")]
     [ApiController]
     [EnableQuery]
     public class CashInController : ODataController
@@ -26,7 +27,7 @@ namespace Service.Controllers
 
         // Get api/<CashInController>
         [HttpGet("allCashIn")]
-        [EnableQuery(PageSize = 50, MaxExpansionDepth = 5)]
+        [EnableQuery(PageSize = 2, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
             try
@@ -34,8 +35,8 @@ namespace Service.Controllers
                 var result = await _cashInBusiness.GetAllCashIn();
                 if (result.Status == false)
                 {
-                    var cashIn = result.Data.FirstOrDefault() as CashInDTO;
-                    return Created("Cash in retrieved.",cashIn);
+                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+                    return Created("Cash in retrieved.",cashIns);
                 }
                 else
                 {

@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using AutoMapper;
+using Business.Mapping;
 
 namespace Service
 {
@@ -94,11 +96,20 @@ namespace Service
            
            //Register JwtSettings token
            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
-            
-            //Automapper registering
-            services.AddAutoMapper(typeof(Startup));
 
-           
+            ////Automapper registering
+            //services.AddAutoMapper(typeof(Startup));
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
 
             //Register dependencies
             services.AddScoped<IJwtTokenBusiness,JwtTokenBusiness>();
@@ -109,6 +120,7 @@ namespace Service
             services.AddScoped<IRoleBusiness,RoleBusiness>();
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
+            services.AddScoped<IMomoAPI, MomoAPI>();
 
 
         }

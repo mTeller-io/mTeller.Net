@@ -12,9 +12,9 @@ namespace Business.DTO
         //The bearer token
         public string AuthToken {get;set;}
         //Result of successfully operation
-        public List<object> Data {get;set;}
+        public List<object> Data {get;set; } = new List<object>();
         //error list of failed operation
-        public List<Error> ErrorList {get;set;}
+        public List<Error> ErrorList { get; set; } = new List<Error>();
     }
 
     public class Error{
