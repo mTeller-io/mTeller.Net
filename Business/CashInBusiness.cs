@@ -6,24 +6,31 @@ using DataAccess.Models;
 using Business.Interface;
 using System.Collections.Generic;
 using System.Net.Http;
+using Business.DTO;
+using AutoMapper;
+using System.Linq;
+
 namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
         private readonly ImTellerRepository<CashIn> _cashInRepository;
-        private static readonly HttpClient client = new HttpClient();
+        private readonly IMapper _mapper;
+        private readonly IMomoAPI _momoAPI;
 
-        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository)
+        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IMomoAPI momoAPI)
         {
             _cashInRepository = cashInRepository;
+            _mapper = mapper;
+            _momoAPI = momoAPI;
         }
 
-        public  bool AddCashIn(CashIn cashIn)
+        public OperationalResult AddCashIn(CashInDTO cashInDTO)
         {
-            var validationResult = CashInValidator.GetInstance.Validate(cashIn);
-
-            if (validationResult.IsValid)
+            try
             {
+                var result = new OperationalResult<CashInDTO>();
+
                 //TODO: 1. Get customer data from MTN API
                 //      2. If data retrieval succeeds
                 //          2.1. Add the cashin ammount to customers balance
@@ -31,40 +38,112 @@ namespace Business
                 //      3. If data retrieval fails
                 //          3.1. log the exception
                 //          3.2. throw a user friendly error message for user
-               return  _cashInRepository.Add(cashIn);
+
+                var cashIn = _mapper.Map<CashIn>(cashInDTO);
+                var added =  _cashInRepository.Add(cashIn);
+
+                result.Data.Add(added);
+                return result;
             }
-            else
+            catch (Exception)
             {
-                throw new ValidationException(validationResult.Errors);
+                throw;
             }
         }
 
-        public async Task<bool> DeleteCashIn(int id)
+        public async Task<OperationalResult> DeleteCashIn(int id)
         {
-            return  await _cashInRepository.DeleteAsync(id);
-        }
-
-        public async Task<IEnumerable<CashIn>> GetAllCashIn()
-        {
-            return await _cashInRepository.GetAllAsync();
-        }
-
-        public async Task<CashIn> GetCashIn(int CashInId)
-        {
-            return await _cashInRepository.GetAsync(CashInId);
-        }
-
-        public bool UpdateCashIn(CashIn cashIn)
-        {
-            var validationResult = CashInValidator.GetInstance.Validate(cashIn);
-
-            if (validationResult.IsValid)
+            try
             {
-                return _cashInRepository.Update(cashIn);
+                var result = new OperationalResult<CashInDTO>();
+
+                var CashInResult = await GetCashIn(id);
+                var CashInResultDTO = CashInResult.Data.FirstOrDefault() as CashInDTO;
+                if (CashInResultDTO == null)
+                {
+                    result.Status = true;
+                    result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "The record for the Cash In Id could not be found." });
+                    return result;
+                }
+
+                var deleted = await _cashInRepository.DeleteAsync(id);
+                result.Data.Add(deleted);
+
+                return result;
             }
-            else
+            catch (Exception)
             {
-                throw new ValidationException(validationResult.Errors);
+                throw;
+            }
+        }
+
+
+        public async Task<OperationalResult> GetAllCashIn()
+        {
+            try
+            {
+                var result = new OperationalResult<CashInDTO>();
+                var cashIns = await _cashInRepository.GetAllAsync();
+
+                var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
+                result.Data.Add(cashInsDTO);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<OperationalResult> GetCashIn(int CashInId)
+        {
+            try
+            {
+                var result = new OperationalResult<CashInDTO>();
+
+                var cashIn = await _cashInRepository.GetAsync(CashInId);
+                if (cashIn == null)
+                {
+                    result.Status = true;
+                    result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "No Cash In records could be found." });
+                    return result;
+                }
+
+                // A cashInDTO is created
+                var cashInDTO = _mapper.Map<CashInDTO>(cashIn);
+                result.Data.Add(cashInDTO);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<OperationalResult> UpdateCashIn(CashInDTO cashInDTO)
+        {
+            try
+            {
+                var result = new OperationalResult<CashInDTO>();
+
+                var CashInResult = await GetCashIn(cashInDTO.CashInId);
+                if (!(CashInResult.Data.FirstOrDefault() is CashInDTO CashInResultDTO))
+                {
+                    result.Status = true;
+                    result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "The Cash In record specified could not be found." });
+                    return result;
+                }
+
+                var cashIn = _mapper.Map<CashIn>(CashInResultDTO);
+                var updated = _cashInRepository.Update(cashIn);
+
+                result.Data.Add(updated);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

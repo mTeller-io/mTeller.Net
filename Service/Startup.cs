@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,13 @@ using Microsoft.OpenApi.Models;
 using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
-
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Batch;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+using AutoMapper;
+using Business.Mapping;
 
 namespace Service
 {
@@ -32,8 +39,6 @@ namespace Service
         {
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
           
-            services.AddControllers();
-
             services.AddAuth(jwtSettings);
             
               /*  services.AddDbContext<mTellerDBContext>(options =>
@@ -57,6 +62,14 @@ namespace Service
                     },
                 });
             });
+
+            services.AddControllers()
+                .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssemblyContaining<CashInValidator>();
+                    s.DisableDataAnnotationsValidation = true;
+                });
 
             /*   services.AddDbContext<mTellerContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
@@ -83,11 +96,20 @@ namespace Service
            
            //Register JwtSettings token
            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
-            
-            //Automapper registering
-            services.AddAutoMapper(typeof(Startup));
 
-           
+            ////Automapper registering
+            //services.AddAutoMapper(typeof(Startup));
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
 
             //Register dependencies
             services.AddScoped<IJwtTokenBusiness,JwtTokenBusiness>();
@@ -98,8 +120,19 @@ namespace Service
             services.AddScoped<IRoleBusiness,RoleBusiness>();
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
+            services.AddScoped<IMomoAPI, MomoAPI>();
 
 
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            ODataConventionModelBuilder modelBuilder = new ODataConventionModelBuilder();
+            modelBuilder.EntitySet<CashIn>("CashIns");
+            modelBuilder.EntitySet<CashOut>("CashOuts");
+            IEdmModel model = modelBuilder.GetEdmModel();
+
+            return model;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
