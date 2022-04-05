@@ -1,10 +1,7 @@
 
-using DataAccess;
 using DataAccess.Models;
 using DataAccess.Repository;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net.Http;
 using Business.Interface;
 using Business.DTO;
 using System.Linq;
@@ -14,7 +11,6 @@ namespace Business
     public class CashOutBusiness : ICashOutBusiness
     {
         private readonly ImTellerRepository<CashOut> _cashOutRepository;
-        private static readonly HttpClient client = new HttpClient();
 
         public CashOutBusiness(ImTellerRepository<CashOut> cashOutRepository)
         {
@@ -67,59 +63,41 @@ namespace Business
                
         }
 
-        public  OperationalResult AddCashOut(CashOut cashOut)
+        public OperationalResult AddCashOut(CashOut cashOut)
         {
-             var result = new OperationalResult
-           {
-               Status= false
-           };
-
-            var validationResult = CashOutValidator.GetInstance.Validate(cashOut);
-
-            if (validationResult.IsValid)
+            var result = new OperationalResult
             {
-                //TODO: 1. Get customer data from MTN API
-                //      2. If data retrieval succeeds
-                //          2.1. Check if customers account balance is enough (Including 1% charge)
-               // _ = await client.GetAsync("https://sandbox.momodeveloper.mtn.com/collection/v1_0/account/balance");
-                //          2.2. Initiate authorization process for customer to approve (MTN)
-                //          2.3. If approval succeeds, subtract cashout amount from customers balance and send.
-                //          2.4. Log the transaction details and or print out a receipt.
-                //      3. If data retrieval fails
-                //          3.1. log the exception
-                //          3.2. throw a user friendly error message for user
-                result.Status= _cashOutRepository.Add(cashOut);
+                Status = false
+            };
 
-                if(!result.Status)
-                   result.Message ="Error adding new cashout transaction";
 
-                return result;
 
-                
-            }
-            else
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            //TODO: 1. Get customer data from MTN API
+            //      2. If data retrieval succeeds
+            //          2.1. Check if customers account balance is enough (Including 1% charge)
+            // _ = await client.GetAsync("https://sandbox.momodeveloper.mtn.com/collection/v1_0/account/balance");
+            //          2.2. Initiate authorization process for customer to approve (MTN)
+            //          2.3. If approval succeeds, subtract cashout amount from customers balance and send.
+            //          2.4. Log the transaction details and or print out a receipt.
+            //      3. If data retrieval fails
+            //          3.1. log the exception
+            //          3.2. throw a user friendly error message for user
+            result.Status = _cashOutRepository.Add(cashOut);
+
+            if (!result.Status)
+                result.Message = "Error adding new cashout transaction";
+
+            return result;
+
         }
 
         public OperationalResult UpdateCashOut(CashOut cashOut)
         {
-          var result = new OperationalResult
-           {
-               Status= false
-           };
-
-            var validationResult = CashOutValidator.GetInstance.Validate(cashOut);
-
-            if (validationResult.IsValid)
+            var result = new OperationalResult
             {
-               result.Status =_cashOutRepository.Update(cashOut);
-            }
-            else
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+                Status = false
+            };
+
 
             return result;
         }
