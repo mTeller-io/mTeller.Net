@@ -6,11 +6,11 @@ namespace Business.Interface
 {
     public interface ICashOutBusiness
     {
-        Task<OperationalResult> GetCashOut(int CashOutId);
-        Task<OperationalResult> GetAllCashOut();
-        OperationalResult AddCashOut(CashOut cashOut);
-        OperationalResult UpdateCashOut(CashOut cashOut);
-        Task<OperationalResult> DeleteCashOut(int id);
+        Task<OperationalResult<CashOut>> GetCashOut(int CashOutId);
+        Task<OperationalResult<CashOut>> GetAllCashOut();
+        OperationalResult<CashOut> AddCashOut(CashOut cashOut);
+        OperationalResult<CashOut> UpdateCashOut(CashOut cashOut);
+        Task<OperationalResult<CashOut>> DeleteCashOut(int id);
 
     }
 }

@@ -29,7 +29,7 @@ namespace Business
         {
             try
             {
-                var result = new OperationalResult();
+                var result = new OperationalResult<CashInDTO>();
 
                 //TODO: 1. Get customer data from MTN API
                 //      2. If data retrieval succeeds
@@ -55,7 +55,7 @@ namespace Business
         {
             try
             {
-                var result = new OperationalResult();
+                var result = new OperationalResult<CashInDTO>();
 
                 var CashInResult = await GetCashIn(id);
                 var CashInResultDTO = CashInResult.Data.FirstOrDefault() as CashInDTO;
@@ -77,11 +77,12 @@ namespace Business
             }
         }
 
+
         public async Task<OperationalResult> GetAllCashIn()
         {
             try
             {
-                var result = new OperationalResult();
+                var result = new OperationalResult<CashInDTO>();
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
@@ -99,7 +100,7 @@ namespace Business
         {
             try
             {
-                var result = new OperationalResult();
+                var result = new OperationalResult<CashInDTO>();
 
                 var cashIn = await _cashInRepository.GetAsync(CashInId);
                 if (cashIn == null)
@@ -124,7 +125,7 @@ namespace Business
         {
             try
             {
-                var result = new OperationalResult();
+                var result = new OperationalResult<CashInDTO>();
 
                 var CashInResult = await GetCashIn(cashInDTO.CashInId);
                 if (!(CashInResult.Data.FirstOrDefault() is CashInDTO CashInResultDTO))

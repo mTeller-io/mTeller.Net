@@ -10,13 +10,15 @@ namespace Business.Interface
     {
 
         //Add new user 
-         Task<OperationalResult> CreateUserAsync (UserSignUp userSignUp);
+         Task<OperationalResult<UserDetail>> CreateUserAsync (UserSignUp userSignUp);
 
-        Task<IdentityResult> CreateUserAsync (User user, string password);
+         Task<IdentityResult> CreateUserAsync (User user, string password);
 
-        Task<OperationalResult> SignIn (UserSignIn userSignIn);
+         Task<OperationalResult<UserDetail>> SignIn (UserSignIn userSignIn);
 
-       Task<OperationalResult> AddRoleToUser (string userEmail, string roleName);
+         Task<OperationalResult<UserDetail>> AddRoleToUser (string userEmail, string roleName);
+
+         Task<OperationalResult<UserDetail>> Get (UserSearchParameter userSearchParameter, int pageSize, int pageNo);
          
     }
 }

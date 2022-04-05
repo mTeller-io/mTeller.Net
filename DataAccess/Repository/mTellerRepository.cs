@@ -70,12 +70,15 @@ namespace DataAccess.Repository
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IList<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(int pageNo=0, int pageSize=25)
         {
-            return await _dbSet.ToListAsync();
+             System.Linq.IQueryable<T> query = _dbSet;
+             var skipCount = pageNo * pageSize;
+             query = query.Skip(skipCount).Take(pageSize);
+            return await query.ToListAsync();
         }
 
-         public  async Task<IEnumerable<T>> GetAsync(
+         public  async Task<IEnumerable<T>> GetAsync(int pageNo=0,int pageSize=25,
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")

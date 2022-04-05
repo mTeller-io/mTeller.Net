@@ -34,9 +34,9 @@ namespace Business
         
        
     
-       public   OperationalResult Validate (UserSignUp userSignUp)
+       public   OperationalResult<UserDetail> Validate (UserSignUp userSignUp)
        {
-           var result = new OperationalResult
+           var result = new OperationalResult<UserDetail>
            {
                Status= false
            };
@@ -51,10 +51,10 @@ namespace Business
         /// <param name="user"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public OperationalResult GetToken (User user,IList<string> roles)
+        public OperationalResult<UserDetail> GetToken (User user,IList<string> roles)
         {
             //Initialise the return result
-            var result  = new OperationalResult
+            var result  = new OperationalResult<UserDetail>
                 {
                     Status = false
                 } ;

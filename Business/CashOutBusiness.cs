@@ -18,9 +18,9 @@ namespace Business
         }
 
 
-        public async Task<OperationalResult> GetCashOut(int CashOutId)
+        public async Task<OperationalResult<CashOut>> GetCashOut(int CashOutId)
         {
-          var result = new OperationalResult
+          var result = new OperationalResult<CashOut>
            {
                Status= false
            };
@@ -40,9 +40,9 @@ namespace Business
 
         }
 
-        public async Task<OperationalResult> GetAllCashOut()
+        public async Task<OperationalResult<CashOut>> GetAllCashOut()
         {
-             var result = new OperationalResult
+             var result = new OperationalResult<CashOut>
            {
                Status= false
            };
@@ -63,13 +63,13 @@ namespace Business
                
         }
 
+
         public OperationalResult AddCashOut(CashOut cashOut)
         {
-            var result = new OperationalResult
+            var result = new OperationalResult<CashOut>
             {
                 Status = false
             };
-
 
 
             //TODO: 1. Get customer data from MTN API
@@ -91,9 +91,10 @@ namespace Business
 
         }
 
-        public OperationalResult UpdateCashOut(CashOut cashOut)
+        public OperationalResult<CashOut> UpdateCashOut(CashOut cashOut)
         {
-            var result = new OperationalResult
+            var result = new OperationalResult<CashOut>
+
             {
                 Status = false
             };
@@ -104,7 +105,7 @@ namespace Business
 
         public async Task<OperationalResult> DeleteCashOut(int id)
         {
-             var result = new OperationalResult
+             var result = new OperationalResult<CashOut>
            {
                Status= false
            };

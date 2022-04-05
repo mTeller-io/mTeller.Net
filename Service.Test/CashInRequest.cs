@@ -3,11 +3,12 @@ using Xunit;
 
 namespace Service.Test
 {
-    public class UnitTest1
+    public class CashInRequest
     {
         [Fact]
-        public void Test1()
+        public void AddCashInTest()
         {
+            
 
         }
     }

@@ -8,13 +8,13 @@ namespace DataAccess.Repository
 {
     public interface ImTellerRepository<T> where T: class
     {
-          Task<IList<T>> GetAllAsync();
+          Task<IEnumerable<T>> GetAllAsync(int pageNo=0, int pageSize=25);
           Task<T> GetAsync(int id);
           bool Add(T entity);
           bool Update(T entity);
           Task<bool> DeleteAsync(Object id);
 
-          Task<IEnumerable<T>> GetAsync(
+          Task<IEnumerable<T>> GetAsync(int pageNo=0,int pageSize=25,
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Business.DTO
 {
-    public class OperationalResult
+    public class OperationalResult<T> where T: class
     {
         //True or False status of operation
         public bool Status {get;set;}
@@ -12,7 +12,9 @@ namespace Business.DTO
         //The bearer token
         public string AuthToken {get;set;}
         //Result of successfully operation
-        public List<object> Data {get;set; } = new List<object>();
+
+        public List<T> Data {get;set;}
+
         //error list of failed operation
         public List<Error> ErrorList { get; set; } = new List<Error>();
     }
