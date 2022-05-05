@@ -1,14 +1,16 @@
 using System;
 using System.Net;
+using Platform.Model;
 
 namespace Platform.Interface
 {
     public interface IAPIAdapter
     {
-        HttpWebRequest PrepareRequest (string payLoad, string headers, string baseUrl, string endPoint);
+        void PrepareRequest (APIRequestData apiRequestData);
 
-        string MakeRequest (HttpWebRequest webRequest);
+        string MakeHttpWebRequest ();
+        
 
-        string ProcessResponse ( string requestResponse, string JsonResponseTpl);
+        //string ProcessResponse ( HttpWebResponse requestResponse, string JsonResponseTpl);
     }
-}
+}                       

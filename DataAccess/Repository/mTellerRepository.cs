@@ -78,10 +78,10 @@ namespace DataAccess.Repository
             return await query.ToListAsync();
         }
 
-         public  async Task<IEnumerable<T>> GetAsync(int pageNo=0,int pageSize=25,
+         public  async Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "")
+            string includeProperties = "",int pageNo=0,int pageSize=25)
         {
            
             System.Linq.IQueryable<T> query = _dbSet;

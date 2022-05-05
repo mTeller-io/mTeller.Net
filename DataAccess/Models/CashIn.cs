@@ -20,19 +20,19 @@ namespace DataAccess.Models
         //The default transaction type name
         public string TransactionType { get; set; } = "CASHIN";
         //The name of cash sender
-        public string CustomerName { get; set; }
-        //The phone number of cash sender
-        public string CustomerPhoneNumber {get;set;}
-        //The registered sim name of momo cashin payee number
         public string DepositorName { get; set; }
+        //The phone number of cash sender
+        public string DepositorContactNo {get;set;}
+        //The registered sim name of momo cashin payee number
+        public string AccountName { get; set; }
         // The registered sim  number of momo cashin payee
-        public string DepositPhoneNumber { get; set; }
+        public string AccountNumber { get; set; }
         // The cashin amount
-        public double DepositAmount { get; set; }
+        public decimal Amount { get; set; }
         //True if sender pays charges
         public bool IsSendingChargePaidBySender { get; set; }
         //The amount of charges for sending cashin
-        public double SendingCost { get; set; }
+        public decimal SendingCost { get; set; }
         //The date of transaction. This is auto set with format yyyy/MM/dd
         public string TransactionDate { get; set; }
         //The previous status value before the transation status
@@ -42,11 +42,11 @@ namespace DataAccess.Models
         //The history record of the transation
         public string History {get;set;}
         //The telecom network provider name of the receiver
-        public string DepositPhoneNumberNetworkName {get;set;}
+        public string AccountNetworkName {get;set;}
         //The telecom network provider name of the sender
-        public string BranchMerchantNumberNetworkName {get;set;}
+        public string BranchAccountNetworkName {get;set;}
         // The merchant number sending the e-cash for the cashin
-        public string BranchMerchantNumber {get;set;}
+        public string BranchAccountNumber {get;set;}
         //The branch code of the transaction
         public string BranchCode {get;set;}
         //The name of the user capturing the record
@@ -56,9 +56,17 @@ namespace DataAccess.Models
         //The user name of last modification of the record
         public string ModifyUserName {get;set;}
         //The date and time last modification of the record
-        public DateTime ModifyDateTime {get;set;}
+        public DateTime? ModifyDateTime {get;set;}
         //The name of last process modifying the record
         public string LastProcessName {get;set;}
+        // The note entered by payer for reference
+        public string PayerNote {get;set;}
+        // The note endterd by payer for payee reference
+        public string PayeeNote {get;set;}
+        //
+        public string ExternalId {get;set;}
+        // Indicate either is cell phone number or other number
+        public string PartyIdType {get;set;}
 
     
     }

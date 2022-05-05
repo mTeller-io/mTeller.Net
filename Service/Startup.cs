@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
+using Common;
 
 
 namespace Service
@@ -35,6 +36,8 @@ namespace Service
             services.AddControllers();
 
             services.AddAuth(jwtSettings);
+
+            services.AddTransient<IAppConfig,AppConfig>();
             
               /*  services.AddDbContext<mTellerDBContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
