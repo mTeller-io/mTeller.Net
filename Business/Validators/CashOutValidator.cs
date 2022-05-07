@@ -1,21 +1,12 @@
-﻿using DataAccess.Models;
+﻿using Business.DTO;
+using DataAccess.Models;
 using FluentValidation;
 using System;
 
 namespace Business
 {
-    public class CashOutValidator : AbstractValidator<CashOut>
+    public class CashOutValidator : AbstractValidator<CashOutDTO>
     {
-        private static CashOutValidator _instance = null;
-
-        public static CashOutValidator GetInstance
-        {
-            get
-            {
-                if (_instance == null) _instance = new CashOutValidator();
-                return _instance;
-            }
-        }
         public CashOutValidator()
         {
             RuleFor(c => c.CustomerName).NotEmpty();

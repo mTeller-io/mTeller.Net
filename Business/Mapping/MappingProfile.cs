@@ -10,12 +10,14 @@ namespace Business.Mapping
         {
             //Domain to DTO
             CreateMap<User, UserSignUp>();
-          
+            CreateMap<CashIn, CashInDTO>();
+
 
             //DTO to DTO
 
-             CreateMap<UserSignUp, User>();
-            
+            CreateMap<UserSignUp, User>();
+            CreateMap<CashInDTO, CashIn>();
+
 
         }
     }
