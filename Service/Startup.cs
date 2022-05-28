@@ -124,6 +124,7 @@ namespace Service
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
             services.AddScoped<IMomoAPI, MomoAPI>();
+           
 
 
         }

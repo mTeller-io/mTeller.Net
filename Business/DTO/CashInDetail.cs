@@ -1,4 +1,4 @@
-namespace Business.DTO
+namespace Business.DTO.Del
 {
     public class CashInDetail
     {

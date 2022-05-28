@@ -5,7 +5,7 @@ using Common.Constant;
 
 namespace Business.Validators
 {
-    public class CashInDetailValidator : AbstractValidator<CashInDetail>
+    public class CashInDetailValidator : AbstractValidator<CashInDTO>
     {
         private static CashInDetailValidator _instance = null;
 

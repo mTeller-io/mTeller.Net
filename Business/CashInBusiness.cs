@@ -28,7 +28,7 @@ namespace Business
             _momoAPI = momoAPI;
         }
 
-        public OperationalResult AddCashIn(CashInDTO cashInDTO)
+        public OperationalResult<CashInDTO> AddCashIn(CashInDTO cashInDTO)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Business
                 var cashIn = _mapper.Map<CashIn>(cashInDTO);
                 var added =  _cashInRepository.Add(cashIn);
 
-                result.Data.Add(added);
+                result.Status=added;
                 return result;
             }
             catch (Exception)
@@ -54,7 +54,7 @@ namespace Business
             }
         }
 
-        public CashIn GetCashInDetialsToCashIn(CashInDetail cashInDetail)
+        public CashIn GetCashInDetialsToCashIn(CashInDTO cashInDetail)
         {  
             CashIn newCashIn=null;
            if(cashInDetail!=null && cashInDetail.Amount>0 & !String.IsNullOrWhiteSpace(cashInDetail.Payer.PartyId))
@@ -120,7 +120,7 @@ namespace Business
         }
 
        // public async Task<bool> DeleteCashIn(int id)
-        public async Task<OperationalResult> DeleteCashIn(int id)
+        public async Task<OperationalResult<CashInDTO>> DeleteCashIn(int id)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Business
                 }
 
                 var deleted = await _cashInRepository.DeleteAsync(id);
-                result.Data.Add(deleted);
+                result.Status=deleted;
 
                 return result;
             }
@@ -147,11 +147,15 @@ namespace Business
         }
 
 
-        public async Task<OperationalResult> GetAllCashIn()
+        public async Task<OperationalResult<IList<CashInDTO>>> GetAllCashIn()
         {
+             var result = new OperationalResult<IList<CashInDTO>>()
+             {
+                 Status=false
+             };
             try
             {
-                var result = new OperationalResult<CashInDTO>();
+               
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
@@ -161,20 +165,23 @@ namespace Business
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception (ex.StackTrace);
             }
         }
 
-        public async Task<OperationalResult> GetCashIn(int CashInId)
+        public async Task<OperationalResult<CashInDTO>> GetCashIn(int CashInId)
         {
             try
             {
-                var result = new OperationalResult<CashInDTO>();
+                var result = new OperationalResult<CashInDTO>()
+                {
+                    Status=false
+                };
 
                 var cashIn = await _cashInRepository.GetAsync(CashInId);
                 if (cashIn == null)
                 {
-                    result.Status = true;
+                   // result.Status = true;
                     result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "No Cash In records could be found." });
                     return result;
                 }
@@ -182,6 +189,7 @@ namespace Business
                 // A cashInDTO is created
                 var cashInDTO = _mapper.Map<CashInDTO>(cashIn);
                 result.Data.Add(cashInDTO);
+                result.Status=true;
                 return result;
             }
             catch (Exception)
@@ -190,16 +198,20 @@ namespace Business
             }
         }
 
-        public async Task<OperationalResult> UpdateCashIn(CashInDTO cashInDTO)
+        public async Task<OperationalResult<CashInDTO>> UpdateCashIn(CashInDTO cashInDTO)
         {
+             var result = new OperationalResult<CashInDTO>()
+             {
+                   Status=false
+             };
+
             try
             {
-                var result = new OperationalResult<CashInDTO>();
-
+               
                 var CashInResult = await GetCashIn(cashInDTO.CashInId);
                 if (!(CashInResult.Data.FirstOrDefault() is CashInDTO CashInResultDTO))
                 {
-                    result.Status = true;
+                    //result.Status = true;
                     result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "The Cash In record specified could not be found." });
                     return result;
                 }
@@ -207,7 +219,7 @@ namespace Business
                 var cashIn = _mapper.Map<CashIn>(CashInResultDTO);
                 var updated = _cashInRepository.Update(cashIn);
 
-                result.Data.Add(updated);
+                result.Status=updated;
                 return result;
             }
             catch (Exception)
