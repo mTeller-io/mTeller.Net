@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Business.Settings;
 using Business.Extensions;
 using DataAccess.Repository;
+using Common;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Batch;
@@ -40,6 +41,8 @@ namespace Service
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
           
             services.AddAuth(jwtSettings);
+
+            services.AddTransient<IAppConfig,AppConfig>();
             
               /*  services.AddDbContext<mTellerDBContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
@@ -121,6 +124,7 @@ namespace Service
            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
              services.AddScoped(typeof(ImTellerRepository<>),typeof(mTellerRepository<>));
             services.AddScoped<IMomoAPI, MomoAPI>();
+           
 
 
         }

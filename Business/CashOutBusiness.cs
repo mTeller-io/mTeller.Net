@@ -64,7 +64,7 @@ namespace Business
         }
 
 
-        public OperationalResult AddCashOut(CashOut cashOut)
+        public OperationalResult<CashOut> AddCashOut(CashOut cashOut)
         {
             var result = new OperationalResult<CashOut>
             {
@@ -103,8 +103,8 @@ namespace Business
             return result;
         }
 
-        public async Task<OperationalResult> DeleteCashOut(int id)
-        {
+        public async Task<OperationalResult<CashOut>> DeleteCashOut(int id)
+        {  
              var result = new OperationalResult<CashOut>
            {
                Status= false

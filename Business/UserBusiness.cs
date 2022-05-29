@@ -293,6 +293,7 @@ namespace Business
             catch (System.Exception ex)
             {
                  // TODO: log exception to error file
+                 throw new Exception(ex.StackTrace);
             }
 
             return data;

@@ -16,6 +16,7 @@
     
 
      <ProjectReference Include="..\Business\Business.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
 
 
 
@@ -30,6 +31,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <!-- <FrameworkReference Include="Microsoft.AspNetCore.App" /> -->

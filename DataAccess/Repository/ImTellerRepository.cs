@@ -14,10 +14,10 @@ namespace DataAccess.Repository
           bool Update(T entity);
           Task<bool> DeleteAsync(Object id);
 
-          Task<IEnumerable<T>> GetAsync(int pageNo=0,int pageSize=25,
+          Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
+            string includeProperties = "",int pageNo=0,int pageSize=25);
 
           Task<bool> SaveChangesAsync();
     }

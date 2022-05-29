@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mTellerPresentation", "mTel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "Platform\Platform.csproj", "{34C4A3EC-95D2-45ED-9C9B-CAD9AE81880E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{34C4A3EC-95D2-45ED-9C9B-CAD9AE81880E}.Release|x64.Build.0 = Release|Any CPU
 		{34C4A3EC-95D2-45ED-9C9B-CAD9AE81880E}.Release|x86.ActiveCfg = Release|Any CPU
 		{34C4A3EC-95D2-45ED-9C9B-CAD9AE81880E}.Release|x86.Build.0 = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|x64.Build.0 = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Debug|x86.Build.0 = Debug|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|x64.ActiveCfg = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|x64.Build.0 = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|x86.ActiveCfg = Release|Any CPU
+		{08409E6D-23D2-49B2-A8B3-2BECA298FE6E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

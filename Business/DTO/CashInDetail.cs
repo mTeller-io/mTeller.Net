@@ -1,8 +1,8 @@
-﻿namespace Business.DTO
+namespace Business.DTO.Del
 {
-    public class CashInDTO
+    public class CashInDetail
     {
-      public int CashInId {get;set;}
+      
       public decimal Amount {get;set;}
       public string Currency {get;set;}
       public string ExternalId {get;set;}
