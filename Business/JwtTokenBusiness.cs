@@ -1,18 +1,15 @@
+using Business.Interface;
+using Business.Settings;
+using DataAccess.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+
 //using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Business.DTO;
-using DataAccess.Models;
-using Business.Interface;
-using AutoMapper;
-using Business.Settings;
-using Microsoft.Extensions.Options;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace Business
@@ -23,13 +20,13 @@ namespace Business
     public class JwtTokenBusiness : IJwtTokenBusiness
     {
         //class member of jwttoken
-         private readonly  JwtSettings _jwtSettings;
-         
-         //Inject dependency
-         public JwtTokenBusiness(IOptionsSnapshot<JwtSettings> jwtSettings)
-         {
-             _jwtSettings = jwtSettings.Value;
-         }
+        private readonly JwtSettings _jwtSettings;
+
+        //Inject dependency
+        public JwtTokenBusiness(IOptionsSnapshot<JwtSettings> jwtSettings)
+        {
+            _jwtSettings = jwtSettings.Value;
+        }
 
         /// <summary>
         /// Generate the authenticatin token
@@ -58,12 +55,11 @@ namespace Business
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Issuer,
             claims,
-            expires : expires,
-            signingCredentials : creds
+            expires: expires,
+            signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

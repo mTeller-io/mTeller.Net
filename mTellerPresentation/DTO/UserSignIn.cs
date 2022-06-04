@@ -6,8 +6,9 @@ namespace mTellerPresentation.DTO
     public class UserSignIn
     {
         //User registered email same as signin username
-        public string UserName {get;set;}
+        public string UserName { get; set; }
+
         //User sign passwrd
-        public string Password {get;set;}
+        public string Password { get; set; }
     }
 }

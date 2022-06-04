@@ -1,49 +1,47 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Business.Settings;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace Business.Extensions
 {
     public static class AuthExtensions
     {
-        public static IServiceCollection AddAuth( this IServiceCollection services,
+        public static IServiceCollection AddAuth(this IServiceCollection services,
         JwtSettings jwtSettings)
         {
-           
             services
            .AddAuthorization(
-               options=>{
+               options =>
+               {
                    //Just an example of adding a policy
                    options.AddPolicy("OnlyTest", policy => policy.RequireUserName("test@test.com"));
-                   
                })
-           
-           .AddAuthentication(options=>
+
+           .AddAuthentication(options =>
            {
-            options.DefaultAuthenticateScheme =
-            JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme =
-            JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultAuthenticateScheme =
+               JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultScheme =
+               JwtBearerDefaults.AuthenticationScheme;
+               options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
            })
-           .AddJwtBearer(options=>
+           .AddJwtBearer(options =>
            {
-               options.RequireHttpsMetadata=false;
+               options.RequireHttpsMetadata = false;
                options.TokenValidationParameters = new TokenValidationParameters
                {
                    ValidIssuer = jwtSettings.Issuer,
                    ValidAudience = jwtSettings.Issuer,
                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                    ClockSkew = TimeSpan.Zero
-
                };
            });
 
-           return services;
+            return services;
         }
 
         public static IApplicationBuilder UseAuth(this IApplicationBuilder app)
@@ -53,6 +51,5 @@ namespace Business.Extensions
 
             return app;
         }
-        
     }
 }

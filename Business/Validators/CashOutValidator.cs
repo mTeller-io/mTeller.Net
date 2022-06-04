@@ -1,5 +1,4 @@
 ﻿using Business.DTO;
-using DataAccess.Models;
 using FluentValidation;
 using System;
 
@@ -29,7 +28,6 @@ namespace Business
             RuleFor(c => c.WithdrawerName).NotEmpty();
             RuleFor(c => c.WithdrawerNetworkName).NotEmpty();
             RuleFor(c => c.WithdrawerPhoneNumber).NotEmpty();
-
 
             // TODO: Add more rules
         }
