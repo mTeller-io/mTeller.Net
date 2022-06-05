@@ -1,7 +1,6 @@
-using DataAccess.Models;
-using FluentValidation;
 using Business.DTO;
 using Common.Constant;
+using FluentValidation;
 
 namespace Business.Validators
 {
@@ -28,10 +27,10 @@ namespace Business.Validators
             RuleFor(c => c.Amount).NotEmpty();//.Must(GreaterThanZero);
             RuleFor(c => c.PayerName).NotEmpty();
             RuleFor(c => c.Payer.PartyId).NotEmpty().Must(BeLenghtOfTen);
-            RuleFor(c=>c.Currency).NotEmpty().Must(localCurrency);
+            RuleFor(c => c.Currency).NotEmpty().Must(localCurrency);
             RuleFor(c => c.ExternalId).NotEmpty();
             RuleFor(c => c.Payer.PartyIdType).NotEmpty();
-        
+
             // TODO: Add more rules
         }
 
@@ -41,30 +40,24 @@ namespace Business.Validators
                 return false;
             else
                 return true;
-        } 
-
-        
+        }
 
         public bool localCurrency(string currency)
         {
-            if(currency == nameof(Currency.GHS))
-                 return true;
+            if (currency == nameof(Currency.GHS))
+                return true;
             else
                 return false;
         }
 
         public bool GreaterThanZero(int value)
         {
-            if(value >0)
-            return true;
+            if (value > 0)
+                return true;
             else
-            return false;
-           
+                return false;
         }
 
         // public bool GreaterThan(this decimal amount,decimal value)=>amount>value;
-
-
-        
     }
 }

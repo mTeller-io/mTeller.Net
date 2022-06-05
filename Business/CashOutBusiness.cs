@@ -1,10 +1,9 @@
-
+using Business.DTO;
+using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
-using System.Threading.Tasks;
-using Business.Interface;
-using Business.DTO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Business
 {
@@ -17,52 +16,49 @@ namespace Business
             _cashOutRepository = cashOutRepository;
         }
 
-
         public async Task<OperationalResult<CashOut>> GetCashOut(int CashOutId)
         {
-          var result = new OperationalResult<CashOut>
-           {
-               Status= false
-           };
+            var result = new OperationalResult<CashOut>
+            {
+                Status = false
+            };
 
-            var cashOut= await _cashOutRepository.GetAsync(CashOutId);
-        
-           result.Status = cashOut!=null && cashOut.CashOutId>0;
+            var cashOut = await _cashOutRepository.GetAsync(CashOutId);
 
-           if(result.Status)
-             result.Data.Add(cashOut);
+            result.Status = cashOut != null && cashOut.CashOutId > 0;
+
+            if (result.Status)
+                result.Data.Add(cashOut);
             else
             {
-                result.Message="No cashout transaction  found";
+                result.Message = "No cashout transaction  found";
             }
 
             return result;
-
         }
 
         public async Task<OperationalResult<CashOut>> GetAllCashOut()
         {
-             var result = new OperationalResult<CashOut>
-           {
-               Status= false
-           };
-            
-            var list= await _cashOutRepository.GetAllAsync();
-
-            if(list.Any())
+            var result = new OperationalResult<CashOut>
             {
-                result.Status=true;
-                result.Data.AddRange(list);
+                Status = false
+            };
 
-            }else{
-                result.Status=false;
-                result.Message="Transaction not found";
+            var list = await _cashOutRepository.GetAllAsync();
+
+            if (list.Any())
+            {
+                result.Status = true;
+                result.Data.AddRange(list);
+            }
+            else
+            {
+                result.Status = false;
+                result.Message = "Transaction not found";
             }
 
             return result;
-               
         }
-
 
         public OperationalResult<CashOut> AddCashOut(CashOut cashOut)
         {
@@ -70,7 +66,6 @@ namespace Business
             {
                 Status = false
             };
-
 
             //TODO: 1. Get customer data from MTN API
             //      2. If data retrieval succeeds
@@ -88,7 +83,6 @@ namespace Business
                 result.Message = "Error adding new cashout transaction";
 
             return result;
-
         }
 
         public OperationalResult<CashOut> UpdateCashOut(CashOut cashOut)
@@ -99,25 +93,22 @@ namespace Business
                 Status = false
             };
 
-
             return result;
         }
 
         public async Task<OperationalResult<CashOut>> DeleteCashOut(int id)
-        {  
-             var result = new OperationalResult<CashOut>
-           {
-               Status= false
-           };
+        {
+            var result = new OperationalResult<CashOut>
+            {
+                Status = false
+            };
 
+            result.Status = await _cashOutRepository.DeleteAsync(id);
 
-            result.Status= await _cashOutRepository.DeleteAsync(id);
+            if (!result.Status)
+                result.Message = "Sorry. Transaction could not be deleted";
 
-            if(!result.Status)
-               result.Message="Sorry. Transaction could not be deleted";
-            
             return result;
         }
-
     }
 }

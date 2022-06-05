@@ -1,14 +1,12 @@
+using Business.DTO;
+using Business.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business;
-using Business.DTO;
-using Business.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Service.Controllers
 {
@@ -36,20 +34,18 @@ namespace Service.Controllers
                 if (result.Status == false)
                 {
                     var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Created("Cash in retrieved.",cashIns);
+                    return Created("Cash in retrieved.", cashIns);
                 }
                 else
                 {
                     var error = result.ErrorList.FirstOrDefault();
                     return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));
                 }
-
             }
             catch (Exception ex)
             {
                 return Problem(ex.Message, null, 500);
             }
-
         }
 
         // Get api/<CashInController>
@@ -66,13 +62,11 @@ namespace Service.Controllers
                 }
 
                 return Created("CashIn Created.", cashInDTO);
-
             }
             catch (Exception ex)
             {
                 return Problem(ex.Message, null, 500);
             }
         }
-
     }
 }

@@ -1,12 +1,12 @@
-using  System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace Business.Interface
 {
     public interface IBusiness
     {
-         IList<String> GetList( );
+        IList<String> GetList();
 
-         IBusiness Get();
+        IBusiness Get();
     }
 }

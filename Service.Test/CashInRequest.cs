@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Service.Test
@@ -8,8 +7,6 @@ namespace Service.Test
         [Fact]
         public void AddCashInTest()
         {
-            
-
         }
     }
 }
