@@ -1,14 +1,8 @@
-using System;
-using System.IO;
-using System.Text;
-using System.Configuration;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
+using DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using DataAccess.DataContext;
+using System.IO;
 
 namespace DataAccess
 {
@@ -36,4 +30,3 @@ namespace DataAccess
         }
     }
 }
-         

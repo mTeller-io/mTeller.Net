@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using DataAccess.Models;
+using System.Collections.Generic;
 
 namespace Business.Interface
 {
@@ -8,7 +8,6 @@ namespace Business.Interface
     /// </summary>
     public interface IJwtTokenBusiness
     {
-        
-          string GenerateJwt(User user, IList<string> roles);
+        string GenerateJwt(User user, IList<string> roles);
     }
 }
