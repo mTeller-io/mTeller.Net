@@ -1,49 +1,44 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using Business.DTO;
+using Business.Interface;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
+
 //using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Business.DTO;
-using DataAccess.Models;
-using Business.Interface;
-using AutoMapper;
+using System.Linq;
 
 namespace Business
 {
     /// <summary>
-    /// AuthBusiness class for managing user authentication 
+    /// AuthBusiness class for managing user authentication
     /// </summary>
     public class AuthBusiness : IAuthBusiness
     {
-        
-        private readonly RoleManager<Role> _roleManager;     
+        private readonly RoleManager<Role> _roleManager;
 
-        private readonly IJwtTokenBusiness _jwtTokenBusiness;   
+        private readonly IJwtTokenBusiness _jwtTokenBusiness;
+
         /// <summary>
         ///  The constructor of the AuthBusiness class
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public AuthBusiness( RoleManager<Role> roleManager, IJwtTokenBusiness jwtTokenBusiness)
+        public AuthBusiness(RoleManager<Role> roleManager, IJwtTokenBusiness jwtTokenBusiness)
         {
-           
             _roleManager = roleManager;
             _jwtTokenBusiness = jwtTokenBusiness;
         }
-        
-       
-    
-       public   OperationalResult<UserDetail> Validate (UserSignUp userSignUp)
-       {
-           var result = new OperationalResult<UserDetail>
-           {
-               Status= false
-           };
 
-           return  result;
+        public OperationalResult<UserDetail> Validate(UserSignUp userSignUp)
+        {
+            var result = new OperationalResult<UserDetail>
+            {
+                Status = false
+            };
 
-       }
+            return result;
+        }
 
         /// <summary>
         /// Get token
@@ -51,28 +46,27 @@ namespace Business
         /// <param name="user"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public OperationalResult<UserDetail> GetToken (User user,IList<string> roles)
+        public OperationalResult<UserDetail> GetToken(User user, IList<string> roles)
         {
             //Initialise the return result
-            var result  = new OperationalResult<UserDetail>
-                {
-                    Status = false
-                } ;
+            var result = new OperationalResult<UserDetail>
+            {
+                Status = false
+            };
 
-                if(user !=null &&  !String.IsNullOrWhiteSpace(user.UserName) && roles!=null && roles.Any())
-                {
-                    result.Status=true;
-                    //Generate the token
-                    result.AuthToken =  _jwtTokenBusiness.GenerateJwt(user, roles);
-                }
-                else
-                {
-                     result.Status=false;
-                     result.Message="User or roles cannot be null or empty";
+            if (user != null && !String.IsNullOrWhiteSpace(user.UserName) && roles != null && roles.Any())
+            {
+                result.Status = true;
+                //Generate the token
+                result.AuthToken = _jwtTokenBusiness.GenerateJwt(user, roles);
+            }
+            else
+            {
+                result.Status = false;
+                result.Message = "User or roles cannot be null or empty";
+            }
 
-                }
-            
-             return result;
+            return result;
         }
     }
 }
