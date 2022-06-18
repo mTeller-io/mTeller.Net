@@ -21,10 +21,10 @@ namespace Platform
 
              _momoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
                                                      .Get<MomoAPICollectionConfig>();
-            RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
+            //RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
 
             _apiAdaptor = new APIAdapter(_momoAPICollectionConfig.APIUser,
-            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_restClient); 
+            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_momoAPICollectionConfig.TokenEndpoint); 
         }
 
         /// <summary>

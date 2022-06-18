@@ -8,6 +8,7 @@ namespace Platform.Model
       public string  BaseUrl {get;set;}=String.Empty;
       public string APIUser {get;set;}=String.Empty;
       public string APIKey {get;set;}=String.Empty;
+      public string TokenEndpoint{get;set;}=String.Empty;
       public string TransferEndPoint {get;set;}=String.Empty;
       public string TransferStatusEndPoint {get;set;}=string.Empty;
       public string  AccountHolderActiveStatusEndPoint {get;set;}=String.Empty;

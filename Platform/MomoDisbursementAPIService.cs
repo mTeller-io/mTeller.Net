@@ -25,10 +25,10 @@ namespace Platform
                                                      .Get<MomoAPIDisbursementConfig>();
             
             
-            RestClient _restClient = new RestClient(_momoAPIDisbursementConfig.BaseUrl);
+            //RestClient _restClient = new RestClient(_momoAPIDisbursementConfig.BaseUrl);
 
             _apiAdaptor = new APIAdapter(_momoAPIDisbursementConfig.APIUser,
-            _momoAPIDisbursementConfig.APIKey,_momoAPIDisbursementConfig.BaseUrl,_restClient);
+            _momoAPIDisbursementConfig.APIKey,_momoAPIDisbursementConfig.BaseUrl,_momoAPIDisbursementConfig.TokenEndpoint);
 
         }
 

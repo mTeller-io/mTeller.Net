@@ -27,8 +27,23 @@ namespace Platform
             this.password= password;
             this.baseUrl= baseUrl.EncodeCodeBase64();
             this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
-  
             _restClient = restClient;
+            
+        }
+
+        public APIAdapter(string userName,string password, string baseUrl, string tokenEnpoint)
+        {
+            if(String.IsNullOrWhiteSpace(userName)|| String.IsNullOrWhiteSpace(password)|| String.IsNullOrWhiteSpace(baseUrl))
+                throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
+            this.userName = userName;
+            this.password= password;
+            this.baseUrl= baseUrl.EncodeCodeBase64();
+            this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
+             var options = new RestClientOptions(this.baseUrl);
+            
+            _restClient = new RestClient(options) {
+            Authenticator = new APIAdapterAuthenticaor(tokenEnpoint, this.userName, this.password)
+             };
         }
 
         public async Task<RestResponse> ExecuteGetAsync(string endpoint,Dictionary<string,string>? requestHeaders=null,
