@@ -1,30 +1,27 @@
-﻿using Business.Interface;
-using Microsoft.Extensions.Configuration;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Platform.Model;
+﻿using Microsoft.Extensions.Configuration;
 using Platform.Interface;
+using Platform.Model;
+using RestSharp;
 
 namespace Platform
 {
-    public class MomoCollectionAPIService:IMomoCollectionAPIService
+    public class MomoCollectionAPIService : IMomoCollectionAPIService
     {
         private readonly IAPIAdapter _apiAdaptor;
         private readonly IConfiguration _configuration;
-        public MomoAPIDisbursementConfig? _momoAPIDisbursementConfig { get; private set; }
-        public MomoAPICollectionConfig? _momoAPICollectionConfig { get; private set; }
-        public MomoCollectionAPIService(IConfiguration configuration )
+        public MomoAPIDisbursementConfig? MomoAPIDisbursementConfig { get; private set; }
+        public MomoAPICollectionConfig? MomoAPICollectionConfig { get; private set; }
+
+        public MomoCollectionAPIService(IConfiguration configuration)
         {
             _configuration = configuration;
 
-             _momoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
-                                                     .Get<MomoAPICollectionConfig>();
-            RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
+            MomoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
+                                                    .Get<MomoAPICollectionConfig>();
+            RestClient _restClient = new(MomoAPICollectionConfig.BaseUrl);
 
-            _apiAdaptor = new APIAdapter(_momoAPICollectionConfig.APIUser,
-            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_restClient); 
+            _apiAdaptor = new APIAdapter(MomoAPICollectionConfig.APIUser,
+            MomoAPICollectionConfig.APIKey, MomoAPICollectionConfig.BaseUrl, _restClient);
         }
 
         /// <summary>
@@ -32,13 +29,13 @@ namespace Platform
         /// </summary>
         /// <param name="subscriptionType">The type of subscription (disbursement, collection, remittance)</param>
         /// <returns>Returns an auth token</returns>
-        public string GenerateToken(string subscriptionType)
+        public static string GenerateToken(string subscriptionType)
         {
             // var client = new RestClient($"{endpoint}/{subscriptionType}/token/")
             // {
             //     Timeout = -1
             // };
-            
+
             // var request = new RestRequest(Method.POST);
             // request.AddHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
             // request.AddHeader("Authorization", "Basic N2YyZjllY2UtMjNlZC00OWRlLWFiNDgtYmNhODY3M2M0NDAzOjkwZmExYjc0MjI5YjRjYmZhNjQ1ODg0M2MzZjBiZWRk");
@@ -57,23 +54,31 @@ namespace Platform
         /// <param name="partyId">The phone number of the account holder</param>
         /// <param name="paymentMsg">Any additional comment the user wishes to input</param>
         /// <returns>Returns a request to pay provisioning response</returns>
-         public async Task<string> CreateRequestToPay(string token, string amount, string currency, string externalId, string partyId,string partyIdType, string paymentMsg)
+        public async Task<string?> CreateRequestToPay(string token, string amount, string currency, string externalId, string partyId, string partyIdType, string paymentMsg)
         {
-           //Prepare headers
-            var xreferenceId =  Guid.NewGuid();
-            
-            var  requestHeaders = new Dictionary<string,string>();
-            //Adding headers
-            requestHeaders.Add(_momoAPICollectionConfig!.ReferenceIdHeaderKeyName,xreferenceId.ToString());
-            requestHeaders.Add(_momoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, _momoAPICollectionConfig!.TargetEnvironment);
-            requestHeaders.Add(_momoAPICollectionConfig!.SubscriptionHeaderKeyName, _momoAPICollectionConfig!.PrimarySubscriptionKey);
-            
+            //Prepare headers
+            var xreferenceId = Guid.NewGuid();
+
+            var requestHeaders = new Dictionary<string, string>
+            {
+                //Adding headers
+                { MomoAPICollectionConfig!.ReferenceIdHeaderKeyName, xreferenceId.ToString() },
+                { MomoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, MomoAPICollectionConfig!.TargetEnvironment },
+                { MomoAPICollectionConfig!.SubscriptionHeaderKeyName, MomoAPICollectionConfig!.PrimarySubscriptionKey }
+            };
+
             //requestHeaders.Add("Authorization", $"Bearer {token}");
             //Prepare request body
-            var requestJsonBody = new {
-                amount=amount,currency=currency,externalId=externalId,
-            payer= new {partyIdType=partyIdType,partyId=partyId},payerMessage=paymentMsg,payeeNote=paymentMsg};
-          
+            var requestJsonBody = new
+            {
+                amount,
+                currency,
+                externalId,
+                payer = new { partyIdType, partyId },
+                payerMessage = paymentMsg,
+                payeeNote = paymentMsg
+            };
+
             // var body = @"{" + "\n" +
             // @$"  ""amount"": ""{amount}""," + "\n" +
             // @$"  ""currency"": ""{currency}""," + "\n" +
@@ -87,51 +92,49 @@ namespace Platform
             // @"}";
 
             //make request
-            var response = await _apiAdaptor.ExecutePostAsync(_momoAPICollectionConfig.RequestToPayEndPoint,requestJsonBody,requestHeaders);
-           
-            return response.ToString();
+            var response = await _apiAdaptor.ExecutePostAsync(MomoAPICollectionConfig.RequestToPayEndPoint, requestJsonBody, requestHeaders);
+
+            return response.Content;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="paymentXreferenceId">A UUID generated by user to track the payment provisioned resource</param>
         /// <param name="token">The access token used for auth in the API</param>
         /// <returns>Returns a request to pay data</returns>
-        public async Task<string> GetRequestToPay(string paymentXreferenceId, string token)
+        public async Task<string?> GetRequestToPay(string paymentXreferenceId, string token)
         {
-
-            var routeParams = new Dictionary<string,string>();
+            var routeParams = new Dictionary<string, string>();
 
             //requestHeaders.Add("Authorization", $"Bearer {token}");
 
-              var  requestHeaders = new Dictionary<string,string>();
-            routeParams.Add(_momoAPICollectionConfig!.ReferenceIdHeaderKeyName,paymentXreferenceId);
-            requestHeaders.Add(_momoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, _momoAPICollectionConfig!.TargetEnvironment);
-            requestHeaders.Add(_momoAPICollectionConfig!.SubscriptionHeaderKeyName, _momoAPICollectionConfig!.PrimarySubscriptionKey);
-            
-        
-            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPICollectionConfig.RequestToPayStatusEndPoint,requestHeaders,null,routeParams);
-           
-            return response.ToString();
+            var requestHeaders = new Dictionary<string, string>();
+            routeParams.Add(MomoAPICollectionConfig!.ReferenceIdHeaderKeyName, paymentXreferenceId);
+            requestHeaders.Add(MomoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, MomoAPICollectionConfig!.TargetEnvironment);
+            requestHeaders.Add(MomoAPICollectionConfig!.SubscriptionHeaderKeyName, MomoAPICollectionConfig!.PrimarySubscriptionKey);
+
+            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPICollectionConfig.RequestToPayStatusEndPoint, requestHeaders, null, routeParams);
+
+            return response.Content;
         }
 
         /// <summary>
         /// This method gets the account balance of the account of the subscription
         /// </summary>
         /// <returns>Returns the account balance</returns>
-        public async Task<string> GetAccountBalance()
+        public async Task<string?> GetAccountBalance()
         {
-             var response = new RestResponse();
-             //prepare  headers
-              var  requestHeaders = new Dictionary<string,string>();
-           
-            requestHeaders.Add(_momoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, _momoAPICollectionConfig!.TargetEnvironment);
-            requestHeaders.Add(_momoAPICollectionConfig!.SubscriptionHeaderKeyName, _momoAPICollectionConfig!.PrimarySubscriptionKey);
-            
-             response = await _apiAdaptor.ExecuteGetAsync(_momoAPICollectionConfig.AccountBalanceEndPoint,requestHeaders,null,null);
-           
-            return  response.ToString();
+            //prepare  headers
+            var requestHeaders = new Dictionary<string, string>
+            {
+                { MomoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, MomoAPICollectionConfig!.TargetEnvironment },
+                { MomoAPICollectionConfig!.SubscriptionHeaderKeyName, MomoAPICollectionConfig!.PrimarySubscriptionKey }
+            };
+
+            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPICollectionConfig.AccountBalanceEndPoint, requestHeaders, null, null);
+
+            return response.Content;
         }
 
         /// <summary>
@@ -139,23 +142,22 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<string> GetAccountHolderActiveStatus( string partyID)
+        public async Task<string?> GetAccountHolderActiveStatus(string partyID)
         {
             // var client = new RestClient($"{endpoint}/{subscriptionType}/v1_0/accountholder/{{accountHolderIdTypeCaseDown}}/{partyID}/active")
             // {
             //     Timeout = -1
             // };
-          
 
-             var  routeParams = new Dictionary<string,string>();
-             var requestHeaders = new Dictionary<string,string>();
-            routeParams.Add(_momoAPICollectionConfig!.AccountHolderIdHeaderKeyName,partyID);
-            requestHeaders.Add(_momoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, _momoAPICollectionConfig!.TargetEnvironment);
-            requestHeaders.Add(_momoAPICollectionConfig!.SubscriptionHeaderKeyName, _momoAPICollectionConfig!.PrimarySubscriptionKey);
-            
-            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPICollectionConfig.AccountHolderActiveStatusEndPoint,requestHeaders,null,routeParams);
-           
-            return response.ToString();
+            var routeParams = new Dictionary<string, string>();
+            var requestHeaders = new Dictionary<string, string>();
+            routeParams.Add(MomoAPICollectionConfig!.AccountHolderIdHeaderKeyName, partyID);
+            requestHeaders.Add(MomoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, MomoAPICollectionConfig!.TargetEnvironment);
+            requestHeaders.Add(MomoAPICollectionConfig!.SubscriptionHeaderKeyName, MomoAPICollectionConfig!.PrimarySubscriptionKey);
+
+            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPICollectionConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
+
+            return response.Content;
         }
 
         /// <summary>
@@ -163,20 +165,17 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The phone number of the account holder</param>
         /// <returns>Returns the account holders basic information</returns>
-        public async Task<string> GetAccountHolderBaseInfo(string subscriptionType, string partyID, string token)
+        public async Task<string?> GetAccountHolderBaseInfo(string subscriptionType, string partyID, string token)
         {
+            var routeParams = new Dictionary<string, string>();
+            var requestHeaders = new Dictionary<string, string>();
+            routeParams.Add(MomoAPICollectionConfig!.AccountHolderIdHeaderKeyName, partyID);
+            requestHeaders.Add(MomoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, MomoAPICollectionConfig!.TargetEnvironment);
+            requestHeaders.Add(MomoAPICollectionConfig!.SubscriptionHeaderKeyName, MomoAPICollectionConfig!.PrimarySubscriptionKey);
 
-            var  routeParams = new Dictionary<string,string>();
-             var requestHeaders = new Dictionary<string,string>();
-            routeParams.Add(_momoAPICollectionConfig!.AccountHolderIdHeaderKeyName,partyID);
-            requestHeaders.Add(_momoAPICollectionConfig!.TargetEnvironmentHeaderKeyName, _momoAPICollectionConfig!.TargetEnvironment);
-            requestHeaders.Add(_momoAPICollectionConfig!.SubscriptionHeaderKeyName, _momoAPICollectionConfig!.PrimarySubscriptionKey);
-            
-            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPICollectionConfig.AccountHolderBasicInfoEndPoint,requestHeaders,null,routeParams);
-           
-            return response.ToString();
+            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPICollectionConfig.AccountHolderBasicInfoEndPoint, requestHeaders, null, routeParams);
+
+            return response.Content;
         }
-
-   }
-    
+    }
 }

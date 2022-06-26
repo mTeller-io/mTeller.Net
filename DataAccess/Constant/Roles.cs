@@ -5,5 +5,5 @@ namespace DataAccess.Constant
         SuperAdmin,
         Admin,
         Basic
-    } 
+    }
 }

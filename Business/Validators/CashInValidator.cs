@@ -1,7 +1,5 @@
 ﻿using Business.DTO;
-using DataAccess.Models;
 using FluentValidation;
-using System;
 
 namespace Business
 {
@@ -42,14 +40,14 @@ namespace Business
                 return false;
             else
                 return true;
-        } 
+        }
 
         public bool GreaterThanZero(decimal value)
         {
-            if (value<0)
+            if (value < 0)
                 return false;
             else
                 return true;
-        } 
+        }
     }
 }

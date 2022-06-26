@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Business.DTO;
 using DataAccess.Models;
-using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Business.Interface
 {
@@ -12,15 +9,10 @@ namespace Business.Interface
     /// </summary>
     public interface IAuthBusiness
     {
-       
-         //validate user information
-         OperationalResult<UserDetail> Validate (UserSignUp userSignUp);
+        //validate user information
+        OperationalResult<UserDetail> Validate(UserSignUp userSignUp);
 
-         OperationalResult<UserDetail> GetToken (User user,
-                                           IList<string> roles);
-
-       
-
-         
+        OperationalResult<UserDetail> GetToken(User user,
+                                          IList<string> roles);
     }
 }

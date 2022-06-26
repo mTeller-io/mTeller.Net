@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 namespace Platform.Model
 {
-    struct  HttpHeaders
+    internal struct HttpHeaders
     {
-        public string Key;
-        public string Value;
+        public string? Key { get; set; }
+        public string? Value { get; set; }
     }
 }

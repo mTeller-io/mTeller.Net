@@ -1,14 +1,15 @@
+using mTellerPresentation.DTO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using mTellerPresentation.DTO;
 
 namespace mTellerPresentation.Services
 {
     public class AuthServices : IAuthServices
     {
         private readonly HttpClient _httpClient;
+
         public AuthServices(HttpClient httpClient)
         {
             _httpClient = httpClient;

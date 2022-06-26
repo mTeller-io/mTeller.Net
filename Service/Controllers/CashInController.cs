@@ -1,14 +1,12 @@
+using Business.DTO;
+using Business.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business;
-using Business.DTO;
-using Business.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Service.Controllers
 {
@@ -30,26 +28,10 @@ namespace Service.Controllers
         [EnableQuery(PageSize = 2, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
-            try
-            {
-                var result = await _cashInBusiness.GetAllCashIn();
-                if (result.Status == false)
-                {
-                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Created("Cash in retrieved.",cashIns);
-                }
-                else
-                {
-                    var error = result.ErrorList.FirstOrDefault();
-                    return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));
-                }
+            var result = await _cashInBusiness.GetAllCashIn();
 
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message, null, 500);
-            }
-
+            var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+            return Created("Cash in retrieved.", cashIns);
         }
 
         // Get api/<CashInController>
@@ -66,13 +48,11 @@ namespace Service.Controllers
                 }
 
                 return Created("CashIn Created.", cashInDTO);
-
             }
             catch (Exception ex)
             {
                 return Problem(ex.Message, null, 500);
             }
         }
-
     }
 }
