@@ -30,7 +30,7 @@ jobs:
       uses: SonarSource/sonarcloud-github-action@v1.6
       env:
         #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.Sonar_Token }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
       with:
         # Additional arguments to the sonarcloud scanner
         #args: # optional
