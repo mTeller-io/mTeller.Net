@@ -134,7 +134,6 @@ namespace Business
                 }
 
                 var deleted = await _cashInRepository.DeleteAsync(id);
-                result.Status = deleted;
 
                 return result;
             }

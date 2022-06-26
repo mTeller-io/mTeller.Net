@@ -19,8 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
-using Microsoft.OpenApi.Models;
 using Service.Exceptions;
+using Service.Extensions;
 using System;
 
 namespace Service
@@ -97,28 +97,8 @@ namespace Service
             //Register JwtSettings token
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
-            ////Automapper registering
-            //services.AddAutoMapper(typeof(Startup));
-
-            // Auto Mapper Configurations
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            //Register dependencies
-            services.AddScoped<IJwtTokenBusiness, JwtTokenBusiness>();
-            services.AddScoped<IAuthBusiness, AuthBusiness>();
-            services.AddScoped<ICashInBusiness, CashInBusiness>();
-            services.AddScoped<ICashOutBusiness, CashOutBusiness>();
-            services.AddScoped<IUserBusiness, UserBusiness>();
-            services.AddScoped<IRoleBusiness, RoleBusiness>();
-            // services.AddScoped<ImTellerRepository<CashIn>,mTellerRepository<CashIn>>();
-            services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
-            services.AddScoped<IMomoAPI, MomoAPI>();
+            // Register dependencies
+            services.RegisterDependencies();
         }
 
         private static IEdmModel GetEdmModel()
