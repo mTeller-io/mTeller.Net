@@ -14,11 +14,11 @@ namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
-        private readonly ImTellerRepository<CashIn> _cashInRepository;
+        private readonly IMTellerRepository<CashIn> _cashInRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<CashInBusiness> _logger;
 
-        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IMomoAPI momoAPI, ILogger<CashInBusiness> logger)
+        public CashInBusiness(IMTellerRepository<CashIn> cashInRepository, IMapper mapper, IMomoAPI momoAPI, ILogger<CashInBusiness> logger)
         {
             _cashInRepository = cashInRepository;
             _mapper = mapper;

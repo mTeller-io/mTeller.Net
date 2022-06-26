@@ -19,7 +19,7 @@ namespace Service.Extensions
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
             services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IRoleBusiness, RoleBusiness>();
-            services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
+            services.AddScoped(typeof(IMTellerRepository<>), typeof(MTellerRepository<>));
             services.AddScoped<IMomoAPI, MomoAPI>();
 
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
