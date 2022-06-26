@@ -1,13 +1,9 @@
-using AutoMapper;
 using Business;
 using Business.Extensions;
-using Business.Interface;
-using Business.Mapping;
 using Business.Settings;
 using Common;
 using DataAccess.DataContext;
 using DataAccess.Models;
-using DataAccess.Repository;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
