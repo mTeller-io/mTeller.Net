@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
 using Service.Exceptions;
 using Service.Extensions;
 using System;
@@ -40,6 +41,7 @@ namespace Service
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
 
             services.AddAuth(jwtSettings);
+            services.AddTransient<IAppConfig, AppConfig>();
 
             services.AddTransient<IAppConfig, AppConfig>();
 
@@ -131,9 +133,6 @@ namespace Service
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "mTeller API V1");
-
-                //// To serve SwaggerUI at application's root page, set the RoutePrefix property to an empty string.
-                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();

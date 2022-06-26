@@ -16,14 +16,12 @@ namespace Business
     {
         private readonly ImTellerRepository<CashIn> _cashInRepository;
         private readonly IMapper _mapper;
-        private readonly IMomoAPI _momoAPI;
         private readonly ILogger<CashInBusiness> _logger;
 
         public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IMomoAPI momoAPI, ILogger<CashInBusiness> logger)
         {
             _cashInRepository = cashInRepository;
             _mapper = mapper;
-            _momoAPI = momoAPI;
             _logger = logger;
         }
 
@@ -139,6 +137,7 @@ namespace Business
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 throw new ForbiddenException(ex);
             }
         }
