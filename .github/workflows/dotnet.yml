@@ -27,7 +27,7 @@ jobs:
     - name: Sonarqube Begin
       run: | 
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /o:mTeller.io /k:mTeller.Net /d:sonar.login=b43c8a5ab3656a579254bcd0ed4a82da0262ac3c
+        dotnet sonarscanner begin /o:mTeller.io /k:mTeller.Net /d:sonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build
       run: dotnet build
@@ -38,7 +38,7 @@ jobs:
     #    ASPNETCORE_ENVIRONMENT: Development
 
     - name: Sonarqube end
-      run: dotnet sonarscanner end /d:sonar.login=b43c8a5ab3656a579254bcd0ed4a82da0262ac3c
+      run: dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
