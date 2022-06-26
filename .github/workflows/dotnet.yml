@@ -24,9 +24,3 @@ jobs:
     #- name: Test
      # run: dotnet test --no-build --verbosity normal
    
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: 9f85a8ebeab086c09a56465138f4c9e07ffcbb8a
-   
