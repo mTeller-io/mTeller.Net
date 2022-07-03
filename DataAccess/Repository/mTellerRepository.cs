@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public class mTellerRepository<T> : ImTellerRepository<T> where T : class
+    public class MTellerRepository<T> : IMTellerRepository<T> where T : class
     {
         private readonly mTellerDBContext _mTellerContext;
         internal DbSet<T> _dbSet;
 
-        public mTellerRepository(mTellerDBContext mTellerContext)
+        public MTellerRepository(mTellerDBContext mTellerContext)
         {
             _mTellerContext = mTellerContext;
             this._dbSet = _mTellerContext.Set<T>();

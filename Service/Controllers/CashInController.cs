@@ -28,24 +28,10 @@ namespace Service.Controllers
         [EnableQuery(PageSize = 2, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
-            try
-            {
-                var result = await _cashInBusiness.GetAllCashIn();
-                if (result.Status == false)
-                {
-                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Created("Cash in retrieved.", cashIns);
-                }
-                else
-                {
-                    var error = result.ErrorList.FirstOrDefault();
-                    return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message, null, 500);
-            }
+            var result = await _cashInBusiness.GetAllCashIn();
+
+            var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+            return Created("Cash in retrieved.", cashIns);
         }
 
         // Get api/<CashInController>
