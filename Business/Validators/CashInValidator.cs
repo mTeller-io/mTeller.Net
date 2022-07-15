@@ -34,7 +34,7 @@ namespace Business
             return true;
         }
 
-        public bool BeLenghtOfTen(string BranchNumber)
+        private static bool BeLenghtOfTen(string BranchNumber)
         {
             if (BranchNumber.Length < 10)
                 return false;
@@ -42,7 +42,7 @@ namespace Business
                 return true;
         }
 
-        public bool GreaterThanZero(decimal value)
+        private bool GreaterThanZero(decimal value)
         {
             if (value < 0)
                 return false;

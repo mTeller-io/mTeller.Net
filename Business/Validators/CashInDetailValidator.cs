@@ -12,7 +12,7 @@ namespace Business.Validators
         {
             get
             {
-                if (_instance == null) _instance = new CashInDetailValidator();
+                _instance ??= new CashInDetailValidator();
                 return _instance;
             }
         }
@@ -27,14 +27,14 @@ namespace Business.Validators
             RuleFor(c => c.Amount).NotEmpty();//.Must(GreaterThanZero);
             RuleFor(c => c.PayerName).NotEmpty();
             RuleFor(c => c.Payer.PartyId).NotEmpty().Must(BeLenghtOfTen);
-            RuleFor(c => c.Currency).NotEmpty().Must(localCurrency);
+            RuleFor(c => c.Currency).NotEmpty().Must(LocalCurrency);
             RuleFor(c => c.ExternalId).NotEmpty();
             RuleFor(c => c.Payer.PartyIdType).NotEmpty();
 
             // TODO: Add more rules
         }
 
-        public bool BeLenghtOfTen(string BranchNumber)
+        public static bool BeLenghtOfTen(string BranchNumber)
         {
             if (BranchNumber.Length < 10)
                 return false;
@@ -42,7 +42,7 @@ namespace Business.Validators
                 return true;
         }
 
-        public bool localCurrency(string currency)
+        public static bool LocalCurrency(string currency)
         {
             if (currency == nameof(Currency.GHS))
                 return true;
@@ -50,14 +50,12 @@ namespace Business.Validators
                 return false;
         }
 
-        public bool GreaterThanZero(int value)
+        public static bool GreaterThanZero(int value)
         {
             if (value > 0)
                 return true;
             else
                 return false;
         }
-
-        // public bool GreaterThan(this decimal amount,decimal value)=>amount>value;
     }
 }

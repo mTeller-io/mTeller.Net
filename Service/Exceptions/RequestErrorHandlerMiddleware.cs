@@ -44,12 +44,8 @@ namespace Service.Exceptions
 
             switch (ex)
             {
-                case NotAuthenticatedException:
-                    code = HttpStatusCode.Unauthorized;
-                    context.Response.Headers.Add("WWW-Authenticate", "Basic");
-                    break;
-
                 case UnauthorizedAccessException:
+                case NotAuthenticatedException:
                     code = HttpStatusCode.Unauthorized;
                     context.Response.Headers.Add("WWW-Authenticate", "Basic");
                     break;

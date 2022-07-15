@@ -9,12 +9,12 @@ namespace Platform.MoMo
 
         public Disbursement(IMomoDisbursementAPIService momoDisbursementAPIService)
         {
-            this._momoDisbursementAPIService = momoDisbursementAPIService;
+            _momoDisbursementAPIService = momoDisbursementAPIService;
         }
 
         public async Task<bool> Disburse(CashInDTO cashInDTO)
         {
-            var result = false;
+            bool result;
             try
             {
                 var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInDTO.Payer.PartyId);
