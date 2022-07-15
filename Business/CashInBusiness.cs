@@ -54,7 +54,7 @@ namespace Business
         public static CashIn GetCashInDetialsToCashIn(CashInDTO cashInDetail)
         {
             CashIn newCashIn;
-            if (cashInDetail != null && cashInDetail.Amount > 0 & !String.IsNullOrWhiteSpace(cashInDetail.Payer.PartyId))
+            if (cashInDetail != null && cashInDetail.Amount > 0 && !String.IsNullOrWhiteSpace(cashInDetail.Payer.PartyId))
             {
                 newCashIn = new CashIn
                 {
@@ -118,12 +118,14 @@ namespace Business
             return newCashIn;
         }
 
-        // public async Task<bool> DeleteCashIn(int id)
         public async Task<OperationalResult<CashInDTO>> DeleteCashIn(int id)
         {
             try
             {
-                var result = new OperationalResult<CashInDTO>();
+                var result = new OperationalResult<CashInDTO>()
+                {
+                    Status = false
+                };
 
                 var CashInResult = await GetCashIn(id);
                 if (CashInResult.Data.FirstOrDefault() is not CashInDTO CashInResultDTO)
@@ -131,7 +133,7 @@ namespace Business
                     throw new NotFoundException("Record to be deleted was not found.");
                 }
 
-                var deleted = await _cashInRepository.DeleteAsync(id);
+                result.Status = await _cashInRepository.DeleteAsync(id);
 
                 return result;
             }
@@ -146,15 +148,17 @@ namespace Business
         {
             var result = new OperationalResult<IList<CashInDTO>>()
             {
-                Status = false
+                Status = false,
+                Data = new List<IList<CashInDTO>>()
             };
+
             try
             {
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
                 result.Data.Add(cashInsDTO);
-
+                result.Status = true;
                 return result;
             }
             catch (Exception ex)
@@ -169,7 +173,8 @@ namespace Business
             {
                 var result = new OperationalResult<CashInDTO>()
                 {
-                    Status = false
+                    Status = false,
+                    Data = new List<CashInDTO>()
                 };
 
                 var cashIn = await _cashInRepository.GetAsync(CashInId);
@@ -206,9 +211,8 @@ namespace Business
                 }
 
                 var cashIn = _mapper.Map<CashIn>(CashInResultDTO);
-                var updated = _cashInRepository.Update(cashIn);
+                result.Status = _cashInRepository.Update(cashIn);
 
-                result.Status = updated;
                 return result;
             }
             catch (Exception ex)

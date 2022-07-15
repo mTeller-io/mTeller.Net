@@ -14,7 +14,7 @@ namespace Service.Extensions
         public static void RegisterDependencies(this IServiceCollection services)
         {
             services.AddScoped<IJwtTokenBusiness, JwtTokenBusiness>();
-            services.AddScoped<IAuthBusiness, AuthBusiness>();
+            services.AddScoped<IAuthBusiness, AddCashIn>();
             services.AddScoped<ICashInBusiness, CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
             services.AddScoped<IUserBusiness, UserBusiness>();
