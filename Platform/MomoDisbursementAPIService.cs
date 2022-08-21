@@ -20,10 +20,11 @@ namespace Platform
             _momoAPIDisbursementConfig = _configuration.GetSection(MomoAPIDisbursementConfig.ConfigKey)
                                                     .Get<MomoAPIDisbursementConfig>();
 
-            RestClient _restClient = new RestClient(_momoAPIDisbursementConfig.BaseUrl);
+            //RestClient _restClient = new RestClient(_momoAPIDisbursementConfig.BaseUrl);
 
             _apiAdaptor = new APIAdapter(_momoAPIDisbursementConfig.APIUser,
-            _momoAPIDisbursementConfig.APIKey, _momoAPIDisbursementConfig.BaseUrl, _restClient);
+            _momoAPIDisbursementConfig.APIKey, _momoAPIDisbursementConfig.BaseUrl,
+            _momoAPIDisbursementConfig.TokenEndpoint);
         }
 
         /// <summary>
@@ -51,14 +52,14 @@ namespace Platform
         /// <returns>Returns the account balance</returns>
         public async Task<string> GetAccountBalance(string subscriptionType, string token)
         {
-            var response = new RestResponse();
+            
             //prepare  headers
             var requestHeaders = new Dictionary<string, string>();
 
             requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
             requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
-            response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountBalanceEndPoint, requestHeaders, null, null);
+            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountBalanceEndPoint, requestHeaders, null, null);
 
             return response.ToString();
         }
@@ -68,7 +69,7 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<string> GetAccountHolderActiveStatus(string partyID)
+        public async Task<bool> GetAccountHolderActiveStatus(string partyID)
         {
             var response = new RestResponse();
 
@@ -80,7 +81,8 @@ namespace Platform
 
             response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
 
-            return response.ToString();
+            //return response.ToString();
+            return response.IsSuccessful;
         }
 
         /// <summary>

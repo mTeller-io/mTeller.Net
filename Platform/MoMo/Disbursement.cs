@@ -1,9 +1,9 @@
-using Business.DTO;
+using Platform.Model;
 using Platform.Interface;
 
 namespace Platform.MoMo
 {
-    public class Disbursement
+    public class Disbursement : IDisbursement
     {
         private readonly IMomoDisbursementAPIService _momoDisbursementAPIService;
 
@@ -12,15 +12,23 @@ namespace Platform.MoMo
             this._momoDisbursementAPIService = momoDisbursementAPIService;
         }
 
-        public async Task<bool> Disburse(CashInDTO cashInDTO)
+        public async Task<bool> Disburse(CashInPayload cashInPayload)
         {
             var result = false;
             try
             {
-                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInDTO.Payer.PartyId);
+                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId);
+              
+               if(isPartyIdActive)
+               {
+                 await _momoDisbursementAPIService.CreateTransfer(cashInPayload.Payer.PartyIdType, cashInPayload.Amount, cashInPayload.Currency, cashInPayload.Payer.PartyId, cashInPayload.ExternalId, cashInPayload.PayerMessage);
+                 result = true;
 
-                await _momoDisbursementAPIService.CreateTransfer(cashInDTO.Payer.PartyIdType, cashInDTO.Amount, cashInDTO.Currency, cashInDTO.Payer.PartyId, cashInDTO.ExternalId, cashInDTO.PayerMessage);
-                result = true;
+               }
+               else{
+                 result=false;
+               }
+               
             }
             catch (Exception ex)
             {
