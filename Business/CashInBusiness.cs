@@ -145,7 +145,7 @@ namespace Business
                 var result = new OperationalResult<CashInDTO>();
 
                 var CashInResult = await GetCashIn(id);
-                var CashInResultDTO = CashInResult.Data.FirstOrDefault() as CashInDTO;
+                var CashInResultDTO = CashInResult.Data as CashInDTO;
                 if (CashInResultDTO == null)
                 {
                     result.Status = true;
@@ -168,14 +168,15 @@ namespace Business
         {
             var result = new OperationalResult<IList<CashInDTO>>()
             {
-                Status = false
+                Status = false,
+                Data = new List<CashInDTO>()
             };
             try
             {
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
-                result.Data.Add(cashInsDTO);
+                result.Data=cashInsDTO;
 
                 return result;
             }
@@ -204,7 +205,7 @@ namespace Business
 
                 // A cashInDTO is created
                 var cashInDTO = _mapper.Map<CashInDTO>(cashIn);
-                result.Data.Add(cashInDTO);
+                result.Data=cashInDTO;
                 result.Status = true;
                 return result;
             }
@@ -224,7 +225,7 @@ namespace Business
             try
             {
                 var CashInResult = await GetCashIn(cashInDTO.CashInId);
-                if (!(CashInResult.Data.FirstOrDefault() is CashInDTO CashInResultDTO))
+                if (!(CashInResult.Data is CashInDTO CashInResultDTO))
                 {
                     //result.Status = true;
                     result.ErrorList.Add(new Error { ErrorCode = "404", ErrorMessage = "The Cash In record specified could not be found." });

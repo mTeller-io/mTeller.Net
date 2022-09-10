@@ -37,7 +37,8 @@ namespace Service
             services.AddTransient<IAppConfig, AppConfig>();
 
             services.AddControllers()
-                .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+               // .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                .AddOData(option=>option.Select().Filter().OrderBy().Expand())
                 .AddFluentValidation(s =>
                 {
                     s.RegisterValidatorsFromAssemblyContaining<CashInValidator>();
@@ -70,7 +71,7 @@ namespace Service
             services.RegisterDependencies();
         }
 
-        private static IEdmModel GetEdmModel()
+       /*  private static IEdmModel GetEdmModel()
         {
             ODataConventionModelBuilder modelBuilder = new ODataConventionModelBuilder();
             modelBuilder.EntitySet<CashIn>("CashIns");
@@ -78,7 +79,7 @@ namespace Service
             IEdmModel model = modelBuilder.GetEdmModel();
 
             return model;
-        }
+        } */
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

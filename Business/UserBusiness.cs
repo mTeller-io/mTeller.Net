@@ -214,9 +214,9 @@ namespace Business
         /// <param name="pageSize"></param>
         /// <param name="pageNo"></param>
         /// <returns></returns>
-        public async Task<OperationalResult<UserDetail>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
+        public async Task<OperationalResult<IList<UserDetail>>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
         {
-            var result = new OperationalResult<UserDetail>
+            var result = new OperationalResult<IList<UserDetail>>
             {
                 Status = false
             };

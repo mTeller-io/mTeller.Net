@@ -13,10 +13,10 @@ using Microsoft.AspNetCore.OData.Routing;
 namespace Service.Controllers
 {
     //[Authorize]
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [EnableQuery]
-    public class CashInController : ODataController
+    public class CashInController : ControllerBase//ODataController
     {
         private readonly ICashInBusiness _cashInBusiness;
 
@@ -26,7 +26,8 @@ namespace Service.Controllers
         }
 
         // Get api/<CashInController>
-       [HttpGet("CashIns")]
+       //[HttpGet("CashIns")]
+       [HttpGet()]
        [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
@@ -36,7 +37,7 @@ namespace Service.Controllers
                 if (result.Status == false)
                 {
                     var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Created("Cash in retrieved.", cashIns);
+                    return Ok( cashIns);
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 using Business.DTO;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Interface
@@ -16,6 +17,6 @@ namespace Business.Interface
 
         Task<OperationalResult<UserDetail>> AddRoleToUser(string userEmail, string roleName);
 
-        Task<OperationalResult<UserDetail>> Get(UserSearchParameter userSearchParameter, int pageSize, int pageNo);
+        Task<OperationalResult<IList<UserDetail>>> Get(UserSearchParameter userSearchParameter, int pageSize, int pageNo);
     }
 }
