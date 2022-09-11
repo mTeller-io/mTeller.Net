@@ -15,7 +15,7 @@ namespace Service.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [EnableQuery]
+   // [EnableQuery]
     public class CashInController : ControllerBase//ODataController
     {
         private readonly ICashInBusiness _cashInBusiness;
@@ -28,7 +28,7 @@ namespace Service.Controllers
         // Get api/<CashInController>
        //[HttpGet("CashIns")]
        [HttpGet()]
-       [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
+      // [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
             try

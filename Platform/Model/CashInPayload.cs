@@ -4,19 +4,23 @@ namespace Platform.Model
     {
        
         public decimal Amount { get; set; }
-        public string Currency { get; set; }
-        public string ExternalId { get; set; }
+        public string Currency { get; set; }=String.Empty;
+        public string ExternalId { get; set; }=String.Empty;
         public Payer Payer { get; set; }
-        public string PayerMessage { get; set; }
-        public string PayeeNote { get; set; }
+        public string PayerMessage { get; set; }=String.Empty;
+        public string PayeeNote { get; set; }=String.Empty;
        
-       
+         public CashInPayload()
+         {
+            this.Payer = new Payer();
+            this.ExternalId = String.Empty;
+         }
     }
 
     public class Payer
     {
-        public string PartyIdType { get; set; }
-        public string PartyId { get; set; }
+        public string PartyIdType { get; set; }=String.Empty;
+        public string PartyId { get; set; }=String.Empty;
     }
     
 }
