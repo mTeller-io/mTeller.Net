@@ -6,9 +6,6 @@ using DataAccess.Repository;
 using Platform;
 using Platform.Interface;
 using Platform.MoMo;
-
-
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
@@ -24,7 +21,7 @@ namespace Service.Extensions
             services.AddScoped<IAuthBusiness, AuthBusiness>();
             services.AddScoped<ICashInBusiness, CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
-            services.AddScoped<IUserBusiness, UserBusiness>();
+           // services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IRoleBusiness, RoleBusiness>();
             services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
             //services.AddScoped<IMomoAPI, MomoAPI>();

@@ -1,4 +1,6 @@
+using System;
 using Business;
+using Business.Interface;
 using Business.Extensions;
 using Business.Settings;
 using Common;
@@ -16,7 +18,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Service.Extensions;
-using System;
+
+
 
 namespace Service
 {
@@ -68,6 +71,7 @@ namespace Service
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             // Register dependencies
+            services.AddScoped<IUserBusiness, UserBusiness>();
             services.RegisterDependencies();
         }
 
