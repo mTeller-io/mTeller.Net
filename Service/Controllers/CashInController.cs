@@ -27,7 +27,8 @@ namespace Service.Controllers
 
         // Get api/<CashInController>
        //[HttpGet("CashIns")]
-       [HttpGet()]
+       [HttpGet]
+       [Route("GetCashIn")]
       // [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
@@ -52,7 +53,8 @@ namespace Service.Controllers
         }
 
         // Get api/<CashInController>
-        [HttpPost("addCashIn")]
+        [HttpPost]
+        [Route("AddCashIn")]
         public async Task<IActionResult> AddCashIn([FromBody] CashInDTO cashInDTO)
         {
             try
