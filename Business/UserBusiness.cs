@@ -52,7 +52,7 @@ namespace Business
                 //Get the user by username
                 var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
 
-                if (!String.IsNullOrWhiteSpace(user.UserName))
+                if ( user!=null &&  !String.IsNullOrWhiteSpace(user.UserName))
                 {    //Add the user to the specified role
                     var addRoleResult = await _userManager.AddToRoleAsync(user, roleName);
 

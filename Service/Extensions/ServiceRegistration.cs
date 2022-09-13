@@ -21,7 +21,7 @@ namespace Service.Extensions
             services.AddScoped<IAuthBusiness, AuthBusiness>();
             services.AddScoped<ICashInBusiness, CashInBusiness>();
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
-           // services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IRoleBusiness, RoleBusiness>();
             services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
             //services.AddScoped<IMomoAPI, MomoAPI>();
@@ -54,6 +54,7 @@ namespace Service.Extensions
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+            
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Service.Controllers
     {
         private readonly IUserBusiness _userBusiness;
 
-        public UserController(UserBusiness userBusiness)
+        public UserController(IUserBusiness userBusiness)
         {
             _userBusiness = userBusiness;
         }

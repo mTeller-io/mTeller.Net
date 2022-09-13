@@ -116,9 +116,9 @@ namespace Platform
 
         private RestRequest AddUrlParams(RestRequest restRequest, Dictionary<string, string>? routeParams)
         {
-            if (routeParams == null || routeParams.Count <= 0)
+            if (restRequest==null ||routeParams == null || routeParams.Count <= 0)
                 return restRequest;
-
+             Console.Write(routeParams.Count.ToString());
             foreach (var param in routeParams)
             {
                 restRequest.AddUrlSegment(param.Key, param.Value);

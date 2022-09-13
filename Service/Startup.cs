@@ -71,7 +71,7 @@ namespace Service
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             // Register dependencies
-            services.AddScoped<IUserBusiness, UserBusiness>();
+           // services.AddScoped<IUserBusiness, UserBusiness>();
             services.RegisterDependencies();
         }
 
