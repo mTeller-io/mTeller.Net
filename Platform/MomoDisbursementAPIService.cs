@@ -75,8 +75,8 @@ namespace Platform
 
             var routeParams = new Dictionary<string, string>();
             var requestHeaders = new Dictionary<string, string>();
-            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdHeaderKeyName, partyID);
-            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeHeaderKeyName, partyIdType);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdKeyName, partyID);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeKeyName, partyIdType);
             requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
             requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
