@@ -69,13 +69,14 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<bool> GetAccountHolderActiveStatus(string partyID)
+        public async Task<bool> GetAccountHolderActiveStatus(string partyID,string partyIdType)
         {
             var response = new RestResponse();
 
             var routeParams = new Dictionary<string, string>();
             var requestHeaders = new Dictionary<string, string>();
             routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdHeaderKeyName, partyID);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeHeaderKeyName, partyIdType);
             requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
             requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
 

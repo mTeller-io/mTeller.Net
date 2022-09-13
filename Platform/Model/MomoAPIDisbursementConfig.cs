@@ -13,6 +13,7 @@ namespace Platform.Model
       public string TransferStatusEndPoint {get;set;}=string.Empty;
       public string  AccountHolderActiveStatusEndPoint {get;set;}=String.Empty;
       public string AccountHolderIdHeaderKeyName {get;set;}= string.Empty;
+      public string AccountHolderIdTypeHeaderKeyName {get;set;}= string.Empty;
       public string AccountBalanceEndPoint {get;set;}=String.Empty;
       public string AccountHolderBasicInfoEndPoint {get;set;}= string.Empty;
       public string TargetEnvironment {get;set;}= String.Empty;

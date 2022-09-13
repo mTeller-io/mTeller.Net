@@ -17,7 +17,7 @@ namespace Platform.MoMo
             var result = false;
             try
             {
-                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId);
+                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId,cashInPayload.Payer.PartyIdType);
               
                if(isPartyIdActive)
                {
