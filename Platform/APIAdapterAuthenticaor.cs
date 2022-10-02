@@ -34,7 +34,9 @@ namespace Platform
             var request = new RestRequest(_tokenEndUrl) //api end point
             .AddParameter("grant_type", "client_credentials");
             var response = await client.PostAsync<TokenResponse>(request);
-            return $"{response!.TokenType} {response!.AccessToken}";
+           // return $"{response!.TokenType} {response!.AccessToken}";
+              return response!.AccessToken;
+            
             }
 
     }
