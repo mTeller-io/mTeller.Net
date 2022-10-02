@@ -17,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
+using Service.Exceptions;
 using Service.Extensions;
 
 
@@ -36,8 +38,32 @@ namespace Service
         public void ConfigureServices(IServiceCollection services)
         {
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+
             services.AddAuth(jwtSettings);
             services.AddTransient<IAppConfig, AppConfig>();
+
+            services.AddTransient<IAppConfig, AppConfig>();
+
+            /*  services.AddDbContext<mTellerDBContext>(options =>
+          options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
+
+            // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
+            // Note: Add this service at the end after AddMvc() or AddMvcCore().
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "mTeller API",
+                    Version = "v1",
+                    Description = "The mTeller API shows the endpoints for accessing the mTeller functionalities.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "mTeller",
+                        Email = "mteller@mteller.io",
+                        Url = new Uri("https://mteller.io/"),
+                    },
+                });
+            });
 
             services.AddControllers()
                // .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
@@ -48,14 +74,17 @@ namespace Service
                     s.DisableDataAnnotationsValidation = true;
                 });
 
-            // Register our DB context
-            // services.AddDbContextFactory<mTellerDBContext>(
-            services.AddDbContext<mTellerDBContext>(options =>
-            options.UseNpgsql(
-                Configuration.GetConnectionString("NpgSqlConnectionString"), actions =>
-                actions.MigrationsAssembly("DataAccess")));
+            /*   services.AddDbContext<mTellerContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
-            // Register and tell Identity to use our DbContext for when we use its services
+            //Register our DB context
+            //services.AddDbContextFactory<mTellerDBContext>(
+            services.AddDbContext<mTellerDBContext>(
+        options =>
+            options.UseNpgsql(Configuration.GetConnectionString("NpgSqlConnectionString")
+            , actions => actions.MigrationsAssembly("DataAccess")));
+
+            //Register and tell Identity to use our DbContext for when we use its services
             services.AddIdentity<User, Role>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -67,7 +96,7 @@ namespace Service
             .AddEntityFrameworkStores<mTellerDBContext>()
             .AddDefaultTokenProviders();
 
-            // Register JwtSettings token
+            //Register JwtSettings token
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             // Register dependencies
@@ -77,7 +106,7 @@ namespace Service
 
        /*  private static IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder modelBuilder = new ODataConventionModelBuilder();
+            ODataConventionModelBuilder modelBuilder = new();
             modelBuilder.EntitySet<CashIn>("CashIns");
             modelBuilder.EntitySet<CashOut>("CashOuts");
             IEdmModel model = modelBuilder.GetEdmModel();
@@ -111,7 +140,13 @@ namespace Service
 
             app.UseRouting();
 
+            // app.UseAuthorization();
+
+            // app.UseAuthentication();
+
             app.UseAuth();
+
+            app.UseMiddleware(typeof(RequestErrorHandlerMiddleware));
 
             app.UseEndpoints(endpoints =>
             {

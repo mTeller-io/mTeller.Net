@@ -18,7 +18,7 @@ namespace Business
 
         private readonly IJwtTokenBusiness _jwtTokenBusiness;
 
-        private readonly ImTellerRepository<User> _userRepository;
+        private readonly IMTellerRepository<User> _userRepository;
 
         /// <summary>
         ///  The constructor of the AuthBusiness class
@@ -26,7 +26,7 @@ namespace Business
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
         public UserBusiness(UserManager<User> userManager, IMapper mapper, IJwtTokenBusiness jwtTokenBusiness,
-         ImTellerRepository<User> userRepository)
+         IMTellerRepository<User> userRepository)
         {
             _userManager = userManager;
             _mapper = mapper;

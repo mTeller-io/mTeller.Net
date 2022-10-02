@@ -1,7 +1,5 @@
 using Business.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Service.Controllers
@@ -30,15 +28,7 @@ namespace Service.Controllers
         {
             //add the new role to the context
             var result = await _roleBusiness.CreateRole(roleName);
-
-            if (result.Status)
-            {
-                return Created(new Uri($"Roles/{roleName}"), roleName);
-            }
-            else
-            {
-                return Problem(result.ErrorList.FirstOrDefault().ErrorMessage, null, 500);
-            }
+            return Ok(result.Data);
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Service.Controllers
       // [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
+
             try
             {
                 var result = await _cashInBusiness.GetAllCashIn();
@@ -50,6 +51,7 @@ namespace Service.Controllers
             {
                 return Problem(ex.Message, null, 500);
             }
+
         }
 
         // Get api/<CashInController>

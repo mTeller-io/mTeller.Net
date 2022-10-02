@@ -114,20 +114,20 @@ namespace Platform
             return await ExecuteAsync(restRequest);
         }
 
-        private RestRequest AddUrlParams(RestRequest restRequest, Dictionary<string, string>? routeParams)
+        private static RestRequest AddUrlParams(RestRequest restRequest, Dictionary<string, string>? routeParams)
         {
             if (restRequest==null ||routeParams == null || routeParams.Count <= 0)
                 return restRequest;
              Console.Write(routeParams.Count.ToString());
             foreach (var param in routeParams)
             {
-                restRequest.AddUrlSegment(param.Key, param.Value);
+                restRequest?.AddUrlSegment(param.Key, param.Value);
             }
 
             return restRequest;
         }
 
-        private RestRequest AddRequestHeaders(RestRequest restRequest, Dictionary<string, string>? requestHeaders)
+        private static RestRequest AddRequestHeaders(RestRequest restRequest, Dictionary<string, string>? requestHeaders)
         {
             if (requestHeaders == null || requestHeaders.Count <= 0)
                 return restRequest;
@@ -140,7 +140,7 @@ namespace Platform
             return restRequest;
         }
 
-        private RestRequest AddQueryStrings(RestRequest restRequest, Dictionary<string, string>? queryStrings)
+        private static RestRequest AddQueryStrings(RestRequest restRequest, Dictionary<string, string>? queryStrings)
         {
             if (queryStrings == null || queryStrings.Count <= 0)
                 return restRequest;
@@ -153,7 +153,7 @@ namespace Platform
             return restRequest;
         }
 
-        private RestRequest AddRequestBody(RestRequest restRequest, Object requestBody)
+        private static RestRequest AddRequestBody(RestRequest restRequest, Object requestBody)
         {
             if (requestBody == null)
                 return restRequest;
@@ -161,7 +161,7 @@ namespace Platform
             return restRequest.AddJsonBody(requestBody);
         }
 
-        private RestRequest AddStringRequestBody(RestRequest restRequest, string requestJsonBody)
+        private static RestRequest AddStringRequestBody(RestRequest restRequest, string requestJsonBody)
         {
             if (requestJsonBody == null)
                 return restRequest;

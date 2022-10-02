@@ -1,9 +1,9 @@
 using Business.DTO;
+using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Business
@@ -31,7 +31,7 @@ namespace Business
             };
 
             //Check for null or empty string
-            if (!String.IsNullOrWhiteSpace(roleName))
+            if (!string.IsNullOrWhiteSpace(roleName))
             {
                 var newRole = new Role
                 {
@@ -48,23 +48,12 @@ namespace Business
                 }
                 else
                 {
-                    //Set the status to false
-                    result.Status = false;
-                    //Get error from identity operation
-                    var lsErr = roleResult.Errors;
-                    //Convert and assign identity error to custom error object.
-                    result.ErrorList.AddRange(lsErr.Select(x => new Error
-                    {
-                        ErrorCode = x.Code,
-                        ErrorMessage = x.Description
-                    }));
-
-                    result.Message = $"Sorry. Unable to create new role {newRole}.Please try again";
+                    throw new ForbiddenException($"Sorry. Unable to create new role {newRole}.Please try again");
                 }
             }
             else
             {
-                result.Message = "New role name cannot be null or empty";
+                throw new Exception("New role name cannot be null or empty");
             }
 
             return result;

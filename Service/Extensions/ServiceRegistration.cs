@@ -23,11 +23,13 @@ namespace Service.Extensions
             services.AddScoped<ICashOutBusiness, CashOutBusiness>();
             services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IRoleBusiness, RoleBusiness>();
+
             services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
             //services.AddScoped<IMomoAPI, MomoAPI>();
             services.AddScoped<IMomoCollectionAPIService,MomoCollectionAPIService>();
             services.AddScoped<IMomoDisbursementAPIService,MomoDisbursementAPIService>();       
             services.AddScoped<IDisbursement,Disbursement>();
+
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
             services.AddSwaggerGen(c =>

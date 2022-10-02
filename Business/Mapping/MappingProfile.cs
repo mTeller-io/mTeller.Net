@@ -9,6 +9,7 @@ namespace Business.Mapping
         public MappingProfile()
         {
             //Domain to DTO
+
             CreateMap<User, UserSignUp>();
             CreateMap<CashIn, CashInDTO>();
 

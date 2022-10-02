@@ -1,4 +1,5 @@
 using Business.DTO;
+using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
@@ -10,9 +11,9 @@ namespace Business
 {
     public class CashOutBusiness : ICashOutBusiness
     {
-        private readonly ImTellerRepository<CashOut> _cashOutRepository;
+        private readonly IMTellerRepository<CashOut> _cashOutRepository;
 
-        public CashOutBusiness(ImTellerRepository<CashOut> cashOutRepository)
+        public CashOutBusiness(IMTellerRepository<CashOut> cashOutRepository)
         {
             _cashOutRepository = cashOutRepository;
         }
@@ -32,7 +33,7 @@ namespace Business
                 result.Data=cashOut;
             else
             {
-                result.Message = "No cashout transaction  found";
+                throw new NotFoundException();
             }
 
             return result;
@@ -54,8 +55,7 @@ namespace Business
             }
             else
             {
-                result.Status = false;
-                result.Message = "Transaction not found";
+                throw new NotFoundException("Transaction not found");
             }
 
             return result;
@@ -81,7 +81,7 @@ namespace Business
             result.Status = _cashOutRepository.Add(cashOut);
 
             if (!result.Status)
-                result.Message = "Error adding new cashout transaction";
+                throw new ForbiddenException("Error adding new cashout transaction");
 
             return result;
         }
@@ -107,7 +107,7 @@ namespace Business
             result.Status = await _cashOutRepository.DeleteAsync(id);
 
             if (!result.Status)
-                result.Message = "Sorry. Transaction could not be deleted";
+                throw new ForbiddenException("Sorry. Transaction could not be deleted");
 
             return result;
         }
