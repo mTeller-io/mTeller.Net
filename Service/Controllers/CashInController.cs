@@ -7,14 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.OData.Routing;
+
 
 namespace Service.Controllers
 {
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [EnableQuery]
-    public class CashInController : ODataController
+   // [EnableQuery]
+    public class CashInController : ControllerBase//ODataController
     {
         private readonly ICashInBusiness _cashInBusiness;
 
@@ -24,23 +26,42 @@ namespace Service.Controllers
         }
 
         // Get api/<CashInController>
-        [HttpGet("allCashIn")]
-        [EnableQuery(PageSize = 2, MaxExpansionDepth = 4)]
+       //[HttpGet("CashIns")]
+       [HttpGet]
+       [Route("GetCashIn")]
+      // [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
         public async Task<IActionResult> GetCashIn()
         {
-            var result = await _cashInBusiness.GetAllCashIn();
 
-            var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-            return Created("Cash in retrieved.", cashIns);
+            try
+            {
+                var result = await _cashInBusiness.GetAllCashIn();
+                if (result.Status == false)
+                {
+                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+                    return Ok( cashIns);
+                }
+                else
+                {
+                    var error = result.ErrorList.FirstOrDefault();
+                    return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message, null, 500);
+            }
+
         }
 
         // Get api/<CashInController>
-        [HttpGet("addCashIn")]
-        public IActionResult AddCashIn([FromBody] CashInDTO cashInDTO)
+        [HttpPost]
+        [Route("AddCashIn")]
+        public async Task<IActionResult> AddCashIn([FromBody] CashInDTO cashInDTO)
         {
             try
             {
-                var result = _cashInBusiness.AddCashIn(cashInDTO);
+                var result = await _cashInBusiness.AddCashIn(cashInDTO);
                 if (result.Status)
                 {
                     var error = result.ErrorList.FirstOrDefault();

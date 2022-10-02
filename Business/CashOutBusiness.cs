@@ -5,6 +5,7 @@ using DataAccess.Models;
 using DataAccess.Repository;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Business
 {
@@ -29,7 +30,7 @@ namespace Business
             result.Status = cashOut != null && cashOut.CashOutId > 0;
 
             if (result.Status)
-                result.Data.Add(cashOut);
+                result.Data=cashOut;
             else
             {
                 throw new NotFoundException();
@@ -38,9 +39,9 @@ namespace Business
             return result;
         }
 
-        public async Task<OperationalResult<CashOut>> GetAllCashOut()
+        public async Task<OperationalResult<IList<CashOut>>> GetAllCashOut()
         {
-            var result = new OperationalResult<CashOut>
+            var result = new OperationalResult<IList<CashOut>>
             {
                 Status = false
             };
@@ -50,7 +51,7 @@ namespace Business
             if (list.Any())
             {
                 result.Status = true;
-                result.Data.AddRange(list);
+                result.Data=list.ToList();
             }
             else
             {

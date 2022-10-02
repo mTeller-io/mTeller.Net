@@ -15,7 +15,7 @@ namespace Business.DTO
 
         //Result of successfully operation
 
-        public List<T> Data { get; set; }
+        public T Data { get; set; }
 
         //error list of failed operation
         public List<Error> ErrorList { get; set; } = new List<Error>();

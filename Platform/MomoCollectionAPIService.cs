@@ -16,12 +16,14 @@ namespace Platform
         {
             _configuration = configuration;
 
-            MomoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
-                                                    .Get<MomoAPICollectionConfig>();
-            RestClient _restClient = new(MomoAPICollectionConfig.BaseUrl);
 
-            _apiAdaptor = new APIAdapter(MomoAPICollectionConfig.APIUser,
-            MomoAPICollectionConfig.APIKey, MomoAPICollectionConfig.BaseUrl, _restClient);
+             _momoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
+                                                     .Get<MomoAPICollectionConfig>();
+            //RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
+
+            _apiAdaptor = new APIAdapter(_momoAPICollectionConfig.APIUser,
+            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_momoAPICollectionConfig.TokenEndpoint); 
+
         }
 
         /// <summary>
@@ -54,7 +56,8 @@ namespace Platform
         /// <param name="partyId">The phone number of the account holder</param>
         /// <param name="paymentMsg">Any additional comment the user wishes to input</param>
         /// <returns>Returns a request to pay provisioning response</returns>
-        public async Task<string?> CreateRequestToPay(string token, string amount, string currency, string externalId, string partyId, string partyIdType, string paymentMsg)
+
+        public async Task<bool> CreateRequestToPay(string token, string amount, string currency, string externalId, string partyId, string partyIdType, string paymentMsg)
         {
             //Prepare headers
             var xreferenceId = Guid.NewGuid();
@@ -94,7 +97,8 @@ namespace Platform
             //make request
             var response = await _apiAdaptor.ExecutePostAsync(MomoAPICollectionConfig.RequestToPayEndPoint, requestJsonBody, requestHeaders);
 
-            return response.Content;
+            return response.IsSuccessful;
+
         }
 
         /// <summary>
@@ -142,7 +146,8 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<string?> GetAccountHolderActiveStatus(string partyID)
+
+        public async Task<bool> GetAccountHolderActiveStatus(string partyID)
         {
             // var client = new RestClient($"{endpoint}/{subscriptionType}/v1_0/accountholder/{{accountHolderIdTypeCaseDown}}/{partyID}/active")
             // {
@@ -157,7 +162,8 @@ namespace Platform
 
             var response = await _apiAdaptor.ExecuteGetAsync(MomoAPICollectionConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
 
-            return response.Content;
+            return response.IsSuccessful;
+
         }
 
         /// <summary>

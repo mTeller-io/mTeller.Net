@@ -1,6 +1,7 @@
 using Business.DTO;
 using DataAccess.Models;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Business.Interface
 {
@@ -8,7 +9,7 @@ namespace Business.Interface
     {
         Task<OperationalResult<CashOut>> GetCashOut(int CashOutId);
 
-        Task<OperationalResult<CashOut>> GetAllCashOut();
+        Task<OperationalResult<IList<CashOut>>> GetAllCashOut();
 
         OperationalResult<CashOut> AddCashOut(CashOut cashOut);
 

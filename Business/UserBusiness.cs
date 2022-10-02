@@ -52,7 +52,7 @@ namespace Business
                 //Get the user by username
                 var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
 
-                if (!String.IsNullOrWhiteSpace(user.UserName))
+                if ( user!=null &&  !String.IsNullOrWhiteSpace(user.UserName))
                 {    //Add the user to the specified role
                     var addRoleResult = await _userManager.AddToRoleAsync(user, roleName);
 
@@ -214,9 +214,9 @@ namespace Business
         /// <param name="pageSize"></param>
         /// <param name="pageNo"></param>
         /// <returns></returns>
-        public async Task<OperationalResult<UserDetail>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
+        public async Task<OperationalResult<IList<UserDetail>>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
         {
-            var result = new OperationalResult<UserDetail>
+            var result = new OperationalResult<IList<UserDetail>>
             {
                 Status = false
             };
