@@ -22,7 +22,8 @@ namespace Platform
             //RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
 
             _apiAdaptor = new APIAdapter(_momoAPICollectionConfig.APIUser,
-            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_momoAPICollectionConfig.TokenEndpoint); 
+            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_momoAPICollectionConfig.TokenEndpoint,
+            _momoAPICollectionConfig.SubscriptionHeaderKeyName,_momoAPICollectionConfig.PrimarySubscriptionKey); 
 
         }
 

@@ -24,7 +24,8 @@ namespace Platform
 
             _apiAdaptor = new APIAdapter(_momoAPIDisbursementConfig.APIUser,
             _momoAPIDisbursementConfig.APIKey, _momoAPIDisbursementConfig.BaseUrl,
-            _momoAPIDisbursementConfig.TokenEndpoint);
+            _momoAPIDisbursementConfig.TokenEndpoint,
+            _momoAPIDisbursementConfig.SubscriptionHeaderKeyName,_momoAPIDisbursementConfig.PrimarySubscriptionKey);
 
         }
 
