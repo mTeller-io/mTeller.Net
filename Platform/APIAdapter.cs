@@ -12,6 +12,8 @@ namespace Platform
         private readonly string password;
         private readonly string baseUrl;
         private readonly string basicToken;
+        private readonly string subscriptionKeyName;
+        private readonly string subscriptionKey;
 
         //private readonly APIRequestData apiRequestData;
 
@@ -29,7 +31,7 @@ namespace Platform
             
         }
 
-        public APIAdapter(string userName,string password, string baseUrl, string tokenEnpoint)
+        public APIAdapter(string userName,string password, string baseUrl, string tokenEnpoint,string subscriptionKeyName, string subscriptionKey)
         {
             if(String.IsNullOrWhiteSpace(userName)|| String.IsNullOrWhiteSpace(password)|| String.IsNullOrWhiteSpace(baseUrl))
                 throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
@@ -37,11 +39,13 @@ namespace Platform
             this.password= password;
             this.baseUrl= baseUrl; //.EncodeCodeBase64();
             this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
-             
+            this.subscriptionKeyName= subscriptionKeyName;
+            this.subscriptionKey = subscriptionKey;
+
              var options = new RestClientOptions(this.baseUrl);
             
             _restClient = new RestClient(options) {
-            Authenticator = new APIAdapterAuthenticaor(this.baseUrl,tokenEnpoint, this.userName, this.password)
+            Authenticator = new APIAdapterAuthenticaor(this.baseUrl,tokenEnpoint, this.userName, this.password,this.subscriptionKeyName,this.subscriptionKey)
              };
         }
 

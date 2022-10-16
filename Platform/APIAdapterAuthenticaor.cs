@@ -11,12 +11,16 @@ namespace Platform
         readonly string _clientId;
         readonly string _clientSecret;
         readonly string _baseUrl;
+        readonly string _subscriptionKeyName;
+        readonly string _subscriptionKey;
 
-        public APIAdapterAuthenticaor(string baseUrl,string tokenEndUrl, string clientId, string clientSecret) : base("") {
+        public APIAdapterAuthenticaor(string baseUrl,string tokenEndUrl, string clientId, string clientSecret,string subscriptionKeyName,string subscriptionKey) : base("") {
             _baseUrl= baseUrl;
             _tokenEndUrl    = tokenEndUrl;
             _clientId     = clientId;
             _clientSecret = clientSecret;
+            _subscriptionKeyName=subscriptionKeyName;
+            _subscriptionKey = subscriptionKey;
              
         }
 
@@ -33,6 +37,8 @@ namespace Platform
 
             var request = new RestRequest(_tokenEndUrl) //api end point
             .AddParameter("grant_type", "client_credentials");
+            request.AddHeader(_subscriptionKeyName,_subscriptionKey);
+           // .AddParameter(_subscriptionKeyName,_subscriptionKey);
             var response = await client.PostAsync<TokenResponse>(request);
            // return $"{response!.TokenType} {response!.AccessToken}";
               return response!.AccessToken;
