@@ -11,7 +11,7 @@ namespace Platform.Model
         [JsonPropertyName("access_token")]
         public string AccessToken { get; init; }= String.Empty;
          [JsonPropertyName("expires_in")]
-        public int ExpiresIn { get; init; }= String.Empty;
+        public int ExpiresIn { get; init; }= 0;
     }
     
 }
