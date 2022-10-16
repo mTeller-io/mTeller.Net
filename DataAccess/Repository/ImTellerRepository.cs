@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public interface IMTellerRepository<T> where T : class
+    public interface ImTellerRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync(int pageNo = 0, int pageSize = 25);
 

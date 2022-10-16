@@ -10,7 +10,7 @@ namespace Business.Interface
 
         Task<OperationalResult<IList<CashInDTO>>> GetAllCashIn();
 
-        OperationalResult<CashInDTO> AddCashIn(CashInDTO cashInDTO);
+        Task<OperationalResult<CashInDTO>> AddCashIn(CashInDTO cashInDTO);
 
         Task<OperationalResult<CashInDTO>> UpdateCashIn(CashInDTO cashInDTO);
 

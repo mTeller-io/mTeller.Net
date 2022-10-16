@@ -4,8 +4,9 @@ using RestSharp;
 
 namespace Business
 {
-    public class MomoAPI : IMomoAPI
+    /*  public class MomoAPI : IMomoAPI
     {
+       
         private readonly string endpoint = string.Empty;
         private readonly string subscriptionKey = string.Empty;
         private readonly IConfiguration _configuration;
@@ -273,6 +274,6 @@ namespace Business
             request.AddHeader("Authorization", $"Bearer {token}");
             IRestResponse response = client.Execute(request);
             return response.Content;
-        }
-    }
+        } 
+    }*/
 }

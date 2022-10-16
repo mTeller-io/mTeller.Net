@@ -9,28 +9,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Platform.MoMo;
+using Platform.Model;
+using Platform.Interface;
+
 
 namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
-        private readonly IMTellerRepository<CashIn> _cashInRepository;
+        private readonly ImTellerRepository<CashIn> _cashInRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<CashInBusiness> _logger;
-
-        public CashInBusiness(IMTellerRepository<CashIn> cashInRepository, IMapper mapper, IMomoAPI momoAPI, ILogger<CashInBusiness> logger)
+        private readonly IDisbursement _disbursement;
+        public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IDisbursement disbursement)
         {
             _cashInRepository = cashInRepository;
             _mapper = mapper;
-            _logger = logger;
+            _disbursement = disbursement;
         }
 
-        public OperationalResult<CashInDTO> AddCashIn(CashInDTO cashInDTO)
+        public async Task<OperationalResult<CashInDTO>> AddCashIn(CashInDTO cashInDTO)
         {
             try
             {
                 var result = new OperationalResult<CashInDTO>();
 
+                 var cashInRequestInput= new CashInPayload
+                 {
+                     Amount = cashInDTO.Amount,
+                     Currency = cashInDTO.Currency,
+                     ExternalId = cashInDTO.ExternalId,
+                     Payer = new Platform.Model.Payer{
+                        PartyId= cashInDTO.Payer.PartyId,
+                        PartyIdType= cashInDTO.Payer.PartyIdType
+                     } ,
+                     PayeeNote = cashInDTO.PayeeNote,
+                     PayerMessage = cashInDTO.PayerMessage,
+                    
+
+                 };
                 //TODO: 1. Get customer data from MTN API
                 //      2. If data retrieval succeeds
                 //          2.1. Add the cashin ammount to customers balance
@@ -38,7 +55,7 @@ namespace Business
                 //      3. If data retrieval fails
                 //          3.1. log the exception
                 //          3.2. throw a user friendly error message for user
-
+                   await  _disbursement.Disburse(cashInRequestInput);
                 var cashIn = _mapper.Map<CashIn>(cashInDTO);
                 var added = _cashInRepository.Add(cashIn);
 
@@ -126,7 +143,9 @@ namespace Business
                 var result = new OperationalResult<CashInDTO>();
 
                 var CashInResult = await GetCashIn(id);
-                if (CashInResult.Data.FirstOrDefault() is not CashInDTO CashInResultDTO)
+
+                var CashInResultDTO = CashInResult.Data as CashInDTO;
+                if (CashInResultDTO == null)
                 {
                     throw new NotFoundException("Record to be deleted was not found.");
                 }
@@ -137,7 +156,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                //_logger.LogError(ex, ex.Message);
                 throw new ForbiddenException(ex);
             }
         }
@@ -146,14 +165,15 @@ namespace Business
         {
             var result = new OperationalResult<IList<CashInDTO>>()
             {
-                Status = false
+                Status = false,
+                Data = new List<CashInDTO>()
             };
             try
             {
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
-                result.Data.Add(cashInsDTO);
+                result.Data=cashInsDTO;
 
                 return result;
             }
@@ -180,7 +200,7 @@ namespace Business
 
                 // A cashInDTO is created
                 var cashInDTO = _mapper.Map<CashInDTO>(cashIn);
-                result.Data.Add(cashInDTO);
+                result.Data=cashInDTO;
                 result.Status = true;
                 return result;
             }
@@ -200,7 +220,8 @@ namespace Business
             try
             {
                 var CashInResult = await GetCashIn(cashInDTO.CashInId);
-                if (CashInResult.Data.FirstOrDefault() is not CashInDTO CashInResultDTO)
+
+                if (!(CashInResult.Data is CashInDTO CashInResultDTO))
                 {
                     throw new NotFoundException();
                 }

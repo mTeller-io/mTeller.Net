@@ -20,11 +20,29 @@ namespace Platform
             if (String.IsNullOrWhiteSpace(userName) || String.IsNullOrWhiteSpace(password) || String.IsNullOrWhiteSpace(baseUrl))
                 throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
             this.userName = userName;
-            this.password = password;
-            this.baseUrl = baseUrl.EncodeCodeBase64();
-            this.basicToken = (this.userName + ':' + this.password).EncodeCodeBase64();
+
+            this.password= password;
+            this.baseUrl= baseUrl.EncodeCodeBase64();
+            this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
 
             _restClient = restClient;
+            
+        }
+
+        public APIAdapter(string userName,string password, string baseUrl, string tokenEnpoint)
+        {
+            if(String.IsNullOrWhiteSpace(userName)|| String.IsNullOrWhiteSpace(password)|| String.IsNullOrWhiteSpace(baseUrl))
+                throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
+            this.userName = userName;
+            this.password= password;
+            this.baseUrl= baseUrl; //.EncodeCodeBase64();
+            this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
+             
+             var options = new RestClientOptions(this.baseUrl);
+            
+            _restClient = new RestClient(options) {
+            Authenticator = new APIAdapterAuthenticaor(this.baseUrl,tokenEnpoint, this.userName, this.password)
+             };
         }
 
         public async Task<RestResponse> ExecuteGetAsync(string endpoint, Dictionary<string, string>? requestHeaders = null,
@@ -98,9 +116,9 @@ namespace Platform
 
         private static RestRequest AddUrlParams(RestRequest restRequest, Dictionary<string, string>? routeParams)
         {
-            if (routeParams == null || routeParams.Count <= 0)
+            if (restRequest==null ||routeParams == null || routeParams.Count <= 0)
                 return restRequest;
-
+             Console.Write(routeParams.Count.ToString());
             foreach (var param in routeParams)
             {
                 restRequest?.AddUrlSegment(param.Key, param.Value);
@@ -152,11 +170,14 @@ namespace Platform
         }
 
         private async Task<RestResponse> ExecuteAsync(RestRequest restRequest)
-        {
+        {  var result = new RestResponse(){
+               IsSuccessful=false
+             };
             if (restRequest == null)
-                return new RestResponse();
+                return result;
 
-            return await _restClient.ExecuteAsync(restRequest);
+            result= await _restClient.ExecuteAsync(restRequest);
+            return result;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Business
 
         private readonly IJwtTokenBusiness _jwtTokenBusiness;
 
-        private readonly IMTellerRepository<User> _userRepository;
+        private readonly ImTellerRepository<User> _userRepository;
 
         /// <summary>
         ///  The constructor of the AuthBusiness class
@@ -26,7 +26,7 @@ namespace Business
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
         public UserBusiness(UserManager<User> userManager, IMapper mapper, IJwtTokenBusiness jwtTokenBusiness,
-         IMTellerRepository<User> userRepository)
+         ImTellerRepository<User> userRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -52,7 +52,7 @@ namespace Business
                 //Get the user by username
                 var user = _userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
 
-                if (!String.IsNullOrWhiteSpace(user.UserName))
+                if ( user!=null &&  !String.IsNullOrWhiteSpace(user.UserName))
                 {    //Add the user to the specified role
                     var addRoleResult = await _userManager.AddToRoleAsync(user, roleName);
 
@@ -214,9 +214,9 @@ namespace Business
         /// <param name="pageSize"></param>
         /// <param name="pageNo"></param>
         /// <returns></returns>
-        public async Task<OperationalResult<UserDetail>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
+        public async Task<OperationalResult<IList<UserDetail>>> Get(UserSearchParameter userSearchParameter, int pageSize = 25, int pageNo = 0)
         {
-            var result = new OperationalResult<UserDetail>
+            var result = new OperationalResult<IList<UserDetail>>
             {
                 Status = false
             };

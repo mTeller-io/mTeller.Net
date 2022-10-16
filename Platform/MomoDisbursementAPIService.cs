@@ -11,19 +11,21 @@ namespace Platform
 
         private readonly IConfiguration _configuration;
 
-        public MomoAPIDisbursementConfig? MomoAPIDisbursementConfig { get; private set; }
+        public MomoAPIDisbursementConfig? _momoAPIDisbursementConfig { get; private set; }
 
         public MomoDisbursementAPIService(IConfiguration configuration)
         {
             _configuration = configuration;
 
-            MomoAPIDisbursementConfig = _configuration.GetSection(MomoAPIDisbursementConfig.ConfigKey)
+            _momoAPIDisbursementConfig = _configuration.GetSection(MomoAPIDisbursementConfig.ConfigKey)
                                                     .Get<MomoAPIDisbursementConfig>();
 
-            RestClient _restClient = new(MomoAPIDisbursementConfig.BaseUrl);
+            //RestClient _restClient = new RestClient(_momoAPIDisbursementConfig.BaseUrl);
 
-            _apiAdaptor = new APIAdapter(MomoAPIDisbursementConfig.APIUser,
-            MomoAPIDisbursementConfig.APIKey, MomoAPIDisbursementConfig.BaseUrl, _restClient);
+            _apiAdaptor = new APIAdapter(_momoAPIDisbursementConfig.APIUser,
+            _momoAPIDisbursementConfig.APIKey, _momoAPIDisbursementConfig.BaseUrl,
+            _momoAPIDisbursementConfig.TokenEndpoint);
+
         }
 
         /// <summary>
@@ -51,14 +53,17 @@ namespace Platform
         /// <returns>Returns the account balance</returns>
         public async Task<string?> GetAccountBalance(string subscriptionType, string token)
         {
+            
             //prepare  headers
             var requestHeaders = new Dictionary<string, string>
             {
-                { MomoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, MomoAPIDisbursementConfig!.TargetEnvironment },
-                { MomoAPIDisbursementConfig!.SubscriptionHeaderKeyName, MomoAPIDisbursementConfig!.PrimarySubscriptionKey }
+                { _momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment },
+                { _momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey }
             };
 
-            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPIDisbursementConfig.AccountBalanceEndPoint, requestHeaders, null, null);
+
+            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountBalanceEndPoint, requestHeaders, null, null);
+
 
             return response.Content;
         }
@@ -68,17 +73,21 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<string?> GetAccountHolderActiveStatus(string partyID)
+        public async Task<bool> GetAccountHolderActiveStatus(string partyID,string partyIdType)
         {
             var routeParams = new Dictionary<string, string>();
             var requestHeaders = new Dictionary<string, string>();
-            routeParams.Add(MomoAPIDisbursementConfig!.AccountHolderIdHeaderKeyName, partyID);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, MomoAPIDisbursementConfig!.TargetEnvironment);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.SubscriptionHeaderKeyName, MomoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
-            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPIDisbursementConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdKeyName, partyID);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeKeyName, partyIdType);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
-            return response.Content;
+
+            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
+
+            //return response.ToString();
+            return response.IsSuccessful;
         }
 
         /// <summary>
@@ -90,11 +99,12 @@ namespace Platform
         {
             var routeParams = new Dictionary<string, string>();
             var requestHeaders = new Dictionary<string, string>();
-            routeParams.Add(MomoAPIDisbursementConfig!.AccountHolderIdHeaderKeyName, partyID);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, MomoAPIDisbursementConfig!.TargetEnvironment);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.SubscriptionHeaderKeyName, MomoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
-            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPIDisbursementConfig.AccountHolderBasicInfoEndPoint, requestHeaders, null, routeParams);
+            routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdKeyName, partyID);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
+
+            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountHolderBasicInfoEndPoint, requestHeaders, null, routeParams);
 
             return response.Content;
         }
@@ -116,9 +126,9 @@ namespace Platform
             var requestHeaders = new Dictionary<string, string>
             {
                 //Adding headers
-                { MomoAPIDisbursementConfig!.ReferenceIdHeaderKeyName, xreferenceId.ToString() },
-                { MomoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, MomoAPIDisbursementConfig!.TargetEnvironment },
-                { MomoAPIDisbursementConfig!.SubscriptionHeaderKeyName, MomoAPIDisbursementConfig!.PrimarySubscriptionKey }
+                { _momoAPIDisbursementConfig!.ReferenceIdHeaderKeyName, xreferenceId.ToString() },
+                { _momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment },
+                { _momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey }
             };
 
             //requestHeaders.Add("Authorization", $"Bearer {token}");
@@ -134,7 +144,7 @@ namespace Platform
             };
 
             //make request
-            var response = await _apiAdaptor.ExecutePostAsync(MomoAPIDisbursementConfig.TransferEndPoint, requestJsonBody, requestHeaders);
+            var response = await _apiAdaptor.ExecutePostAsync(_momoAPIDisbursementConfig.TransferEndPoint, requestJsonBody, requestHeaders);
 
             return response.Content;
         }
@@ -151,11 +161,11 @@ namespace Platform
             var routeParams = new Dictionary<string, string>();
 
             var requestHeaders = new Dictionary<string, string>();
-            routeParams.Add(MomoAPIDisbursementConfig!.ReferenceIdHeaderKeyName, paymentXreferenceId);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, MomoAPIDisbursementConfig!.TargetEnvironment);
-            requestHeaders.Add(MomoAPIDisbursementConfig!.SubscriptionHeaderKeyName, MomoAPIDisbursementConfig!.PrimarySubscriptionKey);
+            routeParams.Add(_momoAPIDisbursementConfig!.ReferenceIdHeaderKeyName, paymentXreferenceId);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
+            requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
 
-            var response = await _apiAdaptor.ExecuteGetAsync(MomoAPIDisbursementConfig.TransferStatusEndPoint, requestHeaders, null, routeParams);
+            var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.TransferStatusEndPoint, requestHeaders, null, routeParams);
 
             return response.Content;
         }
