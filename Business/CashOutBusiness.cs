@@ -11,9 +11,9 @@ namespace Business
 {
     public class CashOutBusiness : ICashOutBusiness
     {
-        private readonly IMTellerRepository<CashOut> _cashOutRepository;
+        private readonly ImTellerRepository<CashOut> _cashOutRepository;
 
-        public CashOutBusiness(IMTellerRepository<CashOut> cashOutRepository)
+        public CashOutBusiness(ImTellerRepository<CashOut> cashOutRepository)
         {
             _cashOutRepository = cashOutRepository;
         }

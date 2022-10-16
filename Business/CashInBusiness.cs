@@ -18,7 +18,7 @@ namespace Business
 {
     public class CashInBusiness : ICashInBusiness
     {
-        private readonly IMTellerRepository<CashIn> _cashInRepository;
+        private readonly ImTellerRepository<CashIn> _cashInRepository;
         private readonly IMapper _mapper;
         private readonly IDisbursement _disbursement;
         public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IDisbursement disbursement)
@@ -156,7 +156,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                //_logger.LogError(ex, ex.Message);
                 throw new ForbiddenException(ex);
             }
         }
