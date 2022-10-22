@@ -32,7 +32,7 @@ namespace Service.Extensions
 
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
-            services.AddSwaggerGen(c =>
+           /* services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -46,7 +46,7 @@ namespace Service.Extensions
                         Url = new Uri("https://mteller.io/"),
                     },
                 });
-            });
+            });*/
 
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
