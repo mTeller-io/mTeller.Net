@@ -1,41 +1,37 @@
-using Business.DTO;
+﻿using Business.DTO;
 using Business.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.OData.Routing;
+using System;
+using System.Linq;
+using DataAccess.Models;
 
 namespace Service.Controllers
 {
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CashInController : ControllerBase//ODataController
+    public class CashOutController : ControllerBase//ODataController
     {
-        private readonly ICashInBusiness _cashInBusiness;
+        private readonly ICashOutBusiness _cashOutBusiness;
 
-        public CashInController(ICashInBusiness cashInBusiness)
+        public CashOutController(ICashOutBusiness cashOutBusiness)
         {
-            _cashInBusiness = cashInBusiness;
+            _cashOutBusiness = cashOutBusiness;
         }
 
-        // Get api/<CashInController>
-        //[HttpGet("CashIns")]
         [HttpGet]
         [Route("GetCashIn")]
-        public async Task<IActionResult> GetCashIn()
+        public async Task<IActionResult> GetCashOut()
         {
             try
             {
-                var result = await _cashInBusiness.GetAllCashIn();
+                var result = await _cashOutBusiness.GetAllCashOut();
                 if (!result.Status)
                 {
-                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Ok(cashIns);
+                    var cashOuts = result.Data.FirstOrDefault() as IList<CashOutDTO>;
+                    return Ok(cashOuts);
                 }
                 else
                 {
@@ -49,21 +45,20 @@ namespace Service.Controllers
             }
         }
 
-        // Get api/<CashInController>
         [HttpPost]
-        [Route("AddCashIn")]
-        public async Task<IActionResult> AddCashIn([FromBody] CashInDTO cashInDTO)
+        [Route("AddCashOut")]
+        public async Task<IActionResult> AddCashOut([FromBody] CashOut cashOut)
         {
             try
             {
-                var result = await _cashInBusiness.AddCashIn(cashInDTO);
-                if (result.Status)
+                var result = await _cashOutBusiness.AddCashOut(cashOut);
+                if (!result.Status)
                 {
                     var error = result.ErrorList.FirstOrDefault();
                     return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));
                 }
 
-                return Created("CashIn Created.", cashInDTO);
+                return Created("Cash out Created.", cashOut);
             }
             catch (Exception ex)
             {

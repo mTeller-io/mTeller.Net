@@ -30,7 +30,7 @@ namespace Business
             result.Status = cashOut != null && cashOut.CashOutId > 0;
 
             if (result.Status)
-                result.Data=cashOut;
+                result.Data = cashOut;
             else
             {
                 throw new NotFoundException();
@@ -51,7 +51,7 @@ namespace Business
             if (list.Any())
             {
                 result.Status = true;
-                result.Data=list.ToList();
+                result.Data = list.ToList();
             }
             else
             {
@@ -61,7 +61,7 @@ namespace Business
             return result;
         }
 
-        public OperationalResult<CashOut> AddCashOut(CashOut cashOut)
+        public async Task<OperationalResult<CashOut>> AddCashOut(CashOut cashOut)
         {
             var result = new OperationalResult<CashOut>
             {
@@ -78,7 +78,7 @@ namespace Business
             //      3. If data retrieval fails
             //          3.1. log the exception
             //          3.2. throw a user friendly error message for user
-            result.Status = _cashOutRepository.Add(cashOut);
+            result.Status = await Task.FromResult(_cashOutRepository.Add(cashOut));
 
             if (!result.Status)
                 throw new ForbiddenException("Error adding new cashout transaction");

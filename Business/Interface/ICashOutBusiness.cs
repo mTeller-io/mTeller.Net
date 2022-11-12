@@ -11,7 +11,7 @@ namespace Business.Interface
 
         Task<OperationalResult<IList<CashOut>>> GetAllCashOut();
 
-        OperationalResult<CashOut> AddCashOut(CashOut cashOut);
+        Task<OperationalResult<CashOut>> AddCashOut(CashOut cashOut);
 
         OperationalResult<CashOut> UpdateCashOut(CashOut cashOut);
 
