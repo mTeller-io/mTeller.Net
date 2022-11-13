@@ -3,9 +3,9 @@ using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Business
 {

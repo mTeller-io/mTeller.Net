@@ -1,13 +1,10 @@
 using Business.DTO;
 using Business.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.OData.Routing;
 
 namespace Service.Controllers
 {

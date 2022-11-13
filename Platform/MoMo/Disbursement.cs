@@ -1,5 +1,5 @@
-using Platform.Model;
 using Platform.Interface;
+using Platform.Model;
 
 namespace Platform.MoMo
 {
@@ -17,18 +17,17 @@ namespace Platform.MoMo
             bool result;
             try
             {
-                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId,cashInPayload.Payer.PartyIdType);
-              
-               if(isPartyIdActive)
-               {
-                 await _momoDisbursementAPIService.CreateTransfer(cashInPayload.Payer.PartyIdType, cashInPayload.Amount, cashInPayload.Currency, cashInPayload.Payer.PartyId, cashInPayload.ExternalId, cashInPayload.PayerMessage);
-                 result = true;
+                var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId, cashInPayload.Payer.PartyIdType);
 
-               }
-               else{
-                 result=false;
-               }
-               
+                if (isPartyIdActive)
+                {
+                    await _momoDisbursementAPIService.CreateTransfer(cashInPayload.Payer.PartyIdType, cashInPayload.Amount, cashInPayload.Currency, cashInPayload.Payer.PartyId, cashInPayload.ExternalId, cashInPayload.PayerMessage);
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
             catch (Exception ex)
             {

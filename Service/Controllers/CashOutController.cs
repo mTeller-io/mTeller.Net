@@ -1,11 +1,11 @@
 ﻿using Business.DTO;
 using Business.Interface;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Service.Controllers
 {

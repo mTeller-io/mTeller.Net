@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Platform.Interface;
 using Platform.Model;
-using RestSharp;
 
 namespace Platform
 {
@@ -16,15 +15,13 @@ namespace Platform
         {
             _configuration = configuration;
 
-
-             _momoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
-                                                     .Get<MomoAPICollectionConfig>();
+            _momoAPICollectionConfig = _configuration.GetSection(MomoAPICollectionConfig.ConfigKey)
+                                                    .Get<MomoAPICollectionConfig>();
             //RestClient _restClient = new RestClient(_momoAPICollectionConfig.BaseUrl);
 
             _apiAdaptor = new APIAdapter(_momoAPICollectionConfig.APIUser,
-            _momoAPICollectionConfig.APIKey,_momoAPICollectionConfig.BaseUrl,_momoAPICollectionConfig.TokenEndpoint,
-            _momoAPICollectionConfig.SubscriptionHeaderKeyName,_momoAPICollectionConfig.PrimarySubscriptionKey); 
-
+            _momoAPICollectionConfig.APIKey, _momoAPICollectionConfig.BaseUrl, _momoAPICollectionConfig.TokenEndpoint,
+            _momoAPICollectionConfig.SubscriptionHeaderKeyName, _momoAPICollectionConfig.PrimarySubscriptionKey);
         }
 
         /// <summary>
@@ -99,7 +96,6 @@ namespace Platform
             var response = await _apiAdaptor.ExecutePostAsync(_momoAPICollectionConfig.RequestToPayEndPoint, requestJsonBody, requestHeaders);
 
             return response.IsSuccessful;
-
         }
 
         /// <summary>
@@ -164,7 +160,6 @@ namespace Platform
             var response = await _apiAdaptor.ExecuteGetAsync(_momoAPICollectionConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
 
             return response.IsSuccessful;
-
         }
 
         /// <summary>

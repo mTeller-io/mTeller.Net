@@ -4,14 +4,11 @@ using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
-using Microsoft.Extensions.Logging;
+using Platform.Interface;
+using Platform.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Platform.MoMo;
-using Platform.Model;
-using Platform.Interface;
 
 namespace Business
 {

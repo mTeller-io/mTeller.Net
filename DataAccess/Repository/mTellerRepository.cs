@@ -68,8 +68,8 @@ namespace DataAccess.Repository
         {
             System.Linq.IQueryable<T> query = _dbSet;
             //var skipCount = pageNo * pageSize;
-           // query = query.Skip(skipCount).Take(pageSize);
-            
+            // query = query.Skip(skipCount).Take(pageSize);
+
             return await query.ToListAsync();
         }
 

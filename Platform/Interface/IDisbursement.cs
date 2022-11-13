@@ -1,4 +1,5 @@
 using Platform.Model;
+
 namespace Platform.Interface
 {
     public interface IDisbursement
