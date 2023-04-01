@@ -30,7 +30,7 @@ jobs:
         run: dotnet restore mTeller.sln
 
       - name: Test
-        run: dotnet test mTeller.sln --configuration Release --no-restore
+        run: dotnet test Services/mTeller.sln --configuration Release --no-restore
 
   build:
     needs: test
