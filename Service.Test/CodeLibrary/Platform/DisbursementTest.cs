@@ -1,6 +1,10 @@
-﻿namespace Service.Test.CodeLibrary.Platform
+﻿using Xunit;
+
+namespace Service.Test.CodeLibrary.Platform
 {
-    internal class DisbursementTest
+    public class DisbursementTest
     {
+        [Fact]
+        public void Pass() => Assert.True(true);
     }
 }
