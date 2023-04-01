@@ -2,7 +2,7 @@ name: SonarScan
 on:
   push:
     branches:
-      - develop
+      - service
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:

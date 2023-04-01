@@ -1,6 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <Compile Remove="IdentityServer\**" />
+    <Content Remove="IdentityServer\**" />
+    <EmbeddedResource Remove="IdentityServer\**" />
+    <None Remove="IdentityServer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.7.0" />
@@ -9,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
 
@@ -29,13 +37,11 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IdentityServer\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
      <TargetFramework>net6.0</TargetFramework>
+     <UserSecretsId>7e7f6f10-5f2d-4877-9308-a7fc8d963dd4</UserSecretsId>
+     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <!-- <FrameworkReference Include="Microsoft.AspNetCore.App" /> -->

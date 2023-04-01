@@ -3,13 +3,12 @@ using Business;
 using Business.Interface;
 using Business.Mapping;
 using DataAccess.Repository;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Platform;
 using Platform.Interface;
 using Platform.MoMo;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using System;
-
 
 namespace Service.Extensions
 {
@@ -26,9 +25,9 @@ namespace Service.Extensions
 
             services.AddScoped(typeof(ImTellerRepository<>), typeof(mTellerRepository<>));
             //services.AddScoped<IMomoAPI, MomoAPI>();
-            services.AddScoped<IMomoCollectionAPIService,MomoCollectionAPIService>();
-            services.AddScoped<IMomoDisbursementAPIService,MomoDisbursementAPIService>();       
-            services.AddScoped<IDisbursement,Disbursement>();
+            services.AddScoped<IMomoCollectionAPIService, MomoCollectionAPIService>();
+            services.AddScoped<IMomoDisbursementAPIService, MomoDisbursementAPIService>();
+            services.AddScoped<IDisbursement, Disbursement>();
 
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
@@ -56,7 +55,6 @@ namespace Service.Extensions
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            
         }
     }
 }

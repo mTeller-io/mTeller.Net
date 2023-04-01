@@ -1,6 +1,4 @@
-using System;
 using Business;
-using Business.Interface;
 using Business.Extensions;
 using Business.Settings;
 using Common;
@@ -15,13 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Service.Exceptions;
 using Service.Extensions;
-
-
+using System;
 
 namespace Service
 {
@@ -43,39 +38,14 @@ namespace Service
             services.AddTransient<IAppConfig, AppConfig>();
 
             services.AddTransient<IAppConfig, AppConfig>();
-
-            /*  services.AddDbContext<mTellerDBContext>(options =>
-          options.UseNpgsql(Configuration.GetConnectionString("mTellerContext")));  */
-
-            // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
-            // Note: Add this service at the end after AddMvc() or AddMvcCore().
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "mTeller API",
-                    Version = "v1",
-                    Description = "The mTeller API shows the endpoints for accessing the mTeller functionalities.",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "mTeller",
-                        Email = "mteller@mteller.io",
-                        Url = new Uri("https://mteller.io/"),
-                    },
-                });
-            });
-
             services.AddControllers()
-               // .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
-                .AddOData(option=>option.Select().Filter().OrderBy().Expand())
+                // .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                .AddOData(option => option.Select().Filter().OrderBy().Expand())
                 .AddFluentValidation(s =>
                 {
                     s.RegisterValidatorsFromAssemblyContaining<CashInValidator>();
                     s.DisableDataAnnotationsValidation = true;
                 });
-
-            /*   services.AddDbContext<mTellerContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("mTellerContext"))); */
 
             //Register our DB context
             //services.AddDbContextFactory<mTellerDBContext>(
@@ -100,19 +70,19 @@ namespace Service
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             // Register dependencies
-           // services.AddScoped<IUserBusiness, UserBusiness>();
+            // services.AddScoped<IUserBusiness, UserBusiness>();
             services.RegisterDependencies();
         }
 
-       /*  private static IEdmModel GetEdmModel()
-        {
-            ODataConventionModelBuilder modelBuilder = new();
-            modelBuilder.EntitySet<CashIn>("CashIns");
-            modelBuilder.EntitySet<CashOut>("CashOuts");
-            IEdmModel model = modelBuilder.GetEdmModel();
+        /*  private static IEdmModel GetEdmModel()
+         {
+             ODataConventionModelBuilder modelBuilder = new();
+             modelBuilder.EntitySet<CashIn>("CashIns");
+             modelBuilder.EntitySet<CashOut>("CashOuts");
+             IEdmModel model = modelBuilder.GetEdmModel();
 
-            return model;
-        } */
+             return model;
+         } */
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

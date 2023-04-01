@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Service.Test.CodeLibrary.Business
+﻿namespace Service.Test.CodeLibrary.Business
 {
     internal class CashInBusinessTest
     {
