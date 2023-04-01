@@ -78,7 +78,7 @@ jobs:
         run: dotnet restore mTeller.sln
 
       - name: Build
-        run: dotnet build mTeller.sln --configuration Release /p:Version=${{ steps.jedoxver.outputs.ver-core }} --no-restore
+        run: dotnet build mTeller.sln --configuration Release /p:Version=${{ steps.mteller.outputs.ver-core }} --no-restore
 
       -
         name: Login to Docker Hub
