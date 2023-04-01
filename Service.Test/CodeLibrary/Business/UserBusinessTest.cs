@@ -1,6 +1,10 @@
-﻿namespace Service.Test.CodeLibrary.Business
+﻿using Xunit;
+
+namespace Service.Test.CodeLibrary.Business
 {
-    internal class UserBusinessTest
+    public class UserBusinessTest
     {
+        [Fact]
+        public void Pass() => Assert.True(true);
     }
 }
