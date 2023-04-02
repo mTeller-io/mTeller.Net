@@ -36,10 +36,10 @@ namespace Service.Controllers
             try
             {
                 var result = await _cashInBusiness.GetAllCashIn();
-                if (result.Status == false)
+                if (result.Status )
                 {
-                    var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Ok( cashIns);
+                   // var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+                    return Ok( result.Data);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace Service.Controllers
             try
             {
                 var result = await _cashInBusiness.AddCashIn(cashInDTO);
-                if (result.Status)
+                if (!result.Status)
                 {
                     var error = result.ErrorList.FirstOrDefault();
                     return Problem(error.ErrorMessage, null, int.Parse(error.ErrorCode));

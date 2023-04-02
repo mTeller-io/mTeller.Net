@@ -19,7 +19,7 @@ namespace Platform.MoMo
             {
                 var isPartyIdActive = await _momoDisbursementAPIService.GetAccountHolderActiveStatus(cashInPayload.Payer.PartyId,cashInPayload.Payer.PartyIdType);
               
-               if(isPartyIdActive)
+               if(isPartyIdActive==false)
                {
                  await _momoDisbursementAPIService.CreateTransfer(cashInPayload.Payer.PartyIdType, cashInPayload.Amount, cashInPayload.Currency, cashInPayload.Payer.PartyId, cashInPayload.ExternalId, cashInPayload.PayerMessage);
                  result = true;

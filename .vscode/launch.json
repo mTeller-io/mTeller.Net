@@ -12,9 +12,20 @@
             "request": "launch",
             "preLaunchTask": "build",
             "requireExactSource": false,
+            "logging": {
+                "moduleLoad": false,
+                "trace": true,
+                "programOutput":true,
+                "engineLogging": true,
+                "exceptions":true,
+                "traceResponse":true
+
+              },
             // If you have changed target frameworks, make sure to update the program path.
-           // "program": "${workspaceFolder}/Presentation/bin/Debug/netcoreapp3.1/Presentation.dll",
-            "program": "${workspaceFolder}/Service/bin/Debug/netcoreapp3.1/Service.dll",
+           //Service\bin\Debug\net6.0
+            // "program": "${workspaceFolder}/Presentation/bin/Debug/netcoreapp3.1/Presentation.dll",
+           // "program": "${workspaceFolder}/Service/bin/Debug/netcoreapp3.1/Service.dll",
+            "program": "${workspaceFolder}/Service/bin/Debug/net6.0/Service.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Service",
             "stopAtEntry": false,

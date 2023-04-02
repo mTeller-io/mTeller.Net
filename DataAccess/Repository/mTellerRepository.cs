@@ -108,6 +108,18 @@ namespace DataAccess.Repository
                 return false;
             }
             _mTellerContext.Entry(entity).State = EntityState.Modified;
+            
+            return true;
+        }
+
+         public bool Attached(T entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
+          
+            _dbSet.Attach(entity) ;
 
             return true;
         }

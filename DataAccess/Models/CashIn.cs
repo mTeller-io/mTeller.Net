@@ -92,5 +92,8 @@ namespace DataAccess.Models
 
         // Indicate either is cell phone number or other number
         public string PartyIdType { get; set; }
+
+       // The currency of the customer account 
+        public string Currency { get; set; }
     }
 }

@@ -83,6 +83,7 @@ namespace Platform
             routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeKeyName, partyIdType);
             requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
             requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
+           // requestHeaders.Add(_momoAPIDisbursementConfig!.ContentTypeHeaderKeyName, _momoAPIDisbursementConfig!.JsonContentType);
 
 
             var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);

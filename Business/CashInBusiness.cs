@@ -50,16 +50,36 @@ namespace Business
                  };
                 //TODO: 1. Get customer data from MTN API
                 //      2. If data retrieval succeeds
-                //          2.1. Add the cashin ammount to customers balance
-                //          2.2. Log the transaction details and or print out a receipt.
+                //          2.1. Add cashin to database with status Pending
+                //          2.2. Post Cashin to MTN API
+                //          2.2. Update cashin status in the database to Success
+                //          2.3. Log the transaction details and or print out a receipt.
                 //      3. If data retrieval fails
                 //          3.1. log the exception
                 //          3.2. throw a user friendly error message for user
-                   await  _disbursement.Disburse(cashInRequestInput);
-                var cashIn = _mapper.Map<CashIn>(cashInDTO);
+                var cashIn = GetCashInDetialsToCashIn(cashInDTO);// _mapper.Map<CashIn>(cashInDTO);
+                
                 var added = _cashInRepository.Add(cashIn);
 
-                result.Status = added;
+                if(added)
+                {
+                  await _cashInRepository.SaveChangesAsync();
+                   var success= await  _disbursement.Disburse(cashInRequestInput);
+                   if(success){
+                      _cashInRepository.Attached(cashIn);
+                      cashIn.Status="Success";
+                      await  _cashInRepository.SaveChangesAsync();
+
+                   }else
+                   {
+                     result.Status=false;
+                   }
+                }
+                   
+                else
+                   result.Status=false;          
+
+               
                 return result;
             }
             catch (Exception ex)
@@ -82,7 +102,7 @@ namespace Business
                     //The default transaction type name
                     TransactionType = "CASHIN",
                     //The name of cash sender
-                    DepositorName = cashInDetail.PayerName,
+                    DepositorName = cashInDetail.DepositorName,
                     //The phone number of cash sender
                     DepositorContactNo = cashInDetail.DepositorContactNo,
                     //The registered sim name of momo cashin payee number
@@ -98,7 +118,7 @@ namespace Business
                                                                         //The date of transaction. This is auto set with format yyyy/MM/dd
                     TransactionDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:sss"),
                     lastStatus = "New",
-                    Status = "PostReady",
+                    Status = "Pending",
                     History = "",
                     // The merchant number sending the e-cash for the cashin
                     // BranchAccountNumber = subscription.MerchantNumbere,
@@ -174,6 +194,8 @@ namespace Business
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
                 result.Data=cashInsDTO;
+
+                result.Status=true;
 
                 return result;
             }
