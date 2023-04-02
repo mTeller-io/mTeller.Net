@@ -74,16 +74,6 @@ namespace Service
             services.RegisterDependencies();
         }
 
-        /*  private static IEdmModel GetEdmModel()
-         {
-             ODataConventionModelBuilder modelBuilder = new();
-             modelBuilder.EntitySet<CashIn>("CashIns");
-             modelBuilder.EntitySet<CashOut>("CashOuts");
-             IEdmModel model = modelBuilder.GetEdmModel();
-
-             return model;
-         } */
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -109,10 +99,6 @@ namespace Service
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            // app.UseAuthorization();
-
-            // app.UseAuthentication();
 
             app.UseAuth();
 
