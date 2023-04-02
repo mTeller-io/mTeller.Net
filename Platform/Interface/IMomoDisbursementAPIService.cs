@@ -4,7 +4,7 @@ namespace Platform.Interface
     {
         Task<string?> GetAccountBalance(string subscriptionType, string token);
 
-        Task<string?> GetAccountHolderActiveStatus(string partyID);
+        Task<bool> GetAccountHolderActiveStatus(string partyID, string partyIdType);
 
         Task<string?> GetAccountHolderBaseInfo(string subscriptionType, string partyID, string token);
 

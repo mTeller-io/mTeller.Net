@@ -13,8 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Service.Exceptions;
 using Service.Extensions;
@@ -63,7 +61,8 @@ namespace Service
             });
 
             services.AddControllers()
-                .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                // .AddOData(opt => opt.EnableQueryFeatures().AddRouteComponents("api", GetEdmModel()))
+                .AddOData(option => option.Select().Filter().OrderBy().Expand())
                 .AddFluentValidation(s =>
                 {
                     s.RegisterValidatorsFromAssemblyContaining<CashInValidator>();
@@ -96,18 +95,19 @@ namespace Service
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             // Register dependencies
+            // services.AddScoped<IUserBusiness, UserBusiness>();
             services.RegisterDependencies();
         }
 
-        private static IEdmModel GetEdmModel()
-        {
-            ODataConventionModelBuilder modelBuilder = new();
-            modelBuilder.EntitySet<CashIn>("CashIns");
-            modelBuilder.EntitySet<CashOut>("CashOuts");
-            IEdmModel model = modelBuilder.GetEdmModel();
+        /*  private static IEdmModel GetEdmModel()
+         {
+             ODataConventionModelBuilder modelBuilder = new();
+             modelBuilder.EntitySet<CashIn>("CashIns");
+             modelBuilder.EntitySet<CashOut>("CashOuts");
+             IEdmModel model = modelBuilder.GetEdmModel();
 
-            return model;
-        }
+             return model;
+         } */
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

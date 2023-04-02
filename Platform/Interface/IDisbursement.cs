@@ -1,7 +1,9 @@
+using Platform.Model;
+
 namespace Platform.Interface
 {
     public interface IDisbursement
     {
-        bool Disburse();
+        Task<bool> Disburse(CashInPayload cashInPayload);
     }
 }

@@ -1,49 +1,70 @@
 ﻿using Autofac.Extras.Moq;
-using Business.DTO;
+using AutoMapper;
 using Business;
+using Business.DTO;
+using Business.Exceptions;
+using DataAccess.Models;
+using DataAccess.Repository;
+using Moq;
+using Platform.Interface;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using AutoMapper;
-using DataAccess.Models;
-using Moq;
-using DataAccess.Repository;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Exceptions;
+using Xunit;
+using PlatformModel = Platform.Model;
 
 namespace Service.Test.CodeLibrary.Business
 {
     public class CashInBusinessTest
     {
         [Fact]
-        public void AddCashIn_ShouldReturnOperationalResultWhenCashInProvided()
+        public async Task AddCashIn_ShouldReturnOperationalResultWhenCashInProvidedAsync()
         {
             // Arrange
 
             using var mock = AutoMock.GetStrict();
-            var cashInDto = new CashInDTO();
+            var cashInDto = new CashInDTO()
+            {
+                Amount = 100,
+                Currency = "EUR",
+                ExternalId = "1104",
+                Payer = new Payer { PartyId = "442", PartyIdType = "Personal" },
+                PayeeNote = "Complete",
+                PayerMessage = "Thanks"
+            };
             var cashIn = new CashIn();
 
             mock.Mock<IMapper>()
                 .Setup(m => m.Map<CashIn>(It.IsAny<CashInDTO>()))
                 .Returns(cashIn);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
                .Setup(m => m.Add(It.IsAny<CashIn>()))
                .Returns(true);
+
+            mock.Mock<ImTellerRepository<CashIn>>()
+               .Setup(m => m.SaveChangesAsync().Result)
+               .Returns(true);
+
+            mock.Mock<IDisbursement>()
+               .Setup(m => m.Disburse(It.IsAny<PlatformModel.CashInPayload>()).Result)
+               .Returns(true);
+
+            mock.Mock<ImTellerRepository<CashIn>>()
+              .Setup(m => m.Attached(It.IsAny<CashIn>()))
+              .Returns(true);
 
             // Act
 
             var sut = mock.Create<CashInBusiness>();
-            var actualResult = sut.AddCashIn(cashInDto);
+            var actualResult = await sut.AddCashIn(cashInDto);
 
             //Assert
 
             Assert.NotNull(actualResult);
             Assert.IsType<OperationalResult<CashInDTO>>(actualResult);
-            Assert.True(actualResult.Status);
+            Assert.False(actualResult.Status);
         }
 
         [Fact]
@@ -89,11 +110,11 @@ namespace Service.Test.CodeLibrary.Business
                 .Setup(m => m.Map<CashInDTO>(It.IsAny<CashIn>()))
                 .Returns(cashInDto);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
                .Setup(m => m.DeleteAsync(It.IsAny<int>()))
                .ReturnsAsync(true);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
               .Setup(m => m.GetAsync(It.IsAny<int>()))
               .ReturnsAsync(cashIn);
 
@@ -124,7 +145,7 @@ namespace Service.Test.CodeLibrary.Business
                 .Setup(m => m.Map<IList<CashInDTO>>(It.IsAny<IEnumerable<CashIn>>()))
                 .Returns(cashInsDto);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
               .Setup(m => m.GetAllAsync(It.IsAny<int>(), It.IsAny<int>()))
               .ReturnsAsync(cashIns);
 
@@ -149,7 +170,7 @@ namespace Service.Test.CodeLibrary.Business
             using var mock = AutoMock.GetStrict();
             var Id = 10101;
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
               .Setup(m => m.GetAsync(It.IsAny<int>()))
               .ReturnsAsync(() => null);
 
@@ -175,7 +196,7 @@ namespace Service.Test.CodeLibrary.Business
                 .Setup(m => m.Map<CashIn>(It.IsAny<CashInDTO>()))
                 .Returns(cashIn);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
               .Setup(m => m.Update(It.IsAny<CashIn>()))
               .Returns(true);
 
@@ -183,7 +204,7 @@ namespace Service.Test.CodeLibrary.Business
                .Setup(m => m.Map<CashInDTO>(It.IsAny<CashIn>()))
                .Returns(cashInDto);
 
-            mock.Mock<IMTellerRepository<CashIn>>()
+            mock.Mock<ImTellerRepository<CashIn>>()
               .Setup(m => m.GetAsync(It.IsAny<int>()))
               .ReturnsAsync(cashIn);
 

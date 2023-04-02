@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public class MTellerRepository<T> : IMTellerRepository<T> where T : class
+    public class mTellerRepository<T> : ImTellerRepository<T> where T : class
     {
         private readonly mTellerDBContext _mTellerContext;
         internal DbSet<T> _dbSet;
 
-        public MTellerRepository(mTellerDBContext mTellerContext)
+        public mTellerRepository(mTellerDBContext mTellerContext)
         {
             _mTellerContext = mTellerContext;
             this._dbSet = _mTellerContext.Set<T>();
@@ -67,8 +67,9 @@ namespace DataAccess.Repository
         public async Task<IEnumerable<T>> GetAllAsync(int pageNo = 0, int pageSize = 25)
         {
             System.Linq.IQueryable<T> query = _dbSet;
-            var skipCount = pageNo * pageSize;
-            query = query.Skip(skipCount).Take(pageSize);
+            //var skipCount = pageNo * pageSize;
+            // query = query.Skip(skipCount).Take(pageSize);
+
             return await query.ToListAsync();
         }
 
@@ -107,6 +108,18 @@ namespace DataAccess.Repository
                 return false;
             }
             _mTellerContext.Entry(entity).State = EntityState.Modified;
+
+            return true;
+        }
+
+        public bool Attached(T entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _dbSet.Attach(entity);
 
             return true;
         }

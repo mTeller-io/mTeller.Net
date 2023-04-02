@@ -33,7 +33,7 @@ namespace Business.Validators
 
         public static bool LocalCurrency(string currency)
         {
-            if (currency == nameof(Currency.GHS))
+            if (currency == nameof(Currency.EUR))
                 return true;
             else
                 return false;

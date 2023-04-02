@@ -1,4 +1,3 @@
-using Business;
 using Business.DTO;
 using Business.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,7 @@ namespace Service.Controllers
     {
         private readonly IUserBusiness _userBusiness;
 
-        public UserController(UserBusiness userBusiness)
+        public UserController(IUserBusiness userBusiness)
         {
             _userBusiness = userBusiness;
         }

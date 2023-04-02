@@ -1,9 +1,4 @@
-﻿using Autofac.Extras.Moq;
-using Business.Validators;
-using Common.Constant;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Business.Validators;
 using Xunit;
 
 namespace Service.Test.CodeLibrary.Business.Validators
@@ -24,8 +19,8 @@ namespace Service.Test.CodeLibrary.Business.Validators
         {
             // Assert
 
-            Assert.True(CashInDetailValidator.LocalCurrency("GHS"));
-            Assert.False(CashInDetailValidator.LocalCurrency("Cedi"));
+            Assert.True(CashInDetailValidator.LocalCurrency("EUR"));
+            Assert.False(CashInDetailValidator.LocalCurrency("GHS"));
         }
 
         [Fact]

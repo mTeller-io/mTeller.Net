@@ -1,0 +1,100 @@
+name: Tag Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+env:
+    VER_MAJOR: 23
+    VER_MINOR: 4
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.5.0
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Install dependencies
+        run: dotnet restore mTeller.sln
+
+      - name: Test
+        run: dotnet test mTeller.sln --configuration Release --no-restore
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.0
+        with:
+          fetch-depth: 0
+
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+            calculatedSha=$(git rev-parse --short ${{ github.sha }})
+            echo "short_sha=$calculatedSha" >> $GITHUB_OUTPUT
+
+      - name: Generate version
+        id: mteller
+        run: |
+
+            # Get tag
+            echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+            # Build
+            VERBUILD=$(awk -F"'" 'NR==1 {print $2}' Doc/.version)
+            eval "VERBUILD=\$(echo \"\$VERBUILD\" | sed 's/Sha/${{ steps.vars.outputs.short_sha }}/g; s/Build/${{ github.run_number }}/g')"
+            echo "ver-build=$VERBUILD" >> $GITHUB_OUTPUT
+
+            # Core
+            VERCORE=$(awk -F"'" 'NR==2 {print $2}' Doc/.version)
+            eval "VERCORE=\$(echo \"\$VERCORE\" | sed 's/Major/${{ env.VER_MAJOR }}/g; s/Minor/${{ env.VER_MINOR }}/g; s/Patch/${{ github.run_number }}/g')"
+            echo "ver-core=$VERCORE" >> $GITHUB_OUTPUT
+      
+      - name: Echo version
+        run: |
+             echo "${{ steps.mteller.outputs.ver-core }}"
+             echo "${{ steps.mteller.outputs.ver-build }}"
+             echo "${{ steps.mteller.outputs.tag }}"
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Install dependencies
+        run: dotnet restore mTeller.sln
+
+      - name: Build
+        run: dotnet build mTeller.sln --configuration Release /p:Version=${{ steps.mteller.outputs.ver-core }} --no-restore
+
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.MT_DH_USERNAME }}
+          password: ${{ secrets.MT_DH_PASSWORD }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./
+          push: true
+          tags: |
+               mtellergh/mteller-service:${{ steps.mteller.outputs.ver-core }},
+               mtellergh/mteller-service:${{ steps.mteller.outputs.ver-build }},
+               mtellergh/mteller-service:${{ github.sha }},
+               mtellergh/mteller-service:latest,
+               mtellergh/mteller-service:${{ env.VER_MAJOR }}.${{ env.VER_MINOR }}

@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using DataAccess.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(mTellerDBContext))]
-    partial class mTellerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220730223939_AddChanges")]
+    partial class AddChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,9 +163,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreateUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Currency")
                         .HasColumnType("text");
 
                     b.Property<string>("DepositorContactNo")
