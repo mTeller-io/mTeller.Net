@@ -1,0 +1,2 @@
+VERBUILD = 'Sha.Build'
+VERCORE = 'Major.Minor.Patch'

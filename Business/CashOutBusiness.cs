@@ -3,9 +3,9 @@ using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Business
 {
@@ -30,7 +30,7 @@ namespace Business
             result.Status = cashOut != null && cashOut.CashOutId > 0;
 
             if (result.Status)
-                result.Data=cashOut;
+                result.Data = cashOut;
             else
             {
                 throw new NotFoundException();
@@ -51,7 +51,7 @@ namespace Business
             if (list.Any())
             {
                 result.Status = true;
-                result.Data=list.ToList();
+                result.Data = list.ToList();
             }
             else
             {

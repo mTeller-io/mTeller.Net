@@ -68,8 +68,8 @@ namespace DataAccess.Repository
         {
             System.Linq.IQueryable<T> query = _dbSet;
             //var skipCount = pageNo * pageSize;
-           // query = query.Skip(skipCount).Take(pageSize);
-            
+            // query = query.Skip(skipCount).Take(pageSize);
+
             return await query.ToListAsync();
         }
 
@@ -108,18 +108,18 @@ namespace DataAccess.Repository
                 return false;
             }
             _mTellerContext.Entry(entity).State = EntityState.Modified;
-            
+
             return true;
         }
 
-         public bool Attached(T entity)
+        public bool Attached(T entity)
         {
             if (entity == null)
             {
                 return false;
             }
-          
-            _dbSet.Attach(entity) ;
+
+            _dbSet.Attach(entity);
 
             return true;
         }

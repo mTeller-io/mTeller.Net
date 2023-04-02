@@ -1,21 +1,15 @@
 using Business.DTO;
 using Business.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.OData.Routing;
-
 
 namespace Service.Controllers
 {
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-   // [EnableQuery]
     public class CashInController : ControllerBase//ODataController
     {
         private readonly ICashInBusiness _cashInBusiness;
@@ -26,20 +20,18 @@ namespace Service.Controllers
         }
 
         // Get api/<CashInController>
-       //[HttpGet("CashIns")]
-       [HttpGet]
-       [Route("GetCashIn")]
-      // [EnableQuery(PageSize = 25, MaxExpansionDepth = 4)]
+        //[HttpGet("CashIns")]
+        [HttpGet]
+        [Route("GetCashIn")]
         public async Task<IActionResult> GetCashIn()
         {
-
             try
             {
                 var result = await _cashInBusiness.GetAllCashIn();
-                if (result.Status )
+                if (result.Status)
                 {
-                   // var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
-                    return Ok( result.Data);
+                    // var cashIns = result.Data.FirstOrDefault() as IList<CashInDTO>;
+                    return Ok(result.Data);
                 }
                 else
                 {
@@ -51,7 +43,6 @@ namespace Service.Controllers
             {
                 return Problem(ex.Message, null, 500);
             }
-
         }
 
         // Get api/<CashInController>

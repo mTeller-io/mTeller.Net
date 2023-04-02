@@ -26,7 +26,7 @@ namespace Business
             // TODO: Add more rules
         }
 
-        private bool BeOnline(string arg)
+        public static bool BeOnline(string arg)
         {
             if (arg == string.Empty)
                 return false;
@@ -34,7 +34,7 @@ namespace Business
             return true;
         }
 
-        private static bool BeLenghtOfTen(string BranchNumber)
+        public static bool BeLenghtOfTen(string BranchNumber)
         {
             if (BranchNumber.Length < 10)
                 return false;
@@ -42,7 +42,7 @@ namespace Business
                 return true;
         }
 
-        private bool GreaterThanZero(decimal value)
+        public static bool GreaterThanZero(decimal value)
         {
             if (value < 0)
                 return false;

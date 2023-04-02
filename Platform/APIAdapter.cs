@@ -23,42 +23,41 @@ namespace Platform
                 throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
             this.userName = userName;
 
-            this.password= password;
-            this.baseUrl= baseUrl.EncodeCodeBase64();
-            this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
+            this.password = password;
+            this.baseUrl = baseUrl.EncodeCodeBase64();
+            this.basicToken = (this.userName + ':' + this.password).EncodeCodeBase64();
 
             _restClient = restClient;
-            
         }
 
-        public APIAdapter(string userName,string password, string baseUrl, string tokenEnpoint,string subscriptionKeyName, string subscriptionKey)
+        public APIAdapter(string userName, string password, string baseUrl, string tokenEnpoint, string subscriptionKeyName, string subscriptionKey)
         {
-            if(String.IsNullOrWhiteSpace(userName)|| String.IsNullOrWhiteSpace(password)|| String.IsNullOrWhiteSpace(baseUrl))
+            if (String.IsNullOrWhiteSpace(userName) || String.IsNullOrWhiteSpace(password) || String.IsNullOrWhiteSpace(baseUrl))
                 throw new Exception("Username or password or baseurl cannot be either null, whitespace or empty");
             this.userName = userName;
-            this.password= password;
-            this.baseUrl= baseUrl; //.EncodeCodeBase64();
-            this.basicToken =  (this.userName + ':' + this.password).EncodeCodeBase64();
-            this.subscriptionKeyName= subscriptionKeyName;
+            this.password = password;
+            this.baseUrl = baseUrl; //.EncodeCodeBase64();
+            this.basicToken = (this.userName + ':' + this.password).EncodeCodeBase64();
+            this.subscriptionKeyName = subscriptionKeyName;
             this.subscriptionKey = subscriptionKey;
 
-             var options = new RestClientOptions(this.baseUrl);
-            
-            _restClient = new RestClient(options) {
-            Authenticator = new APIAdapterAuthenticaor(this.baseUrl,tokenEnpoint, this.userName, this.password,this.subscriptionKeyName,this.subscriptionKey)
-             };
+            var options = new RestClientOptions(this.baseUrl);
+
+            _restClient = new RestClient(options)
+            {
+                Authenticator = new APIAdapterAuthenticaor(this.baseUrl, tokenEnpoint, this.userName, this.password, this.subscriptionKeyName, this.subscriptionKey)
+            };
         }
 
         public async Task<RestResponse> ExecuteGetAsync(string endpoint, Dictionary<string, string>? requestHeaders = null,
         Dictionary<string, string>? queryStrings = null, Dictionary<string, string>? routeParams = null)
-        {   
-             var url = PopulatePlaceholders(endpoint,routeParams);
+        {
+            var url = PopulatePlaceholders(endpoint, routeParams);
             var restRequest = new RestRequest(url);//, Method.Get);
-           // restRequest = AddUrlParams(restRequest, routeParams);
+                                                   // restRequest = AddUrlParams(restRequest, routeParams);
             restRequest = AddRequestHeaders(restRequest, requestHeaders);
             restRequest = AddQueryStrings(restRequest, queryStrings);
-            return await   ExecuteAsync(restRequest);
-
+            return await ExecuteAsync(restRequest);
         }
 
         public async Task<RestResponse> ExecutePostAsync(string endpoint, Object requestBody, Dictionary<string, string>? requestHeaders = null,
@@ -122,9 +121,9 @@ namespace Platform
 
         private static RestRequest AddUrlParams(RestRequest restRequest, Dictionary<string, string>? routeParams)
         {
-            if (restRequest==null ||routeParams == null || routeParams.Count <= 0)
+            if (restRequest == null || routeParams == null || routeParams.Count <= 0)
                 return restRequest;
-             Console.Write(routeParams.Count.ToString());
+            Console.Write(routeParams.Count.ToString());
             foreach (var param in routeParams)
             {
                 restRequest?.AddUrlSegment(param.Key, param.Value);
@@ -139,17 +138,16 @@ namespace Platform
         /// <param name="endpoint"> string containing placeholders</param>
         /// <param name="routeParams">value key structure of containing placeholder values</param>
         /// <returns></returns>
-         private static string PopulatePlaceholders(string endpoint, Dictionary<string, string>? routeParams)
+        private static string PopulatePlaceholders(string endpoint, Dictionary<string, string>? routeParams)
         {
-             var url="";
-            if (endpoint==null ||routeParams == null || routeParams.Count <= 0)
+            var url = "";
+            if (endpoint == null || routeParams == null || routeParams.Count <= 0)
                 return endpoint;
-             Console.Write(routeParams.Count.ToString());
-             url=endpoint;
+            Console.Write(routeParams.Count.ToString());
+            url = endpoint;
             foreach (var param in routeParams)
-            {  
-               url=  url.Replace("{"+param.Key+"}",param.Value);
-  
+            {
+                url = url.Replace("{" + param.Key + "}", param.Value);
             }
 
             return url;
@@ -176,7 +174,6 @@ namespace Platform
             foreach (var item in queryStrings)
             {
                 restRequest.AddParameter(item.Key, item.Value);
-            
             }
 
             return restRequest;
@@ -199,25 +196,25 @@ namespace Platform
         }
 
         private async Task<RestResponse> ExecuteAsync(RestRequest restRequest)
-        {  
-            var result = new RestResponse(){
-               IsSuccessful=false
-             };
+        {
+            var result = new RestResponse()
+            {
+                IsSuccessful = false
+            };
 
-             try
-             {
-                  if (restRequest == null)
-                      return result;
+            try
+            {
+                if (restRequest == null)
+                    return result;
 
-                    result= await _restClient.ExecuteAsync(restRequest);
-           
-             }
-             catch (Exception ex)
-             {
-                    throw ex;
-                   // result.Content = ex.StackTrace;
-             }
-             return result;
+                result = await _restClient.ExecuteAsync(restRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                // result.Content = ex.StackTrace;
+            }
+            return result;
         }
     }
 }

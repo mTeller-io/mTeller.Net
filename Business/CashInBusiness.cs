@@ -4,15 +4,11 @@ using Business.Exceptions;
 using Business.Interface;
 using DataAccess.Models;
 using DataAccess.Repository;
-using Microsoft.Extensions.Logging;
+using Platform.Interface;
+using Platform.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Platform.MoMo;
-using Platform.Model;
-using Platform.Interface;
-
 
 namespace Business
 {
@@ -21,6 +17,7 @@ namespace Business
         private readonly ImTellerRepository<CashIn> _cashInRepository;
         private readonly IMapper _mapper;
         private readonly IDisbursement _disbursement;
+
         public CashInBusiness(ImTellerRepository<CashIn> cashInRepository, IMapper mapper, IDisbursement disbursement)
         {
             _cashInRepository = cashInRepository;
@@ -34,20 +31,19 @@ namespace Business
             {
                 var result = new OperationalResult<CashInDTO>();
 
-                 var cashInRequestInput= new CashInPayload
-                 {
-                     Amount = cashInDTO.Amount,
-                     Currency = cashInDTO.Currency,
-                     ExternalId = cashInDTO.ExternalId,
-                     Payer = new Platform.Model.Payer{
-                        PartyId= cashInDTO.Payer.PartyId,
-                        PartyIdType= cashInDTO.Payer.PartyIdType
-                     } ,
-                     PayeeNote = cashInDTO.PayeeNote,
-                     PayerMessage = cashInDTO.PayerMessage,
-                    
-
-                 };
+                var cashInRequestInput = new CashInPayload
+                {
+                    Amount = cashInDTO.Amount,
+                    Currency = cashInDTO.Currency,
+                    ExternalId = cashInDTO.ExternalId,
+                    Payer = new Platform.Model.Payer
+                    {
+                        PartyId = cashInDTO.Payer.PartyId,
+                        PartyIdType = cashInDTO.Payer.PartyIdType
+                    },
+                    PayeeNote = cashInDTO.PayeeNote,
+                    PayerMessage = cashInDTO.PayerMessage
+                };
                 //TODO: 1. Get customer data from MTN API
                 //      2. If data retrieval succeeds
                 //          2.1. Add cashin to database with status Pending
@@ -58,28 +54,27 @@ namespace Business
                 //          3.1. log the exception
                 //          3.2. throw a user friendly error message for user
                 var cashIn = GetCashInDetialsToCashIn(cashInDTO);// _mapper.Map<CashIn>(cashInDTO);
-                
+
                 var added = _cashInRepository.Add(cashIn);
 
-                if(added)
+                if (added)
                 {
-                  await _cashInRepository.SaveChangesAsync();
-                   var success= await  _disbursement.Disburse(cashInRequestInput);
-                   if(success){
-                      _cashInRepository.Attached(cashIn);
-                      cashIn.Status="Success";
-                      await  _cashInRepository.SaveChangesAsync();
-
-                   }else
-                   {
-                     result.Status=false;
-                   }
+                    await _cashInRepository.SaveChangesAsync();
+                    var success = await _disbursement.Disburse(cashInRequestInput);
+                    if (success)
+                    {
+                        _cashInRepository.Attached(cashIn);
+                        cashIn.Status = "Success";
+                        await _cashInRepository.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        result.Status = false;
+                    }
                 }
-                   
                 else
-                   result.Status=false;          
+                    result.Status = false;
 
-               
                 return result;
             }
             catch (Exception ex)
@@ -91,7 +86,7 @@ namespace Business
         public static CashIn GetCashInDetialsToCashIn(CashInDTO cashInDetail)
         {
             CashIn newCashIn;
-            if (cashInDetail != null && cashInDetail.Amount > 0 & !String.IsNullOrWhiteSpace(cashInDetail.Payer.PartyId))
+            if (cashInDetail != null && cashInDetail.Amount > 0 && !String.IsNullOrWhiteSpace(cashInDetail.Payer.PartyId))
             {
                 newCashIn = new CashIn
                 {
@@ -155,12 +150,14 @@ namespace Business
             return newCashIn;
         }
 
-        // public async Task<bool> DeleteCashIn(int id)
         public async Task<OperationalResult<CashInDTO>> DeleteCashIn(int id)
         {
             try
             {
-                var result = new OperationalResult<CashInDTO>();
+                var result = new OperationalResult<CashInDTO>()
+                {
+                    Status = false
+                };
 
                 var CashInResult = await GetCashIn(id);
 
@@ -170,7 +167,7 @@ namespace Business
                     throw new NotFoundException("Record to be deleted was not found.");
                 }
 
-                var deleted = await _cashInRepository.DeleteAsync(id);
+                result.Status = await _cashInRepository.DeleteAsync(id);
 
                 return result;
             }
@@ -188,14 +185,15 @@ namespace Business
                 Status = false,
                 Data = new List<CashInDTO>()
             };
+
             try
             {
                 var cashIns = await _cashInRepository.GetAllAsync();
 
                 var cashInsDTO = _mapper.Map<IList<CashInDTO>>(cashIns);
-                result.Data=cashInsDTO;
+                result.Data = cashInsDTO;
 
-                result.Status=true;
+                result.Status = true;
 
                 return result;
             }
@@ -211,7 +209,8 @@ namespace Business
             {
                 var result = new OperationalResult<CashInDTO>()
                 {
-                    Status = false
+                    Status = false,
+                    Data = new CashInDTO()
                 };
 
                 var cashIn = await _cashInRepository.GetAsync(CashInId);
@@ -222,7 +221,7 @@ namespace Business
 
                 // A cashInDTO is created
                 var cashInDTO = _mapper.Map<CashInDTO>(cashIn);
-                result.Data=cashInDTO;
+                result.Data = cashInDTO;
                 result.Status = true;
                 return result;
             }
@@ -249,9 +248,8 @@ namespace Business
                 }
 
                 var cashIn = _mapper.Map<CashIn>(CashInResultDTO);
-                var updated = _cashInRepository.Update(cashIn);
+                result.Status = _cashInRepository.Update(cashIn);
 
-                result.Status = updated;
                 return result;
             }
             catch (Exception ex)

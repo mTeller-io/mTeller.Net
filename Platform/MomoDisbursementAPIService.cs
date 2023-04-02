@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Platform.Interface;
 using Platform.Model;
-using RestSharp;
 
 namespace Platform
 {
@@ -25,8 +24,7 @@ namespace Platform
             _apiAdaptor = new APIAdapter(_momoAPIDisbursementConfig.APIUser,
             _momoAPIDisbursementConfig.APIKey, _momoAPIDisbursementConfig.BaseUrl,
             _momoAPIDisbursementConfig.TokenEndpoint,
-            _momoAPIDisbursementConfig.SubscriptionHeaderKeyName,_momoAPIDisbursementConfig.PrimarySubscriptionKey);
-
+            _momoAPIDisbursementConfig.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig.PrimarySubscriptionKey);
         }
 
         /// <summary>
@@ -54,7 +52,6 @@ namespace Platform
         /// <returns>Returns the account balance</returns>
         public async Task<string?> GetAccountBalance(string subscriptionType, string token)
         {
-            
             //prepare  headers
             var requestHeaders = new Dictionary<string, string>
             {
@@ -62,9 +59,7 @@ namespace Platform
                 { _momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey }
             };
 
-
             var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountBalanceEndPoint, requestHeaders, null, null);
-
 
             return response.Content;
         }
@@ -74,7 +69,7 @@ namespace Platform
         /// </summary>
         /// <param name="partyID">The customer number or Id</param>
         /// <returns>Returns the status of the momo account which holds a subscription</returns>
-        public async Task<bool> GetAccountHolderActiveStatus(string partyID,string partyIdType)
+        public async Task<bool> GetAccountHolderActiveStatus(string partyID, string partyIdType)
         {
             var routeParams = new Dictionary<string, string>();
             var requestHeaders = new Dictionary<string, string>();
@@ -83,8 +78,7 @@ namespace Platform
             routeParams.Add(_momoAPIDisbursementConfig!.AccountHolderIdTypeKeyName, partyIdType);
             requestHeaders.Add(_momoAPIDisbursementConfig!.TargetEnvironmentHeaderKeyName, _momoAPIDisbursementConfig!.TargetEnvironment);
             requestHeaders.Add(_momoAPIDisbursementConfig!.SubscriptionHeaderKeyName, _momoAPIDisbursementConfig!.PrimarySubscriptionKey);
-           // requestHeaders.Add(_momoAPIDisbursementConfig!.ContentTypeHeaderKeyName, _momoAPIDisbursementConfig!.JsonContentType);
-
+            // requestHeaders.Add(_momoAPIDisbursementConfig!.ContentTypeHeaderKeyName, _momoAPIDisbursementConfig!.JsonContentType);
 
             var response = await _apiAdaptor.ExecuteGetAsync(_momoAPIDisbursementConfig.AccountHolderActiveStatusEndPoint, requestHeaders, null, routeParams);
 

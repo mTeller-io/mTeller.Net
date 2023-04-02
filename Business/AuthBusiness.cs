@@ -13,7 +13,7 @@ namespace Business
     /// <summary>
     /// AuthBusiness class for managing user authentication
     /// </summary>
-    public class AuthBusiness : IAuthBusiness
+    public class AddCashIn : IAuthBusiness
     {
         private readonly RoleManager<Role> _roleManager;
 
@@ -24,7 +24,7 @@ namespace Business
         /// </summary>
         /// <param name="userManager">The injected identity user manager class</param>
         /// <param name="mapper">The injected automapper </param>
-        public AuthBusiness(RoleManager<Role> roleManager, IJwtTokenBusiness jwtTokenBusiness)
+        public AddCashIn(RoleManager<Role> roleManager, IJwtTokenBusiness jwtTokenBusiness)
         {
             _roleManager = roleManager;
             _jwtTokenBusiness = jwtTokenBusiness;

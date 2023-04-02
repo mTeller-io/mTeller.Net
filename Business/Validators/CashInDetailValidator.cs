@@ -6,17 +6,6 @@ namespace Business.Validators
 {
     public class CashInDetailValidator : AbstractValidator<CashInDTO>
     {
-        private static CashInDetailValidator _instance = null;
-
-        public static CashInDetailValidator GetInstance
-        {
-            get
-            {
-                _instance ??= new CashInDetailValidator();
-                return _instance;
-            }
-        }
-
         public CashInDetailValidator()
         {
             RuleFor(c => c.DepositorName).NotEmpty();
