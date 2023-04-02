@@ -99,7 +99,7 @@ jobs:
         with:
           context: ./
           push: true
-          tags: menfra/mteller:pr.${{ github.event.number }}
+          tags: mtellergh/mteller-service:pr.${{ github.event.number }}
 
   Add_dod_comments:
         needs: build

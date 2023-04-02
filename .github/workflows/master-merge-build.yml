@@ -87,4 +87,4 @@ jobs:
         with:
           context: ./
           push: true
-          tags: menfra/mteller:latest
+          tags: mtellergh/mteller-service:latest

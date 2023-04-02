@@ -93,8 +93,8 @@ jobs:
           context: ./
           push: true
           tags: |
-               menfra/mteller:${{ steps.mteller.outputs.ver-core }},
-               menfra/mteller:${{ steps.mteller.outputs.ver-build }},
-               menfra/mteller:${{ github.sha }},
-               menfra/mteller:latest,
-               menfra/mteller:${{ env.VER_MAJOR }}.${{ env.VER_MINOR }}
+               mtellergh/mteller-service:${{ steps.mteller.outputs.ver-core }},
+               mtellergh/mteller-service:${{ steps.mteller.outputs.ver-build }},
+               mtellergh/mteller-service:${{ github.sha }},
+               mtellergh/mteller-service:latest,
+               mtellergh/mteller-service:${{ env.VER_MAJOR }}.${{ env.VER_MINOR }}
