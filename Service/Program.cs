@@ -13,6 +13,7 @@ namespace Service
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+               
                 .ConfigureWebHostDefaults(webBuilder =>
                 /*  webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
                 {

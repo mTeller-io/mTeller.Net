@@ -20,5 +20,7 @@ namespace Platform.Model
       public string ReferenceIdHeaderKeyName {get;set;}=String.Empty;
       public string TargetEnvironmentHeaderKeyName {get;set;}=string.Empty;
       public string  SubscriptionHeaderKeyName {get;set;}=String.Empty;
+      public string ContentTypeHeaderKeyName {get;set;}=String.Empty;
+      public string JsonContentType {get;set;}=String.Empty;
     }
 }

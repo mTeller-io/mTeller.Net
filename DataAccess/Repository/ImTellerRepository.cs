@@ -16,6 +16,8 @@ namespace DataAccess.Repository
 
         bool Update(T entity);
 
+        bool Attached(T entity);
+
         Task<bool> DeleteAsync(Object id);
 
         Task<IEnumerable<T>> GetAsync(
